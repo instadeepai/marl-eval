@@ -74,7 +74,7 @@ def aggregate_scores(
     dictionary: Mapping[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
-) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
+) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
     Args:
@@ -85,8 +85,8 @@ def aggregate_scores(
 
     Returns:
         fig: Matplotlib figure for storing.
-        aggregate_scores: Aggregated score values
-        aggregate_score_cis: Aggregated score confidence intervals
+        aggregate_scores_dict: Aggregated score values
+        aggregate_score_cis_dict: Aggregated score confidence intervals
     """
 
     data_dictionary = dictionary[f"mean_{metric_name}"]
@@ -109,17 +109,36 @@ def aggregate_scores(
     aggregate_scores, aggregate_score_cis = rly.get_interval_estimates(
         data_dictionary, aggregate_func, reps=50000
     )
+
+    metric_names = ["Median", "IQM", "Mean", "Optimality Gap"]
+
     fig, axes = plot_utils.plot_interval_estimates(
         aggregate_scores,
         aggregate_score_cis,
-        metric_names=["Median", "IQM", "Mean", "Optimality Gap"],
+        metric_names=metric_names,
         algorithms=algorithms,
         xlabel=xlabel,
         color_palette=cc.glasbey_category10,
         xlabel_y_coordinate=-0.5,
     )
 
-    return fig, aggregate_scores, aggregate_score_cis
+    # Reformat aggregate scores and aggregate score
+    # confidences interval as dictionaries for easier use.
+    aggregate_scores_dict = dict()
+    for algorithm, scores in aggregate_scores.items():
+        algorithm_scores_dict = dict()
+        for metric, metric_value in zip(metric_names, scores):
+            algorithm_scores_dict[metric] = metric_value
+        aggregate_scores_dict[algorithm] = algorithm_scores_dict
+
+    aggregate_score_cis_dict = dict()
+    for algorithm, scores in aggregate_score_cis.items():
+        algorithm_cis_dict = dict()
+        for metric_value_idx, metric in enumerate(metric_names):
+            algorithm_cis_dict[metric] = scores[:, metric_value_idx]
+        aggregate_score_cis_dict[algorithm] = algorithm_cis_dict
+
+    return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
 
 def probability_of_improvement(
