@@ -14,16 +14,16 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Mapping, Tuple
 
 import numpy as np
 
 """Tools for processing MARL experiment data."""
 
 
-def data_process_pipeline(
-    raw_data: Dict[str, Any], metrics_to_normalize: List[str]
-) -> Dict[str, Any]:
+def data_process_pipeline(  # noqa: C901
+    raw_data: Mapping[str, Dict[str, Any]], metrics_to_normalize: List[str]
+) -> Mapping[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
     Args:
@@ -35,11 +35,11 @@ def data_process_pipeline(
 
     Returns:
         processed_data: Dictionary containing processed experiment data where relevant
-            metrics have been min/max normalised and the mean of all arrays in the dataset
-            have been computed and added to the dataset.
+            metrics have been min/max normalised and the mean of all arrays in the
+            dataset have been computed and added to the dataset.
     """
 
-    metric_min_max_info = {}
+    metric_min_max_info: Dict[str, Any] = {}
 
     # Create global max, min dictionary
     for metric in metrics_to_normalize:
@@ -137,44 +137,52 @@ def data_process_pipeline(
     return processed_data
 
 
-def create_matrices_for_rliable(
-    data_dictionary: Dict[str, Any],
+def create_matrices_for_rliable(  # noqa: C901
+    data_dictionary: Mapping[str, Dict[str, Any]],
     environment_name: str,
     metrics_to_normalize: List[str],
-) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    """Create dictionary containing matrices required for using the rliable tools.
-        These are a (number of runs x number of tasks) array where the entries are
-        the normalised absolute metrics for a given environments. And a dictionary
-        with a (number of logging steps x number of runs x number of tasks) array
-        as values and environment names as keys to be used for computing sample
-        efficiency curves.
+) -> Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]]:
+    """Creates two dictionaries containing arrays required for using the rliable tools.
+
+        The first dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that were
+        used in an experiment. For each metric algorithm pair a
+        (number of runs x number of tasks) array is created containing as rows
+        the normalised metric values acrossall tasks for a given independent
+        experiment run.
+
+        The second dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that
+        were used in an experiment, but for each metric algorithm pair a
+        (number of runs x number of tasks x number of logging steps) array is created
+        where the rows correspond to the normalised metric values across
+        all tasks for a given logging step of an independent experiment run.
+        This dictionary will be used to produce the sample efficiency curves.
 
 
     Args:
-        data_dictionary: Dictionary of data that has been processed
-        environment_name: Name of environment for which matrices should be
+        data_dictionary: Dictionary of data that has been processed using the
+            data_process_pipeline function.
+        environment_name: Name of environment for which arrays should be
             computed.
-        metrics_to_normalize: LIst of metric names of metrics that should be
+        metrics_to_normalize: List of metric names of metrics that should be
             normalised.
 
     Returns:
-        metric_dictionary_return: dictionary containing normalised matrices
-            to be used by rliable tools. The dictionary keys are the metrics for
-            for which normalised arrays were computed at the algorithm level.
-        final_metric_tensor_dictionary:
+        metric_dictionary_return: dictionary to be used by rliable tools
+        final_metric_tensor_dictionary: dictionary to be used by rliable tools
     """
-    # matrix 1
+    # Compute first arrays
 
-    # we want the name of the environment
-
+    # Get the environment name
     env_name = environment_name
 
-    # extract relevant information
+    # Extract relevant information
     data_env = data_dictionary[env_name]
 
-    # making a strong assumption here that all experiments in this
+    # Making a strong assumption here that all experiments in this
     # environment will have the same number of steps, same number of tasks
-    # same number of algorithms
+    # and same number of.
     tasks = list(data_env.keys())
     algorithms = list(data_env[tasks[0]].keys())
     runs = list(data_env[tasks[0]][algorithms[0]].keys())
@@ -187,11 +195,8 @@ def create_matrices_for_rliable(
         metric for metric in absolute_metrics if metric.split("_")[0].lower() == "mean"
     ]
 
-    num_tasks = len(tasks)
-    num_steps = len(steps)
-
-    # create a dictionary of matrices
-    metric_dictionary = {}
+    # Create a dictionary of matrices with correct shape
+    metric_dictionary: Dict[str, Any] = {}
 
     for metric in mean_absolute_metrics:
         metric_dictionary[metric] = {}
@@ -200,7 +205,7 @@ def create_matrices_for_rliable(
                 shape=(len(runs), len(tasks))
             )
 
-    # now we need to populate the matrices
+    # Populate the matrices
     for metric in mean_absolute_metrics:
         for algorithm in algorithms:
             for i, run in enumerate(runs):
@@ -209,13 +214,13 @@ def create_matrices_for_rliable(
                         algorithm
                     ][run][steps[-1]][metric]
 
-    # now normalize the metrics that aren't already in range [0, 1]
+    # Normalize the metrics that aren't already in range [0, 1]
 
-    # we need to metrics that must be normalized
+    # Get metrics that must be normalized
     non_norm_metrics = [f"mean_{metric}" for metric in metrics_to_normalize]
 
     for metric in non_norm_metrics:
-        for task in range(num_tasks):
+        for task in range(len(tasks)):  # type: ignore
             min_max_array = np.array([])
 
             for algorithm in algorithms:
@@ -232,10 +237,10 @@ def create_matrices_for_rliable(
 
     metric_dictionary_return = metric_dictionary
 
-    # next we create matrix 2
+    # Compute second arrays
 
-    # create master dictionary with all metrics
-    master_metric_dictionary = {}
+    # Create master dictionary with all arrays
+    master_metric_dictionary: Dict[str, Any] = {}
 
     for metric in mean_absolute_metrics:
         master_metric_dictionary[metric] = {}
@@ -252,7 +257,7 @@ def create_matrices_for_rliable(
                     shape=(len(runs), len(tasks))
                 )
 
-        # now we need to populate the matrices
+        # Now populate the matrices
         for metric in mean_absolute_metrics:
             for algorithm in algorithms:
                 for i, run in enumerate(runs):
@@ -267,7 +272,7 @@ def create_matrices_for_rliable(
                     metric_dictionary[metric][algorithm]
                 )
 
-    final_metric_tensor_dictionary = {}
+    final_metric_tensor_dictionary: Dict[str, Any] = {}
     for metric in mean_absolute_metrics:
         final_metric_tensor_dictionary[metric] = {}
         for algorithm in algorithms:

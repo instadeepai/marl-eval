@@ -13,17 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Any, Dict, List, Mapping, Tuple
+
 import colorcet as cc
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from matplotlib.figure import Figure
 from rliable import library as rly
 from rliable import metrics, plot_utils
 
 """Tools for plotting MARL experiments based on rliable."""
 
 
-def performance_profiles(dictionary, metric_name, metrics_to_normalize):
+def performance_profiles(
+    dictionary: Mapping[str, Dict[str, Any]],
+    metric_name: str,
+    metrics_to_normalize: List[str],
+) -> Figure:
+    """Produces performance profile plots.
+
+    Args:
+        dictionary: Dictionary containing 2D arrays of normalised absolute metric scores
+            for metric algorithm pairs.
+        metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
+
+    Returns:
+        fig: Matplotlib figure for storing.
+    """
 
     data_dictionary = dictionary[f"mean_{metric_name}"]
     algorithms = list(data_dictionary.keys())
@@ -52,7 +70,24 @@ def performance_profiles(dictionary, metric_name, metrics_to_normalize):
     return fig
 
 
-def aggregate_scores(dictionary, metric_name, metrics_to_normalize):
+def aggregate_scores(
+    dictionary: Mapping[str, Dict[str, Any]],
+    metric_name: str,
+    metrics_to_normalize: List[str],
+) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
+    """Produces aggregated score plots.
+
+    Args:
+        dictionary: Dictionary containing 2D arrays of normalised absolute metric scores
+            for metric algorithm pairs.
+        metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
+
+    Returns:
+        fig: Matplotlib figure for storing.
+        aggregate_scores: Aggregated score values
+        aggregate_score_cis: Aggregated score confidence intervals
+    """
 
     data_dictionary = dictionary[f"mean_{metric_name}"]
     algorithms = list(data_dictionary.keys())
@@ -63,7 +98,7 @@ def aggregate_scores(dictionary, metric_name, metrics_to_normalize):
     else:
         xlabel = " ".join(metric_name.split("_")).capitalize()
 
-    aggregate_func = lambda x: np.array(
+    aggregate_func = lambda x: np.array(  # noqa: E731
         [
             metrics.aggregate_median(x),
             metrics.aggregate_iqm(x),
@@ -84,10 +119,26 @@ def aggregate_scores(dictionary, metric_name, metrics_to_normalize):
         xlabel_y_coordinate=-0.5,
     )
 
-    return fig, axes, aggregate_scores, aggregate_score_cis
+    return fig, aggregate_scores, aggregate_score_cis
 
 
-def probability_of_improvement(dictionary, metric_name, algorithms_to_compare):
+def probability_of_improvement(
+    dictionary: Mapping[str, Dict[str, Any]],
+    metric_name: str,
+    algorithms_to_compare: List[List],
+) -> Figure:
+    """Produces probability of improvement plots.
+
+    Args:
+        dictionary: Dictionary containing 2D arrays of normalised absolute metric scores
+            for metric algorithm pairs.
+        metric_name: Name of metric to produce plots for.
+        algorithms_to_compare: 2D list containing pairs of algorithms to be compared.
+
+    Returns:
+        fig: Matplotlib figure for storing.
+    """
+
     data_dictionary = dictionary[f"mean_{metric_name}"]
     algorithm_pairs = {}
     for pair in algorithms_to_compare:
@@ -104,7 +155,24 @@ def probability_of_improvement(dictionary, metric_name, algorithms_to_compare):
     return fig
 
 
-def sample_efficiency_curves(dictionary, metric_name, metrics_to_normalize):
+def sample_efficiency_curves(
+    dictionary: Mapping[str, Dict[str, Any]],
+    metric_name: str,
+    metrics_to_normalize: List[str],
+) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
+    """Produces sample efficiency curve plots.
+
+    Args:
+        dictionary: Dictionary containing 3 dimensional arrays of normalised absolute
+             metric scores for metric algorithm pairs.
+        metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
+
+    Returns:
+        fig: Matplotlib figure for storing.
+        iqm_scores: IQM score values used in plots.
+        iqm_cis: IQM score score confidence intervals used in plots.
+    """
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -126,7 +194,7 @@ def sample_efficiency_curves(dictionary, metric_name, metrics_to_normalize):
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
     }
 
-    iqm = lambda scores: np.array(
+    iqm = lambda scores: np.array(  # noqa: E731
         [metrics.aggregate_iqm(scores[..., frame]) for frame in range(scores.shape[-1])]
     )
 

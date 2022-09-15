@@ -51,7 +51,7 @@ fig = performance_profiles(
 )
 fig.figure.savefig("examples/demo_return_performance_profile.png", bbox_inches="tight")
 
-fig, _, _, _ = aggregate_scores(
+fig, _, _ = aggregate_scores(
     environment_comparison_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
