@@ -47,15 +47,9 @@ def data_process_pipeline(  # noqa: C901
             metric_min_max_info[env] = {}
             for scenario in raw_data[env]:
                 metric_min_max_info[env][scenario] = {}
-                for algorithm in raw_data[env][scenario]:
-                    metric_min_max_info[env][scenario][algorithm] = {}
-                    metric_min_max_info[env][scenario][algorithm][metric] = {}
-                    metric_min_max_info[env][scenario][algorithm][metric][
-                        "global_min"
-                    ] = 1_000_000
-                    metric_min_max_info[env][scenario][algorithm][metric][
-                        "global_max"
-                    ] = -1_000_000
+                metric_min_max_info[env][scenario][metric] = {}
+                metric_min_max_info[env][scenario][metric]["global_min"] = 1_000_000
+                metric_min_max_info[env][scenario][metric]["global_max"] = -1_000_000
 
     # Now we have to traverse the data to find the global min and max
     for metric in metrics_to_normalize:
@@ -75,20 +69,20 @@ def data_process_pipeline(  # noqa: C901
                             )
                             if (
                                 min_val
-                                < metric_min_max_info[env][scenario][algorithm][metric][
+                                < metric_min_max_info[env][scenario][metric][
                                     "global_min"
                                 ]
                             ):
-                                metric_min_max_info[env][scenario][algorithm][metric][
+                                metric_min_max_info[env][scenario][metric][
                                     "global_min"
                                 ] = min_val
                             if (
                                 max_val
-                                > metric_min_max_info[env][scenario][algorithm][metric][
+                                > metric_min_max_info[env][scenario][metric][
                                     "global_max"
                                 ]
                             ):
-                                metric_min_max_info[env][scenario][algorithm][metric][
+                                metric_min_max_info[env][scenario][metric][
                                     "global_max"
                                 ] = max_val
 
@@ -120,10 +114,10 @@ def data_process_pipeline(  # noqa: C901
                                     )
                                     metric_global_min = metric_min_max_info[env][
                                         scenario
-                                    ][algorithm][metric]["global_min"]
+                                    ][metric]["global_min"]
                                     metric_global_max = metric_min_max_info[env][
                                         scenario
-                                    ][algorithm][metric]["global_max"]
+                                    ][metric]["global_max"]
                                     normed_metric_array = (
                                         metric_array - metric_global_min
                                     ) / (metric_global_max - metric_global_min)
