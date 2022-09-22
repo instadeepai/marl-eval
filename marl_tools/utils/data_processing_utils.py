@@ -60,7 +60,7 @@ def data_process_pipeline(  # noqa: C901
                         # exclude final step since it contains the absolute metrics
                         for step in list(
                             raw_data[env][scenario][algorithm][run].keys()
-                        )[:-1]:
+                        ):
                             min_val = np.min(
                                 raw_data[env][scenario][algorithm][run][step][metric]
                             )
@@ -241,7 +241,8 @@ def create_matrices_for_rliable(  # noqa: C901
         for algorithm in algorithms:
             master_metric_dictionary[metric][algorithm] = []
 
-    for step in steps:
+    # exclude the absolute metrics
+    for step in steps[:-1]:
 
         metric_dictionary = {}
         for metric in mean_absolute_metrics:
