@@ -23,7 +23,9 @@ import numpy as np
 import pytest
 from expected_test_data import (
     matrix_1_expected_data,
+    matrix_1_expected_data_single_task,
     sample_efficiency_matrix_expected_data,
+    sample_efficiency_matrix_expected_data_single_task,
 )
 
 from marl_tools.utils.data_processing_utils import (
@@ -49,8 +51,12 @@ def test_data_processing_pipeline(raw_data: Mapping[str, Dict[str, Any]]) -> Non
     )
 
 
-def test_matrices_for_rliable(raw_data: Mapping[str, Dict[str, Any]]) -> None:
-    """Tests that arrays for rliable are created correctly."""
+def test_matrices_for_rliable_full_environment_dataset(
+    raw_data: Mapping[str, Dict[str, Any]]
+) -> None:
+    """Tests that arrays for rliable are created correctly for \
+        a full dataset containing multiple algorithms and tasks \
+            for a given envionment."""
 
     processed_data = data_process_pipeline(
         raw_data=raw_data, metrics_to_normalize=["return"]
@@ -72,4 +78,40 @@ def test_matrices_for_rliable(raw_data: Mapping[str, Dict[str, Any]]) -> None:
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
         m2,
         sample_efficiency_matrix_expected_data,
+    )
+
+
+def test_matrices_for_rliable_single_environment_task(
+    raw_data: Mapping[str, Dict[str, Any]]
+) -> None:
+    """Tests that arrays for rliable are created correctly for \
+        a dataset containing multiple algorithms but only a single task."""
+
+    # Select only one task (3m) from the full environment (SMAC)
+    filtered_raw_data: Dict[Any, Any] = {}
+    filtered_raw_data["SMAC"] = {}
+    filtered_raw_data["SMAC"]["3m"] = {}
+    filtered_raw_data["SMAC"]["3m"] = raw_data["SMAC"]["3m"]
+    raw_data = filtered_raw_data
+
+    processed_data = data_process_pipeline(
+        raw_data=raw_data, metrics_to_normalize=["return"]
+    )
+
+    m1, m2 = create_matrices_for_rliable(
+        data_dictionary=processed_data,
+        environment_name="SMAC",
+        metrics_to_normalize=["return"],
+    )
+
+    # Test that all arrays are equal.
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        m1,
+        matrix_1_expected_data_single_task,
+    )
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        m2,
+        sample_efficiency_matrix_expected_data_single_task,
     )
