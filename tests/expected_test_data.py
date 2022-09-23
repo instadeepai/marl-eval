@@ -15,6 +15,7 @@
 
 import numpy as np
 
+# Full dataset tests
 matrix_1_expected_data = {
     "mean_norm_return": {
         "QMIX": np.array(
@@ -157,3 +158,62 @@ sample_efficiency_matrix_expected_data = {
         ),
     },
 }
+
+# Single task test data
+
+matrix_1_expected_data_single_task = {
+    "mean_return": {
+        "QMIX": np.array([[0.73684211], [0.0]]),
+        "MADQN": np.array([[0.57894737], [0.47368421]]),
+        "VDN": np.array([[0.84210526], [1.0]]),
+    },
+    # TODO (Ruan): Remove when we have a final decision on how we want
+    # to normalise
+    # "mean_return": {
+    #     "QMIX": np.array([ [3.625],
+    #                        [1.875]]),
+    #     "MADQN": np.array([[3.25],
+    #                        [3.0]]),
+    #     "VDN": np.array([  [3.875],
+    #                        [4.25]]),
+    # },
+    "mean_norm_return": {
+        "QMIX": np.array([[0.40277778], [0.20833333]]),
+        "MADQN": np.array([[0.36111111], [0.33333333]]),
+        "VDN": np.array([[0.43055556], [0.47222222]]),
+    },
+    "mean_win_rate": {
+        "QMIX": np.array([[0.2], [0.8]]),
+        "MADQN": np.array([[0.6], [0.4]]),
+        "VDN": np.array([[0.1], [0.1]]),
+    },
+}
+
+sample_efficiency_matrix_expected_data_single_task = {
+    "mean_return": {
+        "QMIX": np.array([[[2.5, 1.5, 2.75]], [[1.25, 2.5, 3.5]]]),
+        "MADQN": np.array([[[0.75, 3.5, 4.5]], [[5.0, 2.25, 4.75]]]),
+        "VDN": np.array([[[0.5, 1.0, 1.75]], [[6.5, 7.25, 2.25]]]),
+    },
+    "mean_norm_return": {
+        "QMIX": np.array(
+            [
+                [[0.27777778, 0.16666667, 0.30555556]],
+                [[0.13888889, 0.27777778, 0.38888889]],
+            ]
+        ),
+        "MADQN": np.array(
+            [[[0.08333333, 0.38888889, 0.5]], [[0.55555556, 0.25, 0.52777778]]]
+        ),
+        "VDN": np.array(
+            [[[0.05555556, 0.11111111, 0.19444444]], [[0.72222222, 0.80555556, 0.25]]]
+        ),
+    },
+    "mean_win_rate": {
+        "QMIX": np.array([[[0.8, 0.5, 0.4]], [[0.7, 0.8, 0.4]]]),
+        "MADQN": np.array([[[0.4, 0.7, 0.4]], [[0.2, 0.8, 0.1]]]),
+        "VDN": np.array([[[0.1, 0.3, 0.5]], [[0.3, 0.2, 0.7]]]),
+    },
+}
+
+# Single algorithm multiple task test data
