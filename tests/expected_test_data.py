@@ -217,3 +217,70 @@ sample_efficiency_matrix_expected_data_single_task = {
 }
 
 # Single algorithm multiple task test data
+matrix_1_expected_data_single_algorithm = {
+    "mean_return": {
+        "QMIX": np.array(
+            [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                ],
+            ]
+        ),
+    },
+    # TODO (Ruan): Remove when we have a final decision on how we want
+    # to normalise
+    # "mean_return": {
+    #     "QMIX": np.array([ [3.625, 4.625, 6.875, ],
+    #                        [1.875, 3.0, 3.375]]),
+    # },
+    "mean_norm_return": {
+        "QMIX": np.array(
+            [[0.453125, 0.51388889, 0.76388889], [0.234375, 0.33333333, 0.375]]
+        ),
+    },
+    "mean_win_rate": {
+        "QMIX": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
+    },
+}
+
+sample_efficiency_matrix_expected_data_single_algorithm = {
+    "mean_return": {
+        "QMIX": np.array(
+            [
+                [[2.5, 1.5, 2.75], [1.75, 3.5, 2.5], [3.25, 8.25, 6.25]],
+                [[1.25, 2.5, 3.5], [4.5, 7.25, 5.5], [0.75, 5.75, 5.75]],
+            ]
+        ),
+    },
+    "mean_norm_return": {
+        "QMIX": np.array(
+            [
+                [
+                    [0.3125, 0.1875, 0.34375],
+                    [0.19444444, 0.38888889, 0.27777778],
+                    [0.36111111, 0.91666667, 0.69444444],
+                ],
+                [
+                    [0.15625, 0.3125, 0.4375],
+                    [0.5, 0.80555556, 0.61111111],
+                    [0.08333333, 0.63888889, 0.63888889],
+                ],
+            ]
+        ),
+    },
+    "mean_win_rate": {
+        "QMIX": np.array(
+            [
+                [[0.8, 0.5, 0.4], [0.2, 0.5, 0.1], [0.2, 0.6, 0.8]],
+                [[0.7, 0.8, 0.4], [0.5, 0.1, 0.2], [0.4, 0.3, 0.2]],
+            ]
+        ),
+    },
+}
