@@ -23,8 +23,10 @@ import numpy as np
 import pytest
 from expected_test_data import (
     matrix_1_expected_data,
+    matrix_1_expected_data_single_algorithm,
     matrix_1_expected_data_single_task,
     sample_efficiency_matrix_expected_data,
+    sample_efficiency_matrix_expected_data_single_algorithm,
     sample_efficiency_matrix_expected_data_single_task,
 )
 
@@ -114,4 +116,46 @@ def test_matrices_for_rliable_single_environment_task(
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
         m2,
         sample_efficiency_matrix_expected_data_single_task,
+    )
+
+
+def test_matrices_for_rliable_single_algorithm(
+    raw_data: Mapping[str, Dict[str, Any]]
+) -> None:
+    """Tests that arrays for rliable are created correctly for \
+        a dataset containing a single algorithms but multiple tasks."""
+
+    # select only one algorithm (QMIX) over multiple tasks
+    filtered_raw_data: Dict[Any, Any] = {}
+    filtered_raw_data["SMAC"] = {}
+    filtered_raw_data["SMAC"]["3m"] = {}
+    filtered_raw_data["SMAC"]["3m"]["QMIX"] = raw_data["SMAC"]["3m"]["QMIX"]
+
+    filtered_raw_data["SMAC"]["3s5z"] = {}
+    filtered_raw_data["SMAC"]["3s5z"]["QMIX"] = raw_data["SMAC"]["3s5z"]["QMIX"]
+
+    filtered_raw_data["SMAC"]["8m"] = {}
+    filtered_raw_data["SMAC"]["8m"]["QMIX"] = raw_data["SMAC"]["8m"]["QMIX"]
+    raw_data = filtered_raw_data
+
+    processed_data = data_process_pipeline(
+        raw_data=raw_data, metrics_to_normalize=["return"]
+    )
+
+    m1, m2 = create_matrices_for_rliable(
+        data_dictionary=processed_data,
+        environment_name="SMAC",
+        metrics_to_normalize=["return"],
+    )
+
+    # Test that all arrays are equal.
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        m1,
+        matrix_1_expected_data_single_algorithm,
+    )
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        m2,
+        sample_efficiency_matrix_expected_data_single_algorithm,
     )
