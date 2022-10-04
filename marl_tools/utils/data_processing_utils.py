@@ -60,12 +60,13 @@ def data_process_pipeline(  # noqa: C901
     # Extra logs
     environment_list = {}
     algorithm_list = []
-    metric_list = []
+    metric_list = {}
     number_of_runs = 0
     number_of_steps = 0
 
     for env, tasks in raw_data.items():
         environment_list[env] = []
+        metric_list[env] = []
         for task, algorithms in tasks.items():
             environment_list[env].append(task)
             for algorithm, runs in algorithms.items():
@@ -108,10 +109,12 @@ def data_process_pipeline(  # noqa: C901
                                     processed_data[env][task][algorithm][run][step][
                                         f"mean_norm_{metric}"
                                     ] = np.mean(normed_metric_array)
-                        if metric_list == []:
-                            metric_list = processed_data[env][task][algorithm][run][
-                                step
-                            ].keys()
+                        if metric_list[env] == []:
+                            metric_list[env] = list(
+                                processed_data[env][task][algorithm][run][step].keys()
+                            )
+                            if "step_count" in metric_list[env]:
+                                metric_list[env].remove("step_count")
             metric_min_max_info = {}
 
     processed_data["extra"] = {
@@ -121,7 +124,6 @@ def data_process_pipeline(  # noqa: C901
         "algorithm_list": algorithm_list,
         "metric_list": metric_list,
     }
-
     return processed_data
 
 
