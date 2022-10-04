@@ -43,7 +43,7 @@ def performance_profiles(
         fig: Matplotlib figure for storing.
     """
 
-    data_dictionary = dictionary[f"mean_{metric_name}"]
+    data_dictionary = dictionary[f"mean_norm_{metric_name}"]
     algorithms = list(data_dictionary.keys())
 
     if metric_name in metrics_to_normalize:
@@ -89,7 +89,7 @@ def aggregate_scores(
         aggregate_score_cis_dict: Aggregated score confidence intervals
     """
 
-    data_dictionary = dictionary[f"mean_{metric_name}"]
+    data_dictionary = dictionary[f"mean_norm_{metric_name}"]
     algorithms = list(data_dictionary.keys())
 
     if metric_name in metrics_to_normalize:
