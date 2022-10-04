@@ -119,8 +119,8 @@ def data_process_pipeline(  # noqa: C901
 
     processed_data["extra"] = {
         "environment_list": environment_list,
-        "Number_of_steps": number_of_steps,
-        "Number_of_runs": number_of_runs,
+        "number_of_steps": number_of_steps,
+        "number_of_runs": number_of_runs,
         "algorithm_list": algorithm_list,
         "metric_list": metric_list,
     }
@@ -273,3 +273,102 @@ def create_matrices_for_rliable(  # noqa: C901
             )
 
     return metric_dictionary_return, final_metric_tensor_dictionary
+
+
+def create_matrices_for_rliable_second(  # noqa: C901
+    data_dictionary: Mapping[str, Dict[str, Any]],
+    environment_name: str,
+) -> Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]]:
+    """Creates two dictionaries containing arrays required for using the rliable tools.
+
+        The first dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that were
+        used in an experiment. For each metric algorithm pair a
+        (number of runs x number of tasks) array is created containing as rows
+        the normalised metric values acrossall tasks for a given independent
+        experiment run.
+
+        The second dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that
+        were used in an experiment, but for each metric algorithm pair a
+        (number of runs x number of tasks x number of logging steps) array is created
+        where the rows correspond to the normalised metric values across
+        all tasks for a given logging step of an independent experiment run.
+        This dictionary will be used to produce the sample efficiency curves.
+
+
+    Args:
+        data_dictionary: Dictionary of data that has been processed using the
+            data_process_pipeline function.
+        environment_name: Name of environment for which arrays should be
+            computed.
+
+    Returns:
+        metric_dictionary_return: dictionary to be used by rliable tools
+        final_metric_tensor_dictionary: dictionary to be used by rliable tools
+    """
+    # Compute first arrays
+
+    # Get the extra data
+    extra = data_dictionary["extra"]
+    del data_dictionary["extra"]
+
+    # metric_dictionary_return
+    metric_dictionary_return: Dict[str, Any] = {}
+
+    for metric in extra["metric_list"][environment_name]:
+        if "mean" in metric:
+            metric_dictionary_return[metric] = {}
+            for task, algorithms in data_dictionary[environment_name].items():
+                for algorithm, runs in algorithms.items():
+                    if not algorithm in metric_dictionary_return[metric].keys():
+                        metric_dictionary_return[metric][algorithm] = []
+                    aux = np.array([])
+                    for run, steps in runs.items():
+                        value = steps["ABSOLUTE_METRIC"][metric]
+                        aux = np.append(aux, value)
+                    metric_dictionary_return[metric][algorithm].append(aux)
+
+            for algorithm in metric_dictionary_return[metric].keys():
+                metric_dictionary_return[metric][algorithm] = np.array(
+                    metric_dictionary_return[metric][algorithm]
+                )
+                metric_dictionary_return[metric][algorithm] = metric_dictionary_return[
+                    metric
+                ][algorithm].transpose()
+
+    # master_metric_dictionary
+    master_metric_dictionary: Dict[str, Any] = {}
+    dimension = (
+        extra["number_of_runs"],
+        len(extra["environment_list"][environment_name]),
+        extra["number_of_steps"],
+    )
+    for metric in extra["metric_list"][environment_name]:
+        if "mean" in metric:
+            master_metric_dictionary[metric] = {}
+            for algorithms in data_dictionary[environment_name].values():
+                for algorithm, runs in algorithms.items():
+                    master_metric_dictionary[metric][algorithm] = np.zeros(dimension)
+                    i = 0
+                    for run, steps in runs.items():
+                        j = 0
+                        for task in extra["environment_list"][environment_name]:
+                            p = 0
+                            for step in steps.keys():
+                                if "ABSOLUTE" not in step:
+                                    master_metric_dictionary[metric][algorithm][i][j][
+                                        p
+                                    ] = data_dictionary[environment_name][task][
+                                        algorithm
+                                    ][
+                                        run
+                                    ][
+                                        step
+                                    ][
+                                        metric
+                                    ]
+                                    p = p + 1
+                            j = j + 1
+                        i = i + 1
+    return metric_dictionary_return, master_metric_dictionary
