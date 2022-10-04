@@ -22,7 +22,7 @@ import numpy as np
 
 
 def data_process_pipeline(  # noqa: C901
-    raw_data: Mapping[str, Dict[str, Any]], metrics_to_normalize: List[str]
+    raw_data: Mapping[str, Dict[str, Any]], metrics_to_normalize: List[str],
 ) -> Mapping[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
@@ -38,97 +38,75 @@ def data_process_pipeline(  # noqa: C901
             metrics have been min/max normalised and the mean of all arrays in the
             dataset have been computed and added to the dataset.
     """
-
+    def compare_values(metric_min_max_info,metric_values, metric):
+        min_per_step=np.min(metric_values)
+        max_per_step=np.max(metric_values)
+        if metric in list(metric_min_max_info.keys()):
+            if metric_min_max_info[metric]["global_min"]> min_per_step:
+                metric_min_max_info[metric]["global_min"]= min_per_step
+            elif metric_min_max_info[metric]["global_max"]< max_per_step:
+                metric_min_max_info[metric]["global_max"]= max_per_step
+        else:
+            metric_min_max_info[metric]={
+                "global_min": min_per_step,
+                "global_max": max_per_step
+            }
+    
+    processed_data = copy.deepcopy(raw_data)
     metric_min_max_info: Dict[str, Any] = {}
 
-    # Create global max, min dictionary
-    for metric in metrics_to_normalize:
-        for env in raw_data.keys():
-            metric_min_max_info[env] = {}
-            for scenario in raw_data[env]:
-                metric_min_max_info[env][scenario] = {}
-                metric_min_max_info[env][scenario][metric] = {}
-                metric_min_max_info[env][scenario][metric]["global_min"] = 1_000_000
-                metric_min_max_info[env][scenario][metric]["global_max"] = -1_000_000
+    #Extra logs 
+    environment_list={}
+    algorithm_list=[]
+    metric_list=[]
+    number_of_runs=0
+    number_of_steps=0
 
-    # Now we have to traverse the data to find the global min and max
-    for metric in metrics_to_normalize:
-        for env in raw_data.keys():
-            for scenario in raw_data[env]:
-                for algorithm in raw_data[env][scenario]:
-                    for run in raw_data[env][scenario][algorithm]:
-                        # exclude final step since it contains the absolute metrics
-                        for step in list(
-                            raw_data[env][scenario][algorithm][run].keys()
-                        ):
-                            min_val = np.min(
-                                raw_data[env][scenario][algorithm][run][step][metric]
-                            )
-                            max_val = np.max(
-                                raw_data[env][scenario][algorithm][run][step][metric]
-                            )
-                            if (
-                                min_val
-                                < metric_min_max_info[env][scenario][metric][
-                                    "global_min"
-                                ]
-                            ):
-                                metric_min_max_info[env][scenario][metric][
-                                    "global_min"
-                                ] = min_val
-                            if (
-                                max_val
-                                > metric_min_max_info[env][scenario][metric][
-                                    "global_max"
-                                ]
-                            ):
-                                metric_min_max_info[env][scenario][metric][
-                                    "global_max"
-                                ] = max_val
-
-    # there are definitely more elegant and faster ways of doing exactly this with
-    # the tree library. but this is just a POC
-
-    processed_data = copy.deepcopy(raw_data)
-
-    for env in raw_data.keys():
-        for scenario in raw_data[env]:
-            for algorithm in raw_data[env][scenario]:
-                for run in raw_data[env][scenario][algorithm]:
-                    for step in raw_data[env][scenario][algorithm][run]:
-                        for metric in raw_data[env][scenario][algorithm][run][step]:
-                            if metric.split("_")[0].lower() != "step":
-                                mean = np.mean(
-                                    raw_data[env][scenario][algorithm][run][step][
-                                        metric
-                                    ]
-                                )
-                                processed_data[env][scenario][algorithm][run][step][
-                                    f"mean_{metric}"
-                                ] = mean
+    for env, tasks in raw_data.items():
+        environment_list[env]=[]
+        for task, algorithms in tasks.items():
+            environment_list[env].append(task)
+            for algorithm, runs in algorithms.items():
+                if algorithm not in algorithm_list:
+                    algorithm_list.append(algorithm)
+                if number_of_runs==0:
+                        number_of_runs=len(runs.keys())
+                for run, steps in runs.items():
+                    if number_of_steps==0:
+                        number_of_steps=len(steps.keys())-1
+                    for step, metrics in steps.items():
+                        for metric in metrics_to_normalize:
+                            #Find the global minimum and global maximum per task
+                            compare_values(metric_min_max_info, metrics[metric],metric)
+            for algorithm, runs in algorithms.items():
+                for run, steps in runs.items():
+                    for step, metrics in steps.items():
+                        for metric in metrics.keys():
+                            if not "step_count" in metric:
+                                #Mean
+                                mean = np.mean(metrics[metric])
+                                processed_data[env][task][algorithm][run][step][f"mean_{metric}"] = mean    
                                 if metric in metrics_to_normalize:
-                                    metric_array = np.array(
-                                        raw_data[env][scenario][algorithm][run][step][
-                                            metric
-                                        ]
-                                    )
-                                    metric_global_min = metric_min_max_info[env][
-                                        scenario
-                                    ][metric]["global_min"]
-                                    metric_global_max = metric_min_max_info[env][
-                                        scenario
-                                    ][metric]["global_max"]
-                                    normed_metric_array = (
-                                        metric_array - metric_global_min
-                                    ) / (metric_global_max - metric_global_min)
-                                    processed_data[env][scenario][algorithm][run][step][
-                                        f"norm_{metric}"
-                                    ] = normed_metric_array.tolist()
-                                    processed_data[env][scenario][algorithm][run][step][
-                                        f"mean_norm_{metric}"
-                                    ] = np.mean(normed_metric_array)
+                                    #Normalization
+                                    metric_array = np.array(metrics[metric])
+                                    metric_global_min = metric_min_max_info[metric]["global_min"]
+                                    metric_global_max = metric_min_max_info[metric]["global_max"]
+                                    normed_metric_array = (metric_array - metric_global_min)/(metric_global_max - metric_global_min)
+                                    processed_data[env][task][algorithm][run][step][f"norm_{metric}"] = normed_metric_array.tolist()
+                                    processed_data[env][task][algorithm][run][step][f"mean_norm_{metric}"] = np.mean(normed_metric_array)
+                        if metric_list==[]:
+                            metric_list=processed_data[env][task][algorithm][run][step].keys()
+            metric_min_max_info={}
 
-    return processed_data
+    processed_data["extra"]={
+        "environment_list":environment_list,
+        "Number_of_steps":number_of_steps,
+        "Number_of_runs":number_of_runs,
+        "algorithm_list":algorithm_list,
+        "metric_list":metric_list
+    }
+    
+    return processed_data    
 
 
 def create_matrices_for_rliable(  # noqa: C901
