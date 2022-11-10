@@ -76,7 +76,7 @@ def aggregate_scores(
     metric_name: str,
     metrics_to_normalize: List[str],
     value_round: Optional[int] = 2,
-    tabular_results_file: Optional[str] = "./aggregated_score.csv",
+    tabular_results_file_path: Optional[str] = "./aggregated_score.csv",
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -86,7 +86,7 @@ def aggregate_scores(
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
         value_round:number up to which the results values are rounded
-        tabular_results_file: location to store the tabular results
+        tabular_results_file_path: location to store the tabular results
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -145,10 +145,12 @@ def aggregate_scores(
 
     # Get tabular (csv) results
     tabular_results = aggregate_scores_dict.copy()
-    for metric in aggregate_scores_dict.keys():
-        for algorithm in aggregate_scores_dict[metric].keys():
-            ci = aggregate_score_cis_dict[metric][algorithm]
-            value = round(aggregate_scores_dict[metric][algorithm], value_round)
+    algorithms = list(aggregate_scores_dict.keys())
+
+    for algorithm in aggregate_scores_dict.keys():
+        for metric in aggregate_scores_dict[algorithm].keys():
+            ci = aggregate_score_cis_dict[algorithm][metric]
+            value = round(aggregate_scores_dict[algorithm][metric], value_round)
 
             # get the bootstrap confidence interval
             ci_str = (
@@ -160,15 +162,13 @@ def aggregate_scores(
             )
 
             result = str(value) + " " + ci_str
-            tabular_results[metric][algorithm] = result
+            tabular_results[algorithm][metric] = result
 
-    result_csv = pd.DataFrame(
-        aggregate_scores_dict, columns=["QMIX", "MADQN", "VDN", "MAPPO"]
-    )
-    result_csv.to_csv(tabular_results_file, index=False, header=True)
+    result_csv = pd.DataFrame(tabular_results, columns=algorithms)
+    result_csv.to_csv(tabular_results_file_path, index=False, header=True)
     print(
         "The tabular results are stored in "
-        + tabular_results_file
+        + tabular_results_file_path
         + " and they are the following\n",
         result_csv,
     )
