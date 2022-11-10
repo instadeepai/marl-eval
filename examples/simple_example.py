@@ -72,6 +72,7 @@ fig.figure.savefig(
 fig = probability_of_improvement(
     environment_comparison_matrix,
     metric_name="success_rate",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
     algorithms_to_compare=[
         ["algo_1", "algo_2"],
         ["algo_1", "algo_3"],
@@ -94,21 +95,22 @@ fig.figure.savefig(
 # Plot episode return data
 fig = performance_profiles(
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig("examples/plots/return_performance_profile.png", bbox_inches="tight")
 
 fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig("examples/plots/return_aggregate_scores.png", bbox_inches="tight")
 
 fig = probability_of_improvement(
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
     algorithms_to_compare=[
         ["algo_1", "algo_2"],
         ["algo_1", "algo_3"],
@@ -119,7 +121,7 @@ fig.figure.savefig("examples/plots/return_prob_of_improvement.png", bbox_inches=
 
 fig, _, _ = sample_efficiency_curves(
     sample_effeciency_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig(
