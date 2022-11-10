@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Mapping, Tuple, Optional
-import pandas as pd
+from typing import Any, Dict, List, Mapping, Optional, Tuple
+
 import colorcet as cc
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 from matplotlib.figure import Figure
 from rliable import library as rly
@@ -74,8 +75,8 @@ def aggregate_scores(
     dictionary: Mapping[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
-    value_round: Optional[int]=2,
-    tabular_results_file: Optional[str]="./aggregated_score.csv"
+    value_round: Optional[int] = 2,
+    tabular_results_file: Optional[str] = "./aggregated_score.csv",
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -141,23 +142,36 @@ def aggregate_scores(
         for metric_value_idx, metric in enumerate(metric_names):
             algorithm_cis_dict[metric] = scores[:, metric_value_idx]
         aggregate_score_cis_dict[algorithm] = algorithm_cis_dict
-    
-    #Get tabular (csv) results
-    tabular_results=aggregate_scores_dict.copy()
+
+    # Get tabular (csv) results
+    tabular_results = aggregate_scores_dict.copy()
     for metric in aggregate_scores_dict.keys():
         for algorithm in aggregate_scores_dict[metric].keys():
-            ci=aggregate_score_cis_dict[metric][algorithm]
-            value=round(aggregate_scores_dict[metric][algorithm],value_round)
+            ci = aggregate_score_cis_dict[metric][algorithm]
+            value = round(aggregate_scores_dict[metric][algorithm], value_round)
 
-            #get the bootstrap confidence interval
-            ci_str="["+str(round(ci[0],value_round))+", "+str(round(ci[1],value_round))+"]"
+            # get the bootstrap confidence interval
+            ci_str = (
+                "["
+                + str(round(ci[0], value_round))
+                + ", "
+                + str(round(ci[1], value_round))
+                + "]"
+            )
 
-            result=str(value)+" "+ci_str
-            tabular_results[metric][algorithm]=result
+            result = str(value) + " " + ci_str
+            tabular_results[metric][algorithm] = result
 
-    result_csv=pd.DataFrame(aggregate_scores_dict, columns= ['QMIX', 'MADQN',"VDN",'MAPPO'])
-    result_csv.to_csv(tabular_results_file, index = False, header=True)
-    print("The tabular results are stored in "+tabular_results_file+" and they are the following\n",result_csv)
+    result_csv = pd.DataFrame(
+        aggregate_scores_dict, columns=["QMIX", "MADQN", "VDN", "MAPPO"]
+    )
+    result_csv.to_csv(tabular_results_file, index=False, header=True)
+    print(
+        "The tabular results are stored in "
+        + tabular_results_file
+        + " and they are the following\n",
+        result_csv,
+    )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
