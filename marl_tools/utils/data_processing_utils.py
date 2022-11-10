@@ -40,7 +40,23 @@ def data_process_pipeline(  # noqa: C901
             dataset have been computed and added to the dataset.
     """
 
-    def compare_values(metric_min_max_info, metric_values, metric):
+    def _compare_values(
+        metric_min_max_info: Dict[str, Any], metric_values: list, metric: str
+    ) -> None:
+        """Compare list of metric values for a metric to the current global \
+            min and max values for that metric.
+
+        This is done in order to use the global min and max values downstream
+        for normalising metrics.
+
+        Args:
+            metric_min_max_info: a dictionary containing global min and max
+                values for all metrics.
+            metric_values: a list containing metric data.
+            metric: the name of the current metric for which global min and
+                max data is being found.
+        """
+
         min_per_step = np.min(metric_values)
         max_per_step = np.max(metric_values)
         if metric in list(metric_min_max_info.keys()):
@@ -58,9 +74,9 @@ def data_process_pipeline(  # noqa: C901
     metric_min_max_info: Dict[str, Any] = {}
 
     # Extra logs
-    environment_list = {}
+    environment_list: Dict[str, Any] = {}
     algorithm_list = []
-    metric_list = {}
+    metric_list: Dict[str, Any] = {}
     number_of_runs = 0
     number_of_steps = 0
 
@@ -80,12 +96,14 @@ def data_process_pipeline(  # noqa: C901
                     for step, metrics in steps.items():
                         for metric in metrics_to_normalize:
                             # Find the global minimum and global maximum per task
-                            compare_values(metric_min_max_info, metrics[metric], metric)
+                            _compare_values(
+                                metric_min_max_info, metrics[metric], metric
+                            )
             for algorithm, runs in algorithms.items():
                 for run, steps in runs.items():
                     for step, metrics in steps.items():
                         for metric in metrics.keys():
-                            if not "step_count" in metric:
+                            if "step_count" not in metric:
                                 # Mean
                                 mean = np.mean(metrics[metric])
                                 processed_data[env][task][algorithm][run][step][
@@ -117,7 +135,7 @@ def data_process_pipeline(  # noqa: C901
                                 metric_list[env].remove("step_count")
             metric_min_max_info = {}
 
-    processed_data["extra"] = {
+    processed_data["extra"] = {  # type: ignore
         "environment_list": environment_list,
         "number_of_steps": number_of_steps,
         "number_of_runs": number_of_runs,
@@ -311,7 +329,7 @@ def create_matrices_for_rliable_second(  # noqa: C901
 
     # Get the extra data
     extra = data_dictionary["extra"]
-    del data_dictionary["extra"]
+    del data_dictionary["extra"]  # type: ignore
 
     # metric_dictionary_return
     metric_dictionary_return: Dict[str, Any] = {}
@@ -321,7 +339,7 @@ def create_matrices_for_rliable_second(  # noqa: C901
             metric_dictionary_return[metric] = {}
             for task, algorithms in data_dictionary[environment_name].items():
                 for algorithm, runs in algorithms.items():
-                    if not algorithm in metric_dictionary_return[metric].keys():
+                    if algorithm not in metric_dictionary_return[metric].keys():
                         metric_dictionary_return[metric][algorithm] = []
                     aux = np.array([])
                     for run, steps in runs.items():
