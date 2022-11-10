@@ -85,8 +85,8 @@ def aggregate_scores(
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
-        rounding_decimals:number up to which the results values are rounded
-        tabular_results_file_path: location to store the tabular results
+        rounding_decimals: number up to which the results values are rounded.
+        tabular_results_file_path: location to store the tabular results.
 
     Returns:
         fig: Matplotlib figure for storing.
