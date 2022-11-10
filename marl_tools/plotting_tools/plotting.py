@@ -206,7 +206,7 @@ def sample_efficiency_curves(
     else:
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
-    # Find lowest values form amoutn of runs that have completed
+    # Find lowest values from amount of runs that have completed
     # across all algorithms
     run_lengths = [data_dictionary[algo].shape[2] for algo in data_dictionary]
     min_run_length = np.min(run_lengths)
