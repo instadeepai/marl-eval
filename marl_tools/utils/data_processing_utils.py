@@ -22,7 +22,8 @@ import numpy as np
 
 
 def data_process_pipeline(  # noqa: C901
-    raw_data: Mapping[str, Dict[str, Any]], metrics_to_normalize: List[str]
+    raw_data: Mapping[str, Dict[str, Any]],
+    metrics_to_normalize: List[str],
 ) -> Mapping[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
@@ -39,95 +40,90 @@ def data_process_pipeline(  # noqa: C901
             dataset have been computed and added to the dataset.
     """
 
-    metric_min_max_info: Dict[str, Any] = {}
-
-    # Create global max, min dictionary
-    for metric in metrics_to_normalize:
-        for env in raw_data.keys():
-            metric_min_max_info[env] = {}
-            for scenario in raw_data[env]:
-                metric_min_max_info[env][scenario] = {}
-                metric_min_max_info[env][scenario][metric] = {}
-                metric_min_max_info[env][scenario][metric]["global_min"] = 1_000_000
-                metric_min_max_info[env][scenario][metric]["global_max"] = -1_000_000
-
-    # Now we have to traverse the data to find the global min and max
-    for metric in metrics_to_normalize:
-        for env in raw_data.keys():
-            for scenario in raw_data[env]:
-                for algorithm in raw_data[env][scenario]:
-                    for run in raw_data[env][scenario][algorithm]:
-                        # exclude final step since it contains the absolute metrics
-                        for step in list(
-                            raw_data[env][scenario][algorithm][run].keys()
-                        ):
-                            min_val = np.min(
-                                raw_data[env][scenario][algorithm][run][step][metric]
-                            )
-                            max_val = np.max(
-                                raw_data[env][scenario][algorithm][run][step][metric]
-                            )
-                            if (
-                                min_val
-                                < metric_min_max_info[env][scenario][metric][
-                                    "global_min"
-                                ]
-                            ):
-                                metric_min_max_info[env][scenario][metric][
-                                    "global_min"
-                                ] = min_val
-                            if (
-                                max_val
-                                > metric_min_max_info[env][scenario][metric][
-                                    "global_max"
-                                ]
-                            ):
-                                metric_min_max_info[env][scenario][metric][
-                                    "global_max"
-                                ] = max_val
-
-    # there are definitely more elegant and faster ways of doing exactly this with
-    # the tree library. but this is just a POC
+    def compare_values(metric_min_max_info, metric_values, metric):
+        min_per_step = np.min(metric_values)
+        max_per_step = np.max(metric_values)
+        if metric in list(metric_min_max_info.keys()):
+            if metric_min_max_info[metric]["global_min"] > min_per_step:
+                metric_min_max_info[metric]["global_min"] = min_per_step
+            elif metric_min_max_info[metric]["global_max"] < max_per_step:
+                metric_min_max_info[metric]["global_max"] = max_per_step
+        else:
+            metric_min_max_info[metric] = {
+                "global_min": min_per_step,
+                "global_max": max_per_step,
+            }
 
     processed_data = copy.deepcopy(raw_data)
+    metric_min_max_info: Dict[str, Any] = {}
 
-    for env in raw_data.keys():
-        for scenario in raw_data[env]:
-            for algorithm in raw_data[env][scenario]:
-                for run in raw_data[env][scenario][algorithm]:
-                    for step in raw_data[env][scenario][algorithm][run]:
-                        for metric in raw_data[env][scenario][algorithm][run][step]:
-                            if metric.split("_")[0].lower() != "step":
-                                mean = np.mean(
-                                    raw_data[env][scenario][algorithm][run][step][
-                                        metric
-                                    ]
-                                )
-                                processed_data[env][scenario][algorithm][run][step][
+    # Extra logs
+    environment_list = {}
+    algorithm_list = []
+    metric_list = {}
+    number_of_runs = 0
+    number_of_steps = 0
+
+    for env, tasks in raw_data.items():
+        environment_list[env] = []
+        metric_list[env] = []
+        for task, algorithms in tasks.items():
+            environment_list[env].append(task)
+            for algorithm, runs in algorithms.items():
+                if algorithm not in algorithm_list:
+                    algorithm_list.append(algorithm)
+                if number_of_runs == 0:
+                    number_of_runs = len(runs.keys())
+                for run, steps in runs.items():
+                    if number_of_steps == 0:
+                        number_of_steps = len(steps.keys()) - 1
+                    for step, metrics in steps.items():
+                        for metric in metrics_to_normalize:
+                            # Find the global minimum and global maximum per task
+                            compare_values(metric_min_max_info, metrics[metric], metric)
+            for algorithm, runs in algorithms.items():
+                for run, steps in runs.items():
+                    for step, metrics in steps.items():
+                        for metric in metrics.keys():
+                            if not "step_count" in metric:
+                                # Mean
+                                mean = np.mean(metrics[metric])
+                                processed_data[env][task][algorithm][run][step][
                                     f"mean_{metric}"
                                 ] = mean
                                 if metric in metrics_to_normalize:
-                                    metric_array = np.array(
-                                        raw_data[env][scenario][algorithm][run][step][
-                                            metric
-                                        ]
-                                    )
-                                    metric_global_min = metric_min_max_info[env][
-                                        scenario
-                                    ][metric]["global_min"]
-                                    metric_global_max = metric_min_max_info[env][
-                                        scenario
-                                    ][metric]["global_max"]
+                                    # Normalization
+                                    metric_array = np.array(metrics[metric])
+                                    metric_global_min = metric_min_max_info[metric][
+                                        "global_min"
+                                    ]
+                                    metric_global_max = metric_min_max_info[metric][
+                                        "global_max"
+                                    ]
                                     normed_metric_array = (
                                         metric_array - metric_global_min
                                     ) / (metric_global_max - metric_global_min)
-                                    processed_data[env][scenario][algorithm][run][step][
+                                    processed_data[env][task][algorithm][run][step][
                                         f"norm_{metric}"
                                     ] = normed_metric_array.tolist()
-                                    processed_data[env][scenario][algorithm][run][step][
+                                    processed_data[env][task][algorithm][run][step][
                                         f"mean_norm_{metric}"
                                     ] = np.mean(normed_metric_array)
+                        if metric_list[env] == []:
+                            metric_list[env] = list(
+                                processed_data[env][task][algorithm][run][step].keys()
+                            )
+                            if "step_count" in metric_list[env]:
+                                metric_list[env].remove("step_count")
+            metric_min_max_info = {}
 
+    processed_data["extra"] = {
+        "environment_list": environment_list,
+        "number_of_steps": number_of_steps,
+        "number_of_runs": number_of_runs,
+        "algorithm_list": algorithm_list,
+        "metric_list": metric_list,
+    }
     return processed_data
 
 
@@ -277,3 +273,102 @@ def create_matrices_for_rliable(  # noqa: C901
             )
 
     return metric_dictionary_return, final_metric_tensor_dictionary
+
+
+def create_matrices_for_rliable_second(  # noqa: C901
+    data_dictionary: Mapping[str, Dict[str, Any]],
+    environment_name: str,
+) -> Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]]:
+    """Creates two dictionaries containing arrays required for using the rliable tools.
+
+        The first dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that were
+        used in an experiment. For each metric algorithm pair a
+        (number of runs x number of tasks) array is created containing as rows
+        the normalised metric values acrossall tasks for a given independent
+        experiment run.
+
+        The second dictionary will have root keys corresponding to the metrics used
+        in an experiment and subsequent keys corresponding to the Algorithms that
+        were used in an experiment, but for each metric algorithm pair a
+        (number of runs x number of tasks x number of logging steps) array is created
+        where the rows correspond to the normalised metric values across
+        all tasks for a given logging step of an independent experiment run.
+        This dictionary will be used to produce the sample efficiency curves.
+
+
+    Args:
+        data_dictionary: Dictionary of data that has been processed using the
+            data_process_pipeline function.
+        environment_name: Name of environment for which arrays should be
+            computed.
+
+    Returns:
+        metric_dictionary_return: dictionary to be used by rliable tools
+        final_metric_tensor_dictionary: dictionary to be used by rliable tools
+    """
+    # Compute first arrays
+
+    # Get the extra data
+    extra = data_dictionary["extra"]
+    del data_dictionary["extra"]
+
+    # metric_dictionary_return
+    metric_dictionary_return: Dict[str, Any] = {}
+
+    for metric in extra["metric_list"][environment_name]:
+        if "mean" in metric:
+            metric_dictionary_return[metric] = {}
+            for task, algorithms in data_dictionary[environment_name].items():
+                for algorithm, runs in algorithms.items():
+                    if not algorithm in metric_dictionary_return[metric].keys():
+                        metric_dictionary_return[metric][algorithm] = []
+                    aux = np.array([])
+                    for run, steps in runs.items():
+                        value = steps["ABSOLUTE_METRIC"][metric]
+                        aux = np.append(aux, value)
+                    metric_dictionary_return[metric][algorithm].append(aux)
+
+            for algorithm in metric_dictionary_return[metric].keys():
+                metric_dictionary_return[metric][algorithm] = np.array(
+                    metric_dictionary_return[metric][algorithm]
+                )
+                metric_dictionary_return[metric][algorithm] = metric_dictionary_return[
+                    metric
+                ][algorithm].transpose()
+
+    # master_metric_dictionary
+    master_metric_dictionary: Dict[str, Any] = {}
+    dimension = (
+        extra["number_of_runs"],
+        len(extra["environment_list"][environment_name]),
+        extra["number_of_steps"],
+    )
+    for metric in extra["metric_list"][environment_name]:
+        if "mean" in metric:
+            master_metric_dictionary[metric] = {}
+            for algorithms in data_dictionary[environment_name].values():
+                for algorithm, runs in algorithms.items():
+                    master_metric_dictionary[metric][algorithm] = np.zeros(dimension)
+                    i = 0
+                    for run, steps in runs.items():
+                        j = 0
+                        for task in extra["environment_list"][environment_name]:
+                            p = 0
+                            for step in steps.keys():
+                                if "ABSOLUTE" not in step:
+                                    master_metric_dictionary[metric][algorithm][i][j][
+                                        p
+                                    ] = data_dictionary[environment_name][task][
+                                        algorithm
+                                    ][
+                                        run
+                                    ][
+                                        step
+                                    ][
+                                        metric
+                                    ]
+                                    p = p + 1
+                            j = j + 1
+                        i = i + 1
+    return metric_dictionary_return, master_metric_dictionary
