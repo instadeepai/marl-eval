@@ -75,7 +75,7 @@ def aggregate_scores(
     dictionary: Mapping[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
-    value_round: Optional[int] = 2,
+    rounding_decimals: Optional[int] = 2,
     tabular_results_file_path: Optional[str] = "./aggregated_score.csv",
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
@@ -85,7 +85,7 @@ def aggregate_scores(
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
-        value_round:number up to which the results values are rounded
+        rounding_decimals:number up to which the results values are rounded
         tabular_results_file_path: location to store the tabular results
 
     Returns:
@@ -150,14 +150,14 @@ def aggregate_scores(
     for algorithm in aggregate_scores_dict.keys():
         for metric in aggregate_scores_dict[algorithm].keys():
             ci = aggregate_score_cis_dict[algorithm][metric]
-            value = round(aggregate_scores_dict[algorithm][metric], value_round)
+            value = round(aggregate_scores_dict[algorithm][metric], rounding_decimals)
 
             # get the bootstrap confidence interval
             ci_str = (
                 "["
-                + str(round(ci[0], value_round))
+                + str(round(ci[0], rounding_decimals))
                 + ", "
-                + str(round(ci[1], value_round))
+                + str(round(ci[1], rounding_decimals))
                 + "]"
             )
 
