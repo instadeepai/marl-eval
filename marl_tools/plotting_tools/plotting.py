@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Mapping, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 import colorcet as cc
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 from matplotlib.figure import Figure
 from rliable import library as rly
@@ -74,6 +75,8 @@ def aggregate_scores(
     dictionary: Mapping[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
+    rounding_decimals: Optional[int] = 2,
+    tabular_results_file_path: Optional[str] = "./aggregated_score.csv",
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -82,6 +85,8 @@ def aggregate_scores(
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
+        rounding_decimals:number up to which the results values are rounded
+        tabular_results_file_path: location to store the tabular results
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -137,6 +142,36 @@ def aggregate_scores(
         for metric_value_idx, metric in enumerate(metric_names):
             algorithm_cis_dict[metric] = scores[:, metric_value_idx]
         aggregate_score_cis_dict[algorithm] = algorithm_cis_dict
+
+    # Get tabular (csv) results
+    tabular_results = aggregate_scores_dict.copy()
+    algorithms = list(aggregate_scores_dict.keys())
+
+    for algorithm in aggregate_scores_dict.keys():
+        for metric in aggregate_scores_dict[algorithm].keys():
+            ci = aggregate_score_cis_dict[algorithm][metric]
+            value = round(aggregate_scores_dict[algorithm][metric], rounding_decimals)
+
+            # get the bootstrap confidence interval
+            ci_str = (
+                "["
+                + str(round(ci[0], rounding_decimals))
+                + ", "
+                + str(round(ci[1], rounding_decimals))
+                + "]"
+            )
+
+            result = str(value) + " " + ci_str
+            tabular_results[algorithm][metric] = result
+
+    result_csv = pd.DataFrame(tabular_results, columns=algorithms)
+    result_csv.to_csv(tabular_results_file_path, index=False, header=True)
+    print(
+        "The tabular results are stored in "
+        + tabular_results_file_path
+        + " and they are the following\n",
+        result_csv,
+    )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
@@ -206,8 +241,12 @@ def sample_efficiency_curves(
     else:
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
-    frames = np.arange(0, 205, 5)
-    frames[-1] = 199
+    # Find lowest values from amount of runs that have completed
+    # across all algorithms
+    run_lengths = [data_dictionary[algo].shape[2] for algo in data_dictionary]
+    min_run_length = np.min(run_lengths)
+
+    frames = np.arange(0, min_run_length, 1)
 
     scores_dict = {
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
