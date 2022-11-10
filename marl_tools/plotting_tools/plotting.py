@@ -206,8 +206,12 @@ def sample_efficiency_curves(
     else:
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
-    frames = np.arange(0, 205, 5)
-    frames[-1] = 199
+    # Find lowest values form amoutn of runs that have completed
+    # across all algorithms
+    run_lengths = [data_dictionary[algo].shape[2] for algo in data_dictionary]
+    min_run_length = np.min(run_lengths)
+
+    frames = np.arange(0, min_run_length, 1)
 
     scores_dict = {
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
