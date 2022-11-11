@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Package metadata for marl_tools.
+"""Package metadata for marl_eval.
 
 This is kept in a separate module so that it can be imported from setup.py, at
-a time when the dependencies for marl_tools may not have been installed yet.
+a time when the dependencies for marl_eval may not have been installed yet.
 """
 
 # We follow Semantic Versioning (https://semver.org/)

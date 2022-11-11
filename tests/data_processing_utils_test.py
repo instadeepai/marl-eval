@@ -30,7 +30,7 @@ from expected_test_data import (
     sample_efficiency_matrix_expected_data_single_task,
 )
 
-from marl_tools.utils.data_processing_utils import (
+from marl_eval.utils.data_processing_utils import (
     create_matrices_for_rliable,
     data_process_pipeline,
 )

@@ -16,13 +16,13 @@
 import json
 import os
 
-from marl_tools.plotting_tools.plotting import (
+from marl_eval.plotting_tools.plotting import (
     aggregate_scores,
     performance_profiles,
     probability_of_improvement,
     sample_efficiency_curves,
 )
-from marl_tools.utils.data_processing_utils import (
+from marl_eval.utils.data_processing_utils import (
     create_matrices_for_rliable,
     data_process_pipeline,
 )

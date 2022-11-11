@@ -19,19 +19,19 @@ from importlib import util as import_util
 
 from setuptools import find_packages, setup
 
-spec = import_util.spec_from_file_location("_metadata", "marl_tools/_metadata.py")
+spec = import_util.spec_from_file_location("_metadata", "marl_eval/_metadata.py")
 _metadata = import_util.module_from_spec(spec)  # type: ignore
 spec.loader.exec_module(_metadata)  # type: ignore
 
-long_description = """Marl_eval is an implementation of the data processing
+long_description = """marl_eval is a repo implementing experiment data processing
 that goes along with the work done by Gorsane et al. (2022) on standardising
 the way in which multi-agent reinforcement learning evaluation is done.
 This repo builds on the work done by Agarwal et al. (2022) with the rliable
 repo which may be found at [https://github.com/google-research/rliable].
 What marl_eval adds is extra data processing functionality on top of the
 rliable tools for particular use in multi-agent reinforcement learning.
-Given data in the correct json format marl_eval will process all data for d
-ownstream statistical aggregation by rliable. Marl-eval will also plot
+Given data in the correct json format marl_eval will process all data for
+downstream statistical aggregation by rliable. Marl-eval will also plot
 all aggregated data and produce tabular results which may be easily used
 by researchers in order to present clear work which may be easily compared
 to by others. For for information please see the associated paper

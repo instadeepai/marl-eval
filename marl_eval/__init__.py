@@ -17,6 +17,6 @@
     reinforcement experiments."""
 
 # Make __version__ accessible.
-from marl_tools._metadata import __version__
+from marl_eval._metadata import __version__
 
 # Happy researching! ;)
