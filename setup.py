@@ -71,10 +71,13 @@ setup(
         "rliable==1.0.7",
         "seaborn",
         "jax==0.3.15",
-        "laxlib==0.3.15",
+        "jaxlib==0.3.15",
         "pandas==1.4.4",
         "importlib-metadata<5.0",
     ],
+    extras_require={
+        "testing_formatting": testing_formatting_requirements,
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
