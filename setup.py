@@ -52,6 +52,7 @@ testing_formatting_requirements = [
     "types-six",
     "toml",
     "pytest==6.2.4",
+    "pytest-xdist",
 ]
 
 setup(
