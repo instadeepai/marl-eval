@@ -83,7 +83,7 @@ fig.figure.savefig(
     "examples/plots/success_rate_prob_of_improvement.png", bbox_inches="tight"
 )
 
-fig, _, _ = sample_efficiency_curves(
+fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
@@ -119,7 +119,7 @@ fig = probability_of_improvement(
 )
 fig.figure.savefig("examples/plots/return_prob_of_improvement.png", bbox_inches="tight")
 
-fig, _, _ = sample_efficiency_curves(
+fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,

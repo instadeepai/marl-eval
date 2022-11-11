@@ -7,7 +7,7 @@ ensure_newline_before_comments = true
 line_length = 88
 
 [tool.black]
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 (
@@ -25,6 +25,7 @@ exclude = '''
     | dist
     | proto
     | docs
+    | marl_eval_testing
   )/
 )
 '''
