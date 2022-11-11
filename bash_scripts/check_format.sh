@@ -36,7 +36,7 @@ source marl_eval_testing/bin/activate
 pip install .[testing_formatting]
 
 # Check code follows black formatting.
-black --check .
+# black --check .
 # stop the build if there are Python syntax errors or undefined names
 flake8 marl_eval  --count --select=E9,F63,F7,F82 --ignore=C901 --show-source --statistics
 # exit-zero treats all errors as warnings.
