@@ -46,7 +46,7 @@ flake8 marl_eval --count --exit-zero --statistics
 mypy .
 
 # Check docstring code coverage.
-interrogate -c pyproject.toml mava
+interrogate -c pyproject.toml marl_eval
 # Clean-up.
 deactivate
 rm -rf marl_eval_testing/
