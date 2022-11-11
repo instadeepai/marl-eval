@@ -33,9 +33,6 @@ pip install virtualenv
 virtualenv marl_eval_testing
 source marl_eval_testing/bin/activate
 
-# Fix module 'enum' has no attribute 'IntFlag' for py3.6
-pip uninstall -y enum34
-
 pip install .[testing_formatting]
 
 # Check code follows black formatting.
