@@ -135,6 +135,9 @@ In order to use the tools we suggest effectively, raw data JSON files are requir
 ```
 Here `run_1` to `run_n` correspond to the number of independent runs in a given experiment and `step_1` to `step_k` correspond to the number of logging steps in a given environment. We do not require an independent run to explicitly be named run, users my also name a run using the value of a particular seed that was used as a string. `step_count` corresponds to the amount of steps taken by agents in the environment when logging occurs and the values logged for each relevant metric for a given logging step should be a list containing either 1 element for a metric such as a win rate which gets computed over multiple episodes or as many elements as evaluation episodes that we run at the logging step. The final logging step for a given run should contain the `absolute_metric` values for the given metric in an experiment with these list containing either 1 element or 10 times as many elements as evaluation episodes at each logging step. For an explanation of the `absolute metric` please see [paragraph 1 on page 9 here](https://arxiv.org/pdf/2209.10485.pdf).
 
+### Metrics to be normalised during data processing ⚗️
+Certain metrics, like episode returns, are required to me normalised during data processing. In order to achieve this it is required that users give these metric names, in the form of strings in a python list, to the `data_process_pipeline` function, the `create_matrices_for_rliable` function and all plotting functions as an argument. In the case where no normalisation is required this argument may be omitted.
+
 ## Contributing 🤝
 
 Please read our [contributing docs](./CONTRIBUTING.md) for details on how to submit pull requests, our Contributor License Agreement and community guidelines.
