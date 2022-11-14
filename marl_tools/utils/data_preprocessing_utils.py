@@ -221,7 +221,7 @@ def data_preprocessing(  # noqa: C901
                         )
                         if len(steps) != common_nb_steps:
                             steps.remove("ABSOLUTE_METRIC")
-                            for step in steps[common_nb_steps:]:
+                            for step in steps[common_nb_steps-1:]:
                                 del processed_data[env][task.lower()][algorithm][run][
                                     step
                                 ]
