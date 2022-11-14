@@ -14,9 +14,10 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Mapping, Tuple
-
+from typing import Any, Dict, List, Mapping, Tuple, Optional
+import json
 import numpy as np
+from data_preprocessing_utils import data_preprocessing
 
 """Tools for processing MARL experiment data."""
 
@@ -24,6 +25,7 @@ import numpy as np
 def data_process_pipeline(  # noqa: C901
     raw_data: Mapping[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
+    reformat_json: Optional[bool]= False,
 ) -> Mapping[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
@@ -32,7 +34,9 @@ def data_process_pipeline(  # noqa: C901
             from JSON file.
         metrics_to_normalize: A list of metric names for metrics that should
             be min/max normalised. These metric names should match the names as
-            given in the raw dataset
+            given in the raw dataset.
+        reformat_json: check that the function was called for the second time
+            after reformatting the json data.
 
     Returns:
         processed_data: Dictionary containing processed experiment data where relevant
@@ -147,8 +151,15 @@ def data_process_pipeline(  # noqa: C901
         }
 
     except Exception as e:
-        print(e, ": There is an issue related to the format of the json file!")
-        print("We recommand using the data_preprocessing function to reformat the file")
+        if not reformat_json:
+            print(e, ": There is an issue related to the format of the json file!")
+            print("We will reformat the json data and recall the function")
+            reformatted_data= data_preprocessing(raw_data)
+            with open("./reformatted_data.json", "w+") as f:
+                json.dump(reformatted_data, f, indent=4)
+            data_process_pipeline(raw_data=reformatted_data,metrics_to_normalize=metrics_to_normalize, reformat_json=True)
+        else:
+            print(e,": You need to check the format that we provided of the json file.")
 
     return processed_data
 
