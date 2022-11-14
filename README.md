@@ -5,7 +5,7 @@
 </h2>
 
 ## Welcome to MARL-eval 🧪
-A repo for simplifying and standardising the statistical aggregation and plotting of cooperative multi-agent reinforcement learning experimental data.
+`marl-eval` is an open source Python package for simplifying and standardising the statistical aggregation and plotting of cooperative multi-agent reinforcement learning experimental data.
 
 This repo is the official implementation of the data aggregation guideline proposed in the paper titled _Towards a Standardised Performance Evaluation Protocol for Cooperative MARL_ by [Gorsane et al. (2022)](https://arxiv.org/abs/2209.10485) published at the 36th Conference on Neural Information Processing Systems.
 
@@ -14,8 +14,8 @@ The tools here build upon the tools in the [rliable](https://github.com/google-r
 
 ### Overview 🦜
 
-- 🥑 **Easy data processing**: Easy to use functions that will process all raw experiment data and prepare it for downstream use of the `rliable` tools.
-- 🍬 **Easy data plotting**: Easy to use functions built on top of the `rlibale` tools which will handle the plotting of all processed data dn produce tabular results in both `.csv` and `LaTeX` format.
+- 🪄 **Easy data processing**: Easy to use functions that will process all raw experiment data and prepare it for downstream use of the `rliable` tools.
+- 📊 **Easy data plotting**: Easy to use functions built on top of the `rlibale` tools which will handle the plotting of all processed data dn produce tabular results in both `.csv` and `LaTeX` format.
 
 
 ## Installation 🎬
