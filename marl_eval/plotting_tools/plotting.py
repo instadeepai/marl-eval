@@ -188,7 +188,7 @@ def aggregate_scores(
         with open(
             tabular_results_file_path + "_" + metric_name + "_latex.txt", "a"
         ) as f:
-            print(tabular_results_csv.to_latex(index=False), file=f)
+            print(tabular_results_csv.style.to_latex(), file=f)
             print(
                 "The latex tabular results are stored in "
                 + tabular_results_file_path
