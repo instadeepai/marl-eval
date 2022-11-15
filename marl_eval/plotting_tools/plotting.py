@@ -180,11 +180,17 @@ def aggregate_scores(
     )
 
     if csv_to_latex:
-        print(
-            "Here is the latex format of the aggregate score tabular\
-        results:\n",
-            result_csv.to_latex(index=False),
-        )
+        with open(
+            tabular_results_file_path + "_" + metric_name + "_latex.txt", "a"
+        ) as f:
+            print(result_csv.to_latex(index=False), file=f)
+            print(
+                "The latex tabular results are stored in "
+                + tabular_results_file_path
+                + "_"
+                + metric_name
+                + "_latex.txt"
+            )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
