@@ -12,7 +12,7 @@ This repo is the official implementation of the data aggregation guideline propo
 ## Standing on the shoulders of giants ⛰️
 The tools here build upon the tools in the [rliable](https://github.com/google-research/rliable) repo which goes along with the work done by [Agarwal et al. (2022)](https://arxiv.org/abs/2108.13264) in the paper titled _Deep Reinforcement Learning at the Edge of the Statistical Precipice_. For any details on the types of plots produced, please see their work.
 
-### Overview 🦜
+## Overview 🦜
 
 - 🪄 **Easy data processing**: Easy-to-use functions that will process all raw experiment data and prepare it for downstream use of the `rliable` tools.
 - 📊 **Easy data plotting**: Easy-to-use functions built on top of the `rlibale` tools which will handle the plotting of all processed data and produce tabular results in both `.csv` and `LaTeX` formats.
