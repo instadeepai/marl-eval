@@ -80,7 +80,7 @@ def aggregate_scores(
     metric_name: str,
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
-    tabular_results_file_path: str = "./aggregated_score.csv",
+    tabular_results_file_path: str = "./aggregated_score",
     save_tabular_as_latex: Optional[bool] = False,
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
@@ -171,10 +171,15 @@ def aggregate_scores(
             tabular_results[algorithm][metric] = result
 
     tabular_results = pd.DataFrame(tabular_results, columns=algorithms)
-    tabular_results.to_csv(tabular_results_file_path, index=False, header=True)
+    tabular_results.to_csv(
+        tabular_results_file_path + "_" + metric_name + ".csv", index=False, header=True
+    )
     print(
         "The tabular results are stored in "
         + tabular_results_file_path
+        + "_"
+        + metric_name
+        + ".csv"
         + " and they are the following\n",
         tabular_results,
     )
