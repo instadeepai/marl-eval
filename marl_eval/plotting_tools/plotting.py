@@ -81,6 +81,7 @@ def aggregate_scores(
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
     tabular_results_file_path: str = "./aggregated_score.csv",
+    csv_to_latex: Optional[bool] = False,
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -91,6 +92,7 @@ def aggregate_scores(
         metrics_to_normalize: List of metrics that are normalised.
         rounding_decimals:number up to which the results values are rounded
         tabular_results_file_path: location to store the tabular results
+        csv_to_latex: get the tabular results as a latex table format.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -176,6 +178,13 @@ def aggregate_scores(
         + " and they are the following\n",
         result_csv,
     )
+
+    if csv_to_latex:
+        print(
+            "Here is the latex format of the aggregate score tabular\
+        results:\n",
+            result_csv.to_latex(index=False),
+        )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
