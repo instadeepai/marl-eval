@@ -64,7 +64,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
-    csv_to_latex=True,
+    save_tabular_as_latex=True,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_aggregate_scores.png", bbox_inches="tight"
