@@ -170,8 +170,8 @@ def aggregate_scores(
             result = str(value) + " " + ci_str
             tabular_results[algorithm][metric] = result
 
-    tabular_results = pd.DataFrame(tabular_results, columns=algorithms)
-    tabular_results.to_csv(
+    tabular_results_csv = pd.DataFrame(tabular_results, columns=algorithms)
+    tabular_results_csv.to_csv(
         tabular_results_file_path + "_" + metric_name + ".csv", index=False, header=True
     )
     print(
@@ -181,14 +181,14 @@ def aggregate_scores(
         + metric_name
         + ".csv"
         + " and they are the following\n",
-        tabular_results,
+        tabular_results_csv,
     )
 
     if save_tabular_as_latex:
         with open(
             tabular_results_file_path + "_" + metric_name + "_latex.txt", "a"
         ) as f:
-            print(tabular_results.to_latex(index=False), file=f)
+            print(tabular_results_csv.to_latex(index=False), file=f)
             print(
                 "The latex tabular results are stored in "
                 + tabular_results_file_path
