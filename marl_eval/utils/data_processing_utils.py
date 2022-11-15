@@ -14,12 +14,9 @@
 # limitations under the License.
 
 import copy
-import json
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any, Dict, List, Mapping, Tuple, Union
 
 import numpy as np
-
-from marl_eval.utils.data_preprocessing_utils import data_preprocessing
 
 """Tools for processing MARL experiment data."""
 
@@ -27,8 +24,7 @@ from marl_eval.utils.data_preprocessing_utils import data_preprocessing
 def data_process_pipeline(  # noqa: C901
     raw_data: Mapping[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
-    reformat_json: Optional[bool] = False,
-) -> Mapping[str, Dict[str, Any]]:
+) -> Union[Mapping[str, Dict[str, Any]],None]:
     """Function for processing raw input experiment data.
 
     Args:
@@ -37,8 +33,6 @@ def data_process_pipeline(  # noqa: C901
         metrics_to_normalize: A list of metric names for metrics that should
             be min/max normalised. These metric names should match the names as
             given in the raw dataset.
-        reformat_json: check that the function was called for the second time
-            after reformatting the json data.
 
     Returns:
         processed_data: Dictionary containing processed experiment data where relevant
@@ -153,21 +147,9 @@ def data_process_pipeline(  # noqa: C901
         }
 
     except Exception as e:
-        if not reformat_json:
-            print(e, ": There is an issue related to the format of the json file!")
-            print("We will reformat the json data and recall the function")
-            reformatted_data = data_preprocessing(raw_data)
-            with open("./reformatted_data.json", "w+") as f:
-                json.dump(reformatted_data, f, indent=4)
-            data_process_pipeline(
-                raw_data=reformatted_data,
-                metrics_to_normalize=metrics_to_normalize,
-                reformat_json=True,
-            )
-        else:
-            print(
-                e, ": You need to check the format that we provided of the json file."
-            )
+        print(e, ": There is an issue related to the format of the json file!")
+        print("We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
+             to figure out the error.")
 
     return processed_data
 
@@ -176,7 +158,7 @@ def create_matrices_for_rliable(  # noqa: C901
     data_dictionary: Mapping[str, Dict[str, Any]],
     environment_name: str,
     metrics_to_normalize: List[str],
-) -> Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]]:
+) -> Union[Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]], None]:
     """Creates two dictionaries containing arrays required for using the rliable tools.
 
         The first dictionary will have root keys corresponding to the metrics used
@@ -317,8 +299,11 @@ def create_matrices_for_rliable(  # noqa: C901
                     master_metric_dictionary[metric][algorithm], axis=2
                 )
 
+        return metric_dictionary_return, final_metric_tensor_dictionary
+
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
-        print("We recommand using the data_preprocessing function to reformat the file")
+        print("We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
+             to figure out the error.")
 
-    return metric_dictionary_return, final_metric_tensor_dictionary
+    
