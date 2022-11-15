@@ -18,13 +18,16 @@
 import copy
 from typing import Any, Dict, List, Mapping
 
+
 class DiagnoseData:
     """Class to diagnose the errors and"""
-    def __init__(self, raw_data: Mapping[str, Dict[str, Any]])->None:
-        self.raw_data=raw_data
+
+    def __init__(self, raw_data: Mapping[str, Dict[str, Any]]) -> None:
+        """Init"""
+        self.raw_data = raw_data
 
     def check_algo(self, list_algo: List) -> tuple:
-        """Check that through the scenarios, the data share the same list of algorithms"""
+        """Check that through the scenarios, the data share the same algorithms"""
         if list_algo == []:
             return True, []
         identical = True
@@ -73,7 +76,7 @@ class DiagnoseData:
         return identical, same_metrics
 
     def check_runs(self, list_nb_runs: List) -> tuple:
-        """Check that through the algos, and tasks, the data share the same number of run"""
+        """Check that through the algos, and tasks, the data share the same nb of run"""
         if list_nb_runs == []:
             return True, []
 
@@ -87,7 +90,6 @@ class DiagnoseData:
             + " runs."
         )
         return False, min(list_nb_runs)
-
 
     def check_steps(self, list_nb_steps: List) -> tuple:
         """Check that through the different runs, algo and scenarios, \
@@ -106,11 +108,8 @@ class DiagnoseData:
         )
         return False, min(list_nb_steps)
 
-
-    def diagnose_error(  # noqa: C901
-        self
-    ) -> Mapping[str, Dict[str, Any]]:
-        """Method to check the json data format and reformulate it, if there is an issue"""
+    def diagnose_error(self) -> Mapping[str, Dict[str, Any]]:  # noqa: C901
+        """Check if there is any issue related to the format of the json file"""
 
         processed_data = copy.deepcopy(self.raw_data)
 
@@ -128,7 +127,9 @@ class DiagnoseData:
             for task in self.raw_data[env].keys():
                 # Low-case the task names
                 if task.lower() != task:
-                    processed_data[env][task.lower()] = copy.deepcopy(self.raw_data[env][task])
+                    processed_data[env][task.lower()] = copy.deepcopy(
+                        self.raw_data[env][task]
+                    )
                     del processed_data[env][task]
 
                 # Append the list of used algorithms across the tasks
@@ -144,7 +145,7 @@ class DiagnoseData:
                         ] = copy.deepcopy(self.raw_data[env][task][algorithm])
                         del processed_data[env][task.lower()][algorithm]
 
-                    # Append the number of runs used across the different algos, and tasks
+                    # Append the number of runs used across the different algos
                     runs_used.append(
                         len(processed_data[env][task.lower()][algorithm.upper()].keys())
                     )
@@ -160,13 +161,17 @@ class DiagnoseData:
                         )
 
                         for step in self.raw_data[env][task][algorithm][run].keys():
-                            for metric in self.raw_data[env][task][algorithm][run][step].keys():
+                            for metric in self.raw_data[env][task][algorithm][run][
+                                step
+                            ].keys():
                                 # Low-case the metric names
                                 if metric.lower() != metric:
-                                    processed_data[env][task.lower()][algorithm.upper()][
-                                        run
-                                    ][step][metric.lower()] = copy.deepcopy(
-                                        self.raw_data[env][task][algorithm][run][step][metric]
+                                    processed_data[env][task.lower()][
+                                        algorithm.upper()
+                                    ][run][step][metric.lower()] = copy.deepcopy(
+                                        self.raw_data[env][task][algorithm][run][step][
+                                            metric
+                                        ]
                                     )
                                     del processed_data[env][task.lower()][
                                         algorithm.upper()
@@ -185,21 +190,23 @@ class DiagnoseData:
 
                             # Up-case absolute metric
                             if "absolute" in step.lower() and step != "ABSOLUTE_METRIC":
-                                processed_data[env][task.lower()][algorithm.upper()][run][
-                                    "ABSOLUTE_METRIC"
-                                ] = copy.deepcopy(self.raw_data[env][task][algorithm][run][step])
-                                del processed_data[env][task.lower()][algorithm.upper()][
+                                processed_data[env][task.lower()][algorithm.upper()][
                                     run
-                                ][step]
+                                ]["ABSOLUTE_METRIC"] = copy.deepcopy(
+                                    self.raw_data[env][task][algorithm][run][step]
+                                )
+                                del processed_data[env][task.lower()][
+                                    algorithm.upper()
+                                ][run][step]
 
             # Check that the format don't issued any issue while using the tools
             valid_algo, _ = self.check_algo(list_algo=algorithms_used)
             valid_runs, _ = self.check_runs(list_nb_runs=runs_used)
-            valid_steps,_ = self.check_steps(list_nb_steps=steps_used)
+            valid_steps, _ = self.check_steps(list_nb_steps=steps_used)
             valid_metric, _ = self.check_metric(list_metric=metrics_used)
 
             # Check that we have valid json file
             if valid_algo and valid_runs and valid_steps and valid_metric:
-                print("Valid format for the task "+task+"!")
-    
+                print("Valid format for the task " + task + "!")
+
         return processed_data

@@ -24,7 +24,7 @@ import numpy as np
 def data_process_pipeline(  # noqa: C901
     raw_data: Mapping[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
-) -> Union[Mapping[str, Dict[str, Any]],None]:
+) -> Mapping[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
     Args:
@@ -146,19 +146,22 @@ def data_process_pipeline(  # noqa: C901
             "metric_list": metric_list,
         }
 
+        return processed_data
+
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
-        print("We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
-             to figure out the error.")
-
-    return processed_data
+        print(
+            "We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
+             to figure out the error."
+        )
+        return raw_data
 
 
 def create_matrices_for_rliable(  # noqa: C901
     data_dictionary: Mapping[str, Dict[str, Any]],
     environment_name: str,
     metrics_to_normalize: List[str],
-) -> Union[Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]], None]:
+) -> Union[Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]], Any]:
     """Creates two dictionaries containing arrays required for using the rliable tools.
 
         The first dictionary will have root keys corresponding to the metrics used
@@ -303,7 +306,8 @@ def create_matrices_for_rliable(  # noqa: C901
 
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
-        print("We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
-             to figure out the error.")
-
-    
+        print(
+            "We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
+             to figure out the error."
+        )
+        return (None, None)
