@@ -44,7 +44,11 @@ def performance_profiles(
         fig: Matplotlib figure for storing.
     """
 
-    data_dictionary = dictionary[f"mean_{metric_name}"]
+    if metric_name in metrics_to_normalize:
+        data_dictionary = dictionary[f"mean_norm_{metric_name}"]
+    else:
+        data_dictionary = dictionary[f"mean_{metric_name}"]
+
     algorithms = list(data_dictionary.keys())
 
     if metric_name in metrics_to_normalize:
@@ -76,7 +80,7 @@ def aggregate_scores(
     metric_name: str,
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
-    tabular_results_file_path: Optional[str] = "./aggregated_score.csv",
+    tabular_results_file_path: str = "./aggregated_score",
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -94,14 +98,14 @@ def aggregate_scores(
         aggregate_score_cis_dict: Aggregated score confidence intervals
     """
 
-    data_dictionary = dictionary[f"mean_{metric_name}"]
-    algorithms = list(data_dictionary.keys())
-
     if metric_name in metrics_to_normalize:
+        data_dictionary = dictionary[f"mean_norm_{metric_name}"]
         xlabel = "Normalized " + " ".join(metric_name.split("_"))
-
     else:
+        data_dictionary = dictionary[f"mean_{metric_name}"]
         xlabel = " ".join(metric_name.split("_")).capitalize()
+
+    algorithms = list(data_dictionary.keys())
 
     aggregate_func = lambda x: np.array(  # noqa: E731
         [
@@ -165,10 +169,15 @@ def aggregate_scores(
             tabular_results[algorithm][metric] = result
 
     result_csv = pd.DataFrame(tabular_results, columns=algorithms)
-    result_csv.to_csv(tabular_results_file_path, index=False, header=True)
+    result_csv.to_csv(
+        tabular_results_file_path + "_" + metric_name + ".csv", index=False, header=True
+    )
     print(
         "The tabular results are stored in "
         + tabular_results_file_path
+        + "_"
+        + metric_name
+        + ".csv"
         + " and they are the following\n",
         result_csv,
     )
@@ -179,6 +188,7 @@ def aggregate_scores(
 def probability_of_improvement(
     dictionary: Mapping[str, Dict[str, Any]],
     metric_name: str,
+    metrics_to_normalize: List[str],
     algorithms_to_compare: List[List],
 ) -> Figure:
     """Produces probability of improvement plots.
@@ -193,7 +203,11 @@ def probability_of_improvement(
         fig: Matplotlib figure for storing.
     """
 
-    data_dictionary = dictionary[f"mean_{metric_name}"]
+    if metric_name in metrics_to_normalize:
+        data_dictionary = dictionary[f"mean_norm_{metric_name}"]
+    else:
+        data_dictionary = dictionary[f"mean_{metric_name}"]
+
     algorithm_pairs = {}
     for pair in algorithms_to_compare:
         algorithm_pairs[",".join(pair)] = (
@@ -230,16 +244,12 @@ def sample_efficiency_curves(
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
+        ylabel = "Normalized " + " ".join(metric_name.split("_"))
     else:
         data_dictionary = dictionary[f"mean_{metric_name}"]
+        ylabel = " ".join(metric_name.split("_")).capitalize()
 
     algorithms = list(data_dictionary.keys())
-
-    if metric_name in metrics_to_normalize:
-        ylabel = "Normalized " + " ".join(metric_name.split("_"))
-
-    else:
-        ylabel = " ".join(metric_name.split("_")).capitalize()
 
     # Find lowest values from amount of runs that have completed
     # across all algorithms

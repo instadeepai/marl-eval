@@ -16,13 +16,13 @@
 import json
 import os
 
-from marl_tools.plotting_tools.plotting import (
+from marl_eval.plotting_tools.plotting import (
     aggregate_scores,
     performance_profiles,
     probability_of_improvement,
     sample_efficiency_curves,
 )
-from marl_tools.utils.data_processing_utils import (
+from marl_eval.utils.data_processing_utils import (
     create_matrices_for_rliable,
     data_process_pipeline,
 )
@@ -72,6 +72,7 @@ fig.figure.savefig(
 fig = probability_of_improvement(
     environment_comparison_matrix,
     metric_name="success_rate",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
     algorithms_to_compare=[
         ["algo_1", "algo_2"],
         ["algo_1", "algo_3"],
@@ -82,7 +83,7 @@ fig.figure.savefig(
     "examples/plots/success_rate_prob_of_improvement.png", bbox_inches="tight"
 )
 
-fig, _, _ = sample_efficiency_curves(
+fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
@@ -94,21 +95,22 @@ fig.figure.savefig(
 # Plot episode return data
 fig = performance_profiles(
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig("examples/plots/return_performance_profile.png", bbox_inches="tight")
 
 fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig("examples/plots/return_aggregate_scores.png", bbox_inches="tight")
 
 fig = probability_of_improvement(
     environment_comparison_matrix,
-    metric_name="norm_return",
+    metric_name="return",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
     algorithms_to_compare=[
         ["algo_1", "algo_2"],
         ["algo_1", "algo_3"],
@@ -117,9 +119,9 @@ fig = probability_of_improvement(
 )
 fig.figure.savefig("examples/plots/return_prob_of_improvement.png", bbox_inches="tight")
 
-fig, _, _ = sample_efficiency_curves(
+fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
-    metric_name="norm_return",
+    metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
 )
 fig.figure.savefig(
