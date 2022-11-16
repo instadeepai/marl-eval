@@ -70,6 +70,9 @@ def test_matrices_for_rliable_full_environment_dataset(
         metrics_to_normalize=["return"],
     )
 
+    # delete extra param from m2
+    del m2["extra"]  # type: ignore
+
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
@@ -105,6 +108,9 @@ def test_matrices_for_rliable_single_environment_task(
         environment_name="SMAC",
         metrics_to_normalize=["return"],
     )
+
+    # delete extra param from m2
+    del m2["extra"]  # type: ignore
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -147,6 +153,9 @@ def test_matrices_for_rliable_single_algorithm(
         environment_name="SMAC",
         metrics_to_normalize=["return"],
     )
+
+    # delete extra param from m2
+    del m2["extra"]  # type: ignore
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
