@@ -53,8 +53,8 @@ def get_and_aggregate_data_single_task(
     runs = list(task_data[algorithms[0]].keys())
     steps = list(task_data[algorithms[0]][runs[0]].keys())
 
-    if "absolute_metrics" in steps:
-        steps.remove("absolute_metrics")
+    # Remove absolute metric from steps.
+    steps = [step for step in steps if "absolute_metric" not in step.lower()]
 
     # Create a dictionary to store the mean and 95% CI for each algorithm
     mean_and_ci: Dict = {algorithm: {"mean": [], "ci": []} for algorithm in algorithms}
