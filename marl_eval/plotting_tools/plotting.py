@@ -241,6 +241,8 @@ def sample_efficiency_curves(
         iqm_scores: IQM score values used in plots.
         iqm_cis: IQM score score confidence intervals used in plots.
     """
+    # Extract the extra info
+    extra = dictionary.pop("extra")  # type: ignore
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -258,6 +260,9 @@ def sample_efficiency_curves(
 
     frames = np.arange(0, min_run_length, 1)
 
+    # Filling the x-axes with the evaluation steps interval.
+    x_axis_values = frames * extra["evaluation_interval"]
+
     scores_dict = {
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
     }
@@ -269,7 +274,7 @@ def sample_efficiency_curves(
     iqm_scores, iqm_cis = rly.get_interval_estimates(scores_dict, iqm, reps=5000)
 
     fig = plot_utils.plot_sample_efficiency_curve(
-        (frames + 1) / 100,
+        x_axis_values,
         iqm_scores,
         iqm_cis,
         algorithms=algorithms,
