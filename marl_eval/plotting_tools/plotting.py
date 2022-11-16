@@ -92,7 +92,7 @@ def aggregate_scores(
         metrics_to_normalize: List of metrics that are normalised.
         rounding_decimals:number up to which the results values are rounded
         tabular_results_file_path: location to store the tabular results
-        save_tabular_as_latex: get the tabular results as a latex table format.
+        save_tabular_as_latex: store tabular results in latex format in a .txt file.
 
     Returns:
         fig: Matplotlib figure for storing.
