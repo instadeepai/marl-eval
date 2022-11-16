@@ -22,6 +22,9 @@ import jax
 import numpy as np
 import pytest
 from expected_test_data import (
+    expected_processed_data,
+    expected_single_task_ci_data_returns,
+    expected_single_task_ci_data_win_rates,
     matrix_1_expected_data,
     matrix_1_expected_data_single_algorithm,
     matrix_1_expected_data_single_task,
@@ -33,6 +36,7 @@ from expected_test_data import (
 from marl_eval.utils.data_processing_utils import (
     create_matrices_for_rliable,
     data_process_pipeline,
+    get_and_aggregate_data_single_task,
 )
 
 
@@ -45,12 +49,24 @@ def raw_data() -> Mapping[str, Dict[str, Any]]:
     return read_in_data
 
 
-def test_data_processing_pipeline(raw_data: Mapping[str, Dict[str, Any]]) -> None:
-    """Tests whether data processing pipeline runs."""
+@pytest.fixture
+def processed_data(
+    raw_data: Mapping[str, Dict[str, Any]]
+) -> Mapping[str, Dict[str, Any]]:
+    """Fixture for processed experiment data"""
 
-    processed_data = data_process_pipeline(  # noqa
+    processed_data = data_process_pipeline(
         raw_data=raw_data, metrics_to_normalize=["return"]
     )
+
+    return processed_data
+
+
+def test_data_processing_pipeline(processed_data: Mapping[str, Dict[str, Any]]) -> None:
+    """Tests whether data processing pipeline runs and aggregates \
+        data correctly."""
+
+    assert processed_data == expected_processed_data
 
 
 def test_matrices_for_rliable_full_environment_dataset(
@@ -158,4 +174,40 @@ def test_matrices_for_rliable_single_algorithm(
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
         m2,
         sample_efficiency_matrix_expected_data_single_algorithm,
+    )
+
+
+def test_single_task_data_aggregation(
+    processed_data: Mapping[str, Dict[str, Any]]
+) -> None:
+    """Tests that single task aggregation is done correctly."""
+
+    # Test for return calculations of single task.
+    task_return_ci_data = get_and_aggregate_data_single_task(
+        processed_data=processed_data,
+        metric_name="return",
+        metrics_to_normalize=["return"],
+        environment_name="SMAC",
+        task_name="3m",
+    )
+
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        task_return_ci_data,
+        expected_single_task_ci_data_returns,
+    )
+
+    # Test for win rate calculations of single task.
+    task_win_rate_ci_data = get_and_aggregate_data_single_task(
+        processed_data=processed_data,
+        metric_name="win_rate",
+        metrics_to_normalize=["return"],
+        environment_name="SMAC",
+        task_name="8m",
+    )
+
+    jax.tree_util.tree_map(
+        lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
+        task_win_rate_ci_data,
+        expected_single_task_ci_data_win_rates,
     )
