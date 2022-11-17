@@ -200,6 +200,8 @@ def test_single_task_data_aggregation(
         task_name="3m",
     )
 
+    del task_return_ci_data["extra"]
+
     jax.tree_util.tree_map(
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),
         task_return_ci_data,
@@ -214,6 +216,8 @@ def test_single_task_data_aggregation(
         environment_name="SMAC",
         task_name="8m",
     )
+
+    del task_win_rate_ci_data["extra"]
 
     jax.tree_util.tree_map(
         lambda x, y: np.testing.assert_allclose(x, y, rtol=0.0, atol=1e-05),

@@ -134,6 +134,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    save_tabular_as_latex=True,
 )
 fig.figure.savefig("examples/plots/return_aggregate_scores.png", bbox_inches="tight")
 

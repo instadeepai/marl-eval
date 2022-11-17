@@ -1318,6 +1318,7 @@ expected_processed_data = {
                 "mean_win_rate",
             ]
         },
+        "evaluation_interval": {"SMAC": 10000},
     },
 }
 
