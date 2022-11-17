@@ -80,7 +80,8 @@ def aggregate_scores(
     metric_name: str,
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
-    tabular_results_file_path: str = "./aggregated_score.csv",
+    tabular_results_file_path: str = "./aggregated_score",
+    save_tabular_as_latex: Optional[bool] = False,
 ) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
     """Produces aggregated score plots.
 
@@ -91,6 +92,7 @@ def aggregate_scores(
         metrics_to_normalize: List of metrics that are normalised.
         rounding_decimals:number up to which the results values are rounded
         tabular_results_file_path: location to store the tabular results
+        save_tabular_as_latex: store tabular results in latex format in a .txt file.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -168,14 +170,32 @@ def aggregate_scores(
             result = str(value) + " " + ci_str
             tabular_results[algorithm][metric] = result
 
-    result_csv = pd.DataFrame(tabular_results, columns=algorithms)
-    result_csv.to_csv(tabular_results_file_path, index=False, header=True)
+    tabular_results_df = pd.DataFrame(tabular_results, columns=algorithms)
+    tabular_results_df.to_csv(
+        tabular_results_file_path + "_" + metric_name + ".csv", index=False, header=True
+    )
     print(
         "The tabular results are stored in "
         + tabular_results_file_path
+        + "_"
+        + metric_name
+        + ".csv"
         + " and they are the following\n",
-        result_csv,
+        tabular_results_df,
     )
+
+    if save_tabular_as_latex:
+        with open(
+            tabular_results_file_path + "_" + metric_name + "_latex.txt", "a"
+        ) as f:
+            print(tabular_results_df.style.to_latex(), file=f)
+            print(
+                "The latex tabular results are stored in "
+                + tabular_results_file_path
+                + "_"
+                + metric_name
+                + "_latex.txt"
+            )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
@@ -236,6 +256,8 @@ def sample_efficiency_curves(
         iqm_scores: IQM score values used in plots.
         iqm_cis: IQM score score confidence intervals used in plots.
     """
+    # Extract the extra info
+    extra = dictionary.pop("extra")  # type: ignore
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -253,6 +275,9 @@ def sample_efficiency_curves(
 
     frames = np.arange(0, min_run_length, 1)
 
+    # Create x-axis values that match evaluation step intervals.
+    x_axis_values = frames * extra["evaluation_interval"]
+
     scores_dict = {
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
     }
@@ -264,7 +289,7 @@ def sample_efficiency_curves(
     iqm_scores, iqm_cis = rly.get_interval_estimates(scores_dict, iqm, reps=5000)
 
     fig = plot_utils.plot_sample_efficiency_curve(
-        (frames + 1) / 100,
+        x_axis_values,
         iqm_scores,
         iqm_cis,
         algorithms=algorithms,
