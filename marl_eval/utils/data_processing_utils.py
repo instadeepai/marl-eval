@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Mapping, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
@@ -22,9 +22,9 @@ import numpy as np
 
 
 def data_process_pipeline(  # noqa: C901
-    raw_data: Mapping[str, Dict[str, Any]],
+    raw_data: Dict[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
-) -> Mapping[str, Dict[str, Any]]:
+) -> Dict[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
     Args:
@@ -158,10 +158,10 @@ def data_process_pipeline(  # noqa: C901
 
 
 def create_matrices_for_rliable(  # noqa: C901
-    data_dictionary: Mapping[str, Dict[str, Any]],
+    data_dictionary: Dict[str, Dict[str, Any]],
     environment_name: str,
     metrics_to_normalize: List[str],
-) -> Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]]:
+) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     """Creates two dictionaries containing arrays required for using the rliable tools.
 
         The first dictionary will have root keys corresponding to the metrics used

@@ -16,7 +16,7 @@
 """Tests for data processing utils"""
 
 import json
-from typing import Any, Dict, Mapping
+from typing import Any, Dict
 
 import jax
 import numpy as np
@@ -37,7 +37,7 @@ from marl_eval.utils.data_processing_utils import (
 
 
 @pytest.fixture
-def raw_data() -> Mapping[str, Dict[str, Any]]:
+def raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -45,7 +45,7 @@ def raw_data() -> Mapping[str, Dict[str, Any]]:
     return read_in_data
 
 
-def test_data_processing_pipeline(raw_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_data_processing_pipeline(raw_data: Dict[str, Dict[str, Any]]) -> None:
     """Tests whether data processing pipeline runs."""
 
     processed_data = data_process_pipeline(  # noqa
@@ -54,7 +54,7 @@ def test_data_processing_pipeline(raw_data: Mapping[str, Dict[str, Any]]) -> Non
 
 
 def test_matrices_for_rliable_full_environment_dataset(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a full dataset containing multiple algorithms and tasks \
@@ -87,7 +87,7 @@ def test_matrices_for_rliable_full_environment_dataset(
 
 
 def test_matrices_for_rliable_single_environment_task(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing multiple algorithms but only a single task."""
@@ -126,7 +126,7 @@ def test_matrices_for_rliable_single_environment_task(
 
 
 def test_matrices_for_rliable_single_algorithm(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing a single algorithms but multiple tasks."""
