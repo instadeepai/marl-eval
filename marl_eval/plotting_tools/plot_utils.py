@@ -58,6 +58,8 @@ def plot_single_task_curve(
     Returns:
       `axes.Axes` object containing the plot.
     """
+    extra_info = aggregated_data.pop("extra")
+
     if ax is None:
         _, ax = plt.subplots(figsize=figsize)
     if algorithms is None:
@@ -68,9 +70,9 @@ def plot_single_task_curve(
 
     for algorithm in algorithms:
         x_axis_len = len(aggregated_data[algorithm]["mean"])
-        # TODO (Ruan): The scaling value needs to be inferred from the extras
-        # once merged.
-        x_axis_values = np.arange(x_axis_len) * 40000
+
+        # Set x-axis values to match evaluation interval steps.
+        x_axis_values = np.arange(x_axis_len) * extra_info["evaluation_interval"]
         metric_values = np.array(aggregated_data[algorithm]["mean"])
         confidence_interval = np.array(aggregated_data[algorithm]["ci"])
         lower, upper = (

@@ -75,6 +75,8 @@ def get_and_aggregate_data_single_task(
             # Using central limit theorem to compute 95% CI
             mean_and_ci[algorithm]["ci"].append(1.96 * np.std(run_total) / np.sqrt(10))
 
+    mean_and_ci["extra"] = processed_data["extra"]
+
     return mean_and_ci
 
 
@@ -363,5 +365,8 @@ def create_matrices_for_rliable(  # noqa: C901
     # Insert the extra info to the final metric tensor dict
     extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
     final_metric_tensor_dictionary["extra"] = extra
+
+    # Add extra mack to data_dictionary
+    data_dictionary["extra"] = extra  # type: ignore
 
     return metric_dictionary_return, final_metric_tensor_dictionary

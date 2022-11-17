@@ -303,6 +303,8 @@ def sample_efficiency_curves(
         color_palette=cc.glasbey_category10,
     )
 
+    dictionary["extra"] = extra  # type: ignore
+
     return fig, iqm_scores, iqm_cis
 
 
@@ -337,6 +339,8 @@ def plot_single_task(
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
     algorithms = list(task_mean_ci_data.keys())
+    algorithms.remove("extra")
+
     fig = plot_single_task_curve(
         task_mean_ci_data,
         algorithms=algorithms,
