@@ -163,7 +163,6 @@ class DiagnoseData:
                                 ] = copy.deepcopy(
                                     self.raw_data[env][task][algorithm][run][step]
                                 )
-                                del processed_data[env][task][algorithm][run][step]
 
             data_used[env] = {
                 "algorithms": algorithms_used,
