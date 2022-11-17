@@ -14,17 +14,76 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Mapping, Tuple, Union
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
 """Tools for processing MARL experiment data."""
 
 
-def data_process_pipeline(  # noqa: C901
-    raw_data: Mapping[str, Dict[str, Any]],
+def get_and_aggregate_data_single_task(
+    processed_data: Dict[str, Any],
+    metric_name: str,
     metrics_to_normalize: List[str],
-) -> Mapping[str, Dict[str, Any]]:
+    task_name: str,
+    environment_name: str,
+) -> Dict[str, Any]:
+    """Compute the mean and 95% CI over all independent \
+        experiment runs at each evaluation step for a given \
+        environment and task.
+
+    Args:
+        processed_data: Dictionary containing processed data.
+        metric_name: Name of metric to aggregate.
+        metrics_to_normalize: List of metrics to normalize.
+        task_name: Name of task to aggregate.
+        environment_name: Name of environment to aggregate.
+    """
+
+    if metric_name in metrics_to_normalize:
+        metric_to_find = f"mean_norm_{metric_name}"
+    else:
+        metric_to_find = f"mean_{metric_name}"
+
+    # Get the data for the given metric and environment
+    task_data = processed_data[environment_name][task_name]
+
+    # Get the algorithm names, nuumber of runs and total steps
+    algorithms = list(task_data.keys())
+    runs = list(task_data[algorithms[0]].keys())
+    steps = list(task_data[algorithms[0]][runs[0]].keys())
+
+    # Remove absolute metric from steps.
+    steps = [step for step in steps if "absolute_metric" not in step.lower()]
+
+    # Create a dictionary to store the mean and 95% CI for each algorithm
+    mean_and_ci: Dict = {algorithm: {"mean": [], "ci": []} for algorithm in algorithms}
+
+    for step in steps:
+        # Loop over each algorithm
+        for algorithm in algorithms:
+
+            # Get the data for the given algorithm
+            algorithm_data = task_data[algorithm]
+            # Compute the mean and 95% CI for the given algorithm over all seeds
+            # at a given step
+            run_total = []
+            for run in runs:
+                run_total.append(algorithm_data[run][step][metric_to_find])
+
+            mean_and_ci[algorithm]["mean"].append(np.mean(run_total))
+            # Using central limit theorem to compute 95% CI
+            mean_and_ci[algorithm]["ci"].append(1.96 * np.std(run_total) / np.sqrt(10))
+
+    mean_and_ci["extra"] = processed_data["extra"]
+
+    return mean_and_ci
+
+
+def data_process_pipeline(  # noqa: C901
+    raw_data: Dict[str, Dict[str, Any]],
+    metrics_to_normalize: List[str],
+) -> Dict[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
     Args:
@@ -168,10 +227,10 @@ def data_process_pipeline(  # noqa: C901
 
 
 def create_matrices_for_rliable(  # noqa: C901
-    data_dictionary: Mapping[str, Dict[str, Any]],
+    data_dictionary: Dict[str, Dict[str, Any]],
     environment_name: str,
     metrics_to_normalize: List[str],
-) -> Union[Tuple[Mapping[str, Dict[str, Any]], Mapping[str, Dict[str, Any]]], Any]:
+) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     """Creates two dictionaries containing arrays required for using the rliable tools.
 
         The first dictionary will have root keys corresponding to the metrics used
@@ -212,7 +271,7 @@ def create_matrices_for_rliable(  # noqa: C901
         data_env = data_dictionary[env_name]
 
         # Extract the extra params
-        extra = data_dictionary.pop("extra")  # type: ignore
+        extra = data_dictionary.pop("extra")
 
         # Making a strong assumption here that all experiments in this
         # environment will have the same number of steps, same number of tasks
@@ -227,7 +286,6 @@ def create_matrices_for_rliable(  # noqa: C901
 
         def _select_metrics_for_plotting(absolute_metrics: list) -> list:
             """Select absolute metrics for plotting.
-
             Here only normalised versions of metrics that should be normalised
             should be chosen.
             """
@@ -282,7 +340,6 @@ def create_matrices_for_rliable(  # noqa: C901
 
         # exclude the absolute metrics
         for step in steps[:-1]:
-
             metric_dictionary = {}
             for metric in mean_absolute_metrics:
                 metric_dictionary[metric] = {}
@@ -315,9 +372,12 @@ def create_matrices_for_rliable(  # noqa: C901
                     master_metric_dictionary[metric][algorithm], axis=2
                 )
 
-        # Add extra info to the final metric tensor dict
+        # Insert the extra info to the final metric tensor dict
         extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
         final_metric_tensor_dictionary["extra"] = extra
+
+        # Add extra mack to data_dictionary
+        data_dictionary["extra"] = extra
 
         return metric_dictionary_return, final_metric_tensor_dictionary
 
@@ -327,4 +387,4 @@ def create_matrices_for_rliable(  # noqa: C901
             "We recommend using the DiagnoseData class from \
             marl_eval/utils/diagnose_data_errors.py to determine the error."
         )
-        return (None, None)
+        return ({}, {})
