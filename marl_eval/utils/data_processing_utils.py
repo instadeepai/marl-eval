@@ -281,7 +281,7 @@ def create_matrices_for_rliable(  # noqa: C901
         runs = list(data_env[tasks[0]][algorithms[0]].keys())
         steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
         absolute_metrics = list(
-            data_env[tasks[0]][algorithms[0]][runs[0]][steps[-1]].keys()
+            data_env[tasks[0]][algorithms[0]][runs[0]]["absolute_metrics"].keys()
         )
 
         def _select_metrics_for_plotting(absolute_metrics: list) -> list:
@@ -324,7 +324,7 @@ def create_matrices_for_rliable(  # noqa: C901
                     for j, task in enumerate(tasks):
                         metric_dictionary[metric][algorithm][i][j] = data_env[task][
                             algorithm
-                        ][run][steps[-1]][metric]
+                        ][run]["absolute_metrics"][metric]
 
         metric_dictionary_return = metric_dictionary
 
@@ -339,7 +339,8 @@ def create_matrices_for_rliable(  # noqa: C901
                 master_metric_dictionary[metric][algorithm] = []
 
         # exclude the absolute metrics
-        for step in steps[:-1]:
+        steps.remove("absolute_metrics")
+        for step in steps:
             metric_dictionary = {}
             for metric in mean_absolute_metrics:
                 metric_dictionary[metric] = {}
