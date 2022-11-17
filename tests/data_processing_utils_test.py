@@ -50,9 +50,7 @@ def raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def processed_data(
-    raw_data: Dict[str, Dict[str, Any]]
-) -> Dict[str, Dict[str, Any]]:
+def processed_data(raw_data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     """Fixture for processed experiment data"""
 
     processed_data = data_process_pipeline(

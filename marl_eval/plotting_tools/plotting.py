@@ -309,7 +309,7 @@ def sample_efficiency_curves(
 
 
 def plot_single_task(
-    processed_data: Mapping[str, Dict[str, Any]],
+    processed_data: Dict[str, Dict[str, Any]],
     environment_name: str,
     task_name: str,
     metric_name: str,

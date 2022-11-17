@@ -22,7 +22,7 @@ import numpy as np
 
 
 def get_and_aggregate_data_single_task(
-    processed_data: Mapping[str, Any],
+    processed_data: Dict[str, Any],
     metric_name: str,
     metrics_to_normalize: List[str],
     task_name: str,
