@@ -91,129 +91,139 @@ def data_process_pipeline(  # noqa: C901
             from JSON file.
         metrics_to_normalize: A list of metric names for metrics that should
             be min/max normalised. These metric names should match the names as
-            given in the raw dataset
+            given in the raw dataset.
 
     Returns:
         processed_data: Dictionary containing processed experiment data where relevant
             metrics have been min/max normalised and the mean of all arrays in the
             dataset have been computed and added to the dataset.
     """
+    try:
 
-    def _compare_values(
-        metric_min_max_info: Dict[str, Any], metric_values: list, metric: str
-    ) -> None:
-        """Compare list of metric values for a metric to the current global \
-            min and max values for that metric.
+        def _compare_values(
+            metric_min_max_info: Dict[str, Any], metric_values: list, metric: str
+        ) -> None:
+            """Compare list of metric values for a metric to the current global \
+                min and max values for that metric.
 
-        This is done in order to use the global min and max values downstream
-        for normalising metrics.
+            This is done in order to use the global min and max values downstream
+            for normalising metrics.
 
-        Args:
-            metric_min_max_info: a dictionary containing global min and max
-                values for all metrics.
-            metric_values: a list containing metric data.
-            metric: the name of the current metric for which global min and
-                max data is being found.
-        """
+            Args:
+                metric_min_max_info: a dictionary containing global min and max
+                    values for all metrics.
+                metric_values: a list containing metric data.
+                metric: the name of the current metric for which global min and
+                    max data is being found.
+            """
 
-        min_per_step = np.min(metric_values)
-        max_per_step = np.max(metric_values)
-        if metric in list(metric_min_max_info.keys()):
-            if metric_min_max_info[metric]["global_min"] > min_per_step:
-                metric_min_max_info[metric]["global_min"] = min_per_step
-            elif metric_min_max_info[metric]["global_max"] < max_per_step:
-                metric_min_max_info[metric]["global_max"] = max_per_step
-        else:
-            metric_min_max_info[metric] = {
-                "global_min": min_per_step,
-                "global_max": max_per_step,
-            }
+            min_per_step = np.min(metric_values)
+            max_per_step = np.max(metric_values)
+            if metric in list(metric_min_max_info.keys()):
+                if metric_min_max_info[metric]["global_min"] > min_per_step:
+                    metric_min_max_info[metric]["global_min"] = min_per_step
+                elif metric_min_max_info[metric]["global_max"] < max_per_step:
+                    metric_min_max_info[metric]["global_max"] = max_per_step
+            else:
+                metric_min_max_info[metric] = {
+                    "global_min": min_per_step,
+                    "global_max": max_per_step,
+                }
 
-    processed_data = copy.deepcopy(raw_data)
-    metric_min_max_info: Dict[str, Any] = {}
+        processed_data = copy.deepcopy(raw_data)
+        metric_min_max_info: Dict[str, Any] = {}
+        # Extra logs
+        environment_list: Dict[str, Any] = {}
+        algorithm_list = []
+        metric_list: Dict[str, Any] = {}
+        number_of_runs = 0
+        number_of_steps = 0
+        # Get the mean evaluation interval used in the experiment
+        eval_interval: Dict[Any, Any] = {}
 
-    # Extra logs
-    environment_list: Dict[str, Any] = {}
-    algorithm_list = []
-    metric_list: Dict[str, Any] = {}
-    number_of_runs = 0
-    number_of_steps = 0
-    # Get the mean evaluation interval used in the experiment
-    eval_interval: Dict[Any, Any] = {}
-
-    for env, tasks in raw_data.items():
-        environment_list[env] = []
-        metric_list[env] = []
-        eval_interval_per_env: list = []
-        for task, algorithms in tasks.items():
-            environment_list[env].append(task)
-            for algorithm, runs in algorithms.items():
-                if algorithm not in algorithm_list:
-                    algorithm_list.append(algorithm)
-                if number_of_runs == 0:
-                    number_of_runs = len(runs.keys())
-                for run, steps in runs.items():
-                    if number_of_steps == 0:
-                        number_of_steps = len(steps.keys()) - 1
-                    for step, metrics in steps.items():
-                        for metric in metrics_to_normalize:
-                            # Find the global minimum and global maximum per task
-                            _compare_values(
-                                metric_min_max_info, metrics[metric], metric
-                            )
-            for algorithm, runs in algorithms.items():
-                for run, steps in runs.items():
-                    step_count = 0
-                    for step, metrics in steps.items():
-                        for metric in metrics.keys():
-                            if "step_count" not in metric:
-                                # Mean
-                                mean = np.mean(metrics[metric])
-                                processed_data[env][task][algorithm][run][step][
-                                    f"mean_{metric}"
-                                ] = mean
-                                if metric in metrics_to_normalize:
-                                    # Normalization
-                                    metric_array = np.array(metrics[metric])
-                                    metric_global_min = metric_min_max_info[metric][
-                                        "global_min"
-                                    ]
-                                    metric_global_max = metric_min_max_info[metric][
-                                        "global_max"
-                                    ]
-                                    normed_metric_array = (
-                                        metric_array - metric_global_min
-                                    ) / (metric_global_max - metric_global_min)
-                                    processed_data[env][task][algorithm][run][step][
-                                        f"norm_{metric}"
-                                    ] = normed_metric_array.tolist()
-                                    processed_data[env][task][algorithm][run][step][
-                                        f"mean_norm_{metric}"
-                                    ] = np.mean(normed_metric_array)
-                            else:
-                                eval_interval_per_env.append(
-                                    metrics[metric] - step_count
+        for env, tasks in raw_data.items():
+            environment_list[env] = []
+            metric_list[env] = []
+            eval_interval_per_env: list = []
+            for task, algorithms in tasks.items():
+                environment_list[env].append(task)
+                for algorithm, runs in algorithms.items():
+                    if algorithm not in algorithm_list:
+                        algorithm_list.append(algorithm)
+                    if number_of_runs == 0:
+                        number_of_runs = len(runs.keys())
+                    for run, steps in runs.items():
+                        if number_of_steps == 0:
+                            number_of_steps = len(steps.keys()) - 1
+                        for step, metrics in steps.items():
+                            for metric in metrics_to_normalize:
+                                # Find the global minimum and global maximum per task
+                                _compare_values(
+                                    metric_min_max_info, metrics[metric], metric
                                 )
-                                step_count = metrics[metric]
-                        if metric_list[env] == []:
-                            metric_list[env] = list(
-                                processed_data[env][task][algorithm][run][step].keys()
-                            )
-                            if "step_count" in metric_list[env]:
-                                metric_list[env].remove("step_count")
+                for algorithm, runs in algorithms.items():
+                    for run, steps in runs.items():
+                        step_count = 0
+                        for step, metrics in steps.items():
+                            for metric in metrics.keys():
+                                if "step_count" not in metric:
+                                    # Mean
+                                    mean = np.mean(metrics[metric])
+                                    processed_data[env][task][algorithm][run][step][
+                                        f"mean_{metric}"
+                                    ] = mean
+                                    if metric in metrics_to_normalize:
+                                        # Normalization
+                                        metric_array = np.array(metrics[metric])
+                                        metric_global_min = metric_min_max_info[metric][
+                                            "global_min"
+                                        ]
+                                        metric_global_max = metric_min_max_info[metric][
+                                            "global_max"
+                                        ]
+                                        normed_metric_array = (
+                                            metric_array - metric_global_min
+                                        ) / (metric_global_max - metric_global_min)
+                                        processed_data[env][task][algorithm][run][step][
+                                            f"norm_{metric}"
+                                        ] = normed_metric_array.tolist()
+                                        processed_data[env][task][algorithm][run][step][
+                                            f"mean_norm_{metric}"
+                                        ] = np.mean(normed_metric_array)
+                                else:
+                                    eval_interval_per_env.append(
+                                        metrics[metric] - step_count
+                                    )
+                                    step_count = metrics[metric]
+                            if metric_list[env] == []:
+                                metric_list[env] = list(
+                                    processed_data[env][task][algorithm][run][
+                                        step
+                                    ].keys()
+                                )
+                                if "step_count" in metric_list[env]:
+                                    metric_list[env].remove("step_count")
 
-            metric_min_max_info = {}
-        eval_interval[env] = round(np.mean(eval_interval_per_env))
+                metric_min_max_info = {}
+            eval_interval[env] = round(np.mean(eval_interval_per_env))
 
-    processed_data["extra"] = {
-        "environment_list": environment_list,
-        "number_of_steps": number_of_steps,
-        "number_of_runs": number_of_runs,
-        "algorithm_list": algorithm_list,
-        "metric_list": metric_list,
-        "evaluation_interval": eval_interval,
-    }
-    return processed_data
+        processed_data["extra"] = {  # type: ignore
+            "environment_list": environment_list,
+            "number_of_steps": number_of_steps,
+            "number_of_runs": number_of_runs,
+            "algorithm_list": algorithm_list,
+            "metric_list": metric_list,
+            "evaluation_interval": eval_interval,
+        }
+        return processed_data
+
+    except Exception as e:
+        print(e, ": There is an issue related to the format of the json file!")
+        print(
+            "We recommend using the DiagnoseData class from \
+            marl_eval/utils/diagnose_data_errors.py to determine the error."
+        )
+        return raw_data
 
 
 def create_matrices_for_rliable(  # noqa: C901
@@ -251,86 +261,55 @@ def create_matrices_for_rliable(  # noqa: C901
         metric_dictionary_return: dictionary to be used by rliable tools
         final_metric_tensor_dictionary: dictionary to be used by rliable tools
     """
-    # Compute first arrays
+    try:
+        # Compute first arrays
 
-    # Get the environment name
-    env_name = environment_name
+        # Get the environment name
+        env_name = environment_name
 
-    # Extract relevant information
-    data_env = data_dictionary[env_name]
+        # Extract relevant information
+        data_env = data_dictionary[env_name]
 
-    # Extract the extra params
-    extra = data_dictionary.pop("extra")
+        # Extract the extra params
+        extra = data_dictionary.pop("extra")
 
-    # Making a strong assumption here that all experiments in this
-    # environment will have the same number of steps, same number of tasks
-    # and same number of.
-    tasks = list(data_env.keys())
-    algorithms = list(data_env[tasks[0]].keys())
-    runs = list(data_env[tasks[0]][algorithms[0]].keys())
-    steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
-    absolute_metrics = list(
-        data_env[tasks[0]][algorithms[0]][runs[0]][steps[-1]].keys()
-    )
+        # Making a strong assumption here that all experiments in this
+        # environment will have the same number of steps, same number of tasks
+        # and same number of.
+        tasks = list(data_env.keys())
+        algorithms = list(data_env[tasks[0]].keys())
+        runs = list(data_env[tasks[0]][algorithms[0]].keys())
+        steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
+        absolute_metrics = list(
+            data_env[tasks[0]][algorithms[0]][runs[0]][steps[-1]].keys()
+        )
 
-    def _select_metrics_for_plotting(absolute_metrics: list) -> list:
-        """Select absolute metrics for plotting.
+        def _select_metrics_for_plotting(absolute_metrics: list) -> list:
+            """Select absolute metrics for plotting.
+            Here only normalised versions of metrics that should be normalised
+            should be chosen.
+            """
+            metrics_to_plot = []
 
-        Here only normalised versions of metrics that should be normalised
-        should be chosen.
-        """
-        metrics_to_plot = []
+            for metric in absolute_metrics:
+                metric_split = metric.split("_")
+                metric_in_absolute = len(
+                    set(metric_split).intersection(set(metrics_to_normalize))
+                )
+                if metric.split("_")[0].lower() == "mean":
+                    if metric_in_absolute > 0 and metric_split[1].lower() == "norm":
+                        metrics_to_plot.append(metric)
 
-        for metric in absolute_metrics:
-            metric_split = metric.split("_")
-            metric_in_absolute = len(
-                set(metric_split).intersection(set(metrics_to_normalize))
-            )
-            if metric.split("_")[0].lower() == "mean":
-                if metric_in_absolute > 0 and metric_split[1].lower() == "norm":
-                    metrics_to_plot.append(metric)
+                    elif metric_in_absolute == 0:
+                        metrics_to_plot.append(metric)
 
-                elif metric_in_absolute == 0:
-                    metrics_to_plot.append(metric)
+            return metrics_to_plot
 
-        return metrics_to_plot
+        mean_absolute_metrics = _select_metrics_for_plotting(absolute_metrics)
 
-    mean_absolute_metrics = _select_metrics_for_plotting(absolute_metrics)
+        # Create a dictionary of matrices with correct shape
+        metric_dictionary: Dict[str, Any] = {}
 
-    # Create a dictionary of matrices with correct shape
-    metric_dictionary: Dict[str, Any] = {}
-
-    for metric in mean_absolute_metrics:
-        metric_dictionary[metric] = {}
-        for algorithm in algorithms:
-            metric_dictionary[metric][algorithm] = np.zeros(
-                shape=(len(runs), len(tasks))
-            )
-
-    # Populate the matrices
-    for metric in mean_absolute_metrics:
-        for algorithm in algorithms:
-            for i, run in enumerate(runs):
-                for j, task in enumerate(tasks):
-                    metric_dictionary[metric][algorithm][i][j] = data_env[task][
-                        algorithm
-                    ][run][steps[-1]][metric]
-
-    metric_dictionary_return = metric_dictionary
-
-    # Compute second arrays
-
-    # Create master dictionary with all arrays
-    master_metric_dictionary: Dict[str, Any] = {}
-
-    for metric in mean_absolute_metrics:
-        master_metric_dictionary[metric] = {}
-        for algorithm in algorithms:
-            master_metric_dictionary[metric][algorithm] = []
-
-    # exclude the absolute metrics
-    for step in steps[:-1]:
-        metric_dictionary = {}
         for metric in mean_absolute_metrics:
             metric_dictionary[metric] = {}
             for algorithm in algorithms:
@@ -338,35 +317,74 @@ def create_matrices_for_rliable(  # noqa: C901
                     shape=(len(runs), len(tasks))
                 )
 
-        # Now populate the matrices
+        # Populate the matrices
         for metric in mean_absolute_metrics:
             for algorithm in algorithms:
                 for i, run in enumerate(runs):
                     for j, task in enumerate(tasks):
                         metric_dictionary[metric][algorithm][i][j] = data_env[task][
                             algorithm
-                        ][run][step][metric]
+                        ][run][steps[-1]][metric]
+
+        metric_dictionary_return = metric_dictionary
+
+        # Compute second arrays
+
+        # Create master dictionary with all arrays
+        master_metric_dictionary: Dict[str, Any] = {}
 
         for metric in mean_absolute_metrics:
+            master_metric_dictionary[metric] = {}
             for algorithm in algorithms:
-                master_metric_dictionary[metric][algorithm].append(
-                    metric_dictionary[metric][algorithm]
+                master_metric_dictionary[metric][algorithm] = []
+
+        # exclude the absolute metrics
+        for step in steps[:-1]:
+            metric_dictionary = {}
+            for metric in mean_absolute_metrics:
+                metric_dictionary[metric] = {}
+                for algorithm in algorithms:
+                    metric_dictionary[metric][algorithm] = np.zeros(
+                        shape=(len(runs), len(tasks))
+                    )
+
+            # Now populate the matrices
+            for metric in mean_absolute_metrics:
+                for algorithm in algorithms:
+                    for i, run in enumerate(runs):
+                        for j, task in enumerate(tasks):
+                            metric_dictionary[metric][algorithm][i][j] = data_env[task][
+                                algorithm
+                            ][run][step][metric]
+
+            for metric in mean_absolute_metrics:
+                for algorithm in algorithms:
+                    master_metric_dictionary[metric][algorithm].append(
+                        metric_dictionary[metric][algorithm]
+                    )
+
+        final_metric_tensor_dictionary: Dict[str, Any] = {}
+        for metric in mean_absolute_metrics:
+            final_metric_tensor_dictionary[metric] = {}
+            for algorithm in algorithms:
+
+                final_metric_tensor_dictionary[metric][algorithm] = np.stack(
+                    master_metric_dictionary[metric][algorithm], axis=2
                 )
 
-    final_metric_tensor_dictionary: Dict[str, Any] = {}
-    for metric in mean_absolute_metrics:
-        final_metric_tensor_dictionary[metric] = {}
-        for algorithm in algorithms:
+        # Insert the extra info to the final metric tensor dict
+        extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
+        final_metric_tensor_dictionary["extra"] = extra
 
-            final_metric_tensor_dictionary[metric][algorithm] = np.stack(
-                master_metric_dictionary[metric][algorithm], axis=2
-            )
+        # Add extra back to data_dictionary
+        data_dictionary["extra"] = extra
 
-    # Insert the extra info to the final metric tensor dict
-    extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
-    final_metric_tensor_dictionary["extra"] = extra
+        return metric_dictionary_return, final_metric_tensor_dictionary
 
-    # Add extra mack to data_dictionary
-    data_dictionary["extra"] = extra
-
-    return metric_dictionary_return, final_metric_tensor_dictionary
+    except Exception as e:
+        print(e, ": There is an issue related to the format of the json file!")
+        print(
+            "We recommend using the DiagnoseData class from \
+            marl_eval/utils/diagnose_data_errors.py to determine the error."
+        )
+        return ({}, {})
