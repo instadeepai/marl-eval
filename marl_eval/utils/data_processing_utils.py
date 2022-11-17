@@ -79,14 +79,13 @@ def data_process_pipeline(  # noqa: C901
     metric_list: Dict[str, Any] = {}
     number_of_runs = 0
     number_of_steps = 0
-    # Het the mean evaluation interval used in the experiment
+    # Get the mean evaluation interval used in the experiment
     eval_interval: Dict[Any, Any] = {}
 
     for env, tasks in raw_data.items():
         environment_list[env] = []
         metric_list[env] = []
-        eval_interval[env] = []
-        eval_interval_per: list = []
+        eval_interval_per_env: list = []
         for task, algorithms in tasks.items():
             environment_list[env].append(task)
             for algorithm, runs in algorithms.items():
@@ -133,7 +132,9 @@ def data_process_pipeline(  # noqa: C901
                                         f"mean_norm_{metric}"
                                     ] = np.mean(normed_metric_array)
                             else:
-                                eval_interval_per.append(metrics[metric] - step_count)
+                                eval_interval_per_env.append(
+                                    metrics[metric] - step_count
+                                )
                                 step_count = metrics[metric]
                         if metric_list[env] == []:
                             metric_list[env] = list(
@@ -143,7 +144,7 @@ def data_process_pipeline(  # noqa: C901
                                 metric_list[env].remove("step_count")
 
             metric_min_max_info = {}
-        eval_interval[env].append(round(np.mean(eval_interval_per)))
+        eval_interval[env] = round(np.mean(eval_interval_per_env))
 
     processed_data["extra"] = {  # type: ignore
         "environment_list": environment_list,
@@ -304,7 +305,7 @@ def create_matrices_for_rliable(  # noqa: C901
             )
 
     # Insert the extra info to the final metric tensor dict
-    extra["evaluation_interval"] = extra["evaluation_interval"][env_name][0]
+    extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
     final_metric_tensor_dictionary["extra"] = extra
 
     return metric_dictionary_return, final_metric_tensor_dictionary
