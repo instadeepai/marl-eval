@@ -199,9 +199,9 @@ sample_efficiency_matrix_expected_data_single_algorithm = {
 }
 
 expected_processed_data = {
-    "SMAC": {
-        "3m": {
-            "QMIX": {
+    "env_1": {
+        "task_1": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -325,7 +325,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -444,7 +444,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -564,8 +564,8 @@ expected_processed_data = {
                 },
             },
         },
-        "3s5z": {
-            "QMIX": {
+        "task_2": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -689,7 +689,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -813,7 +813,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -938,8 +938,8 @@ expected_processed_data = {
                 },
             },
         },
-        "8m": {
-            "QMIX": {
+        "task_3": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1063,7 +1063,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1177,7 +1177,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1304,12 +1304,12 @@ expected_processed_data = {
         },
     },
     "extra": {
-        "environment_list": {"SMAC": ["3m", "3s5z", "8m"]},
+        "environment_list": {"env_1": ["task_1", "task_2", "task_3"]},
         "number_of_steps": 3,
         "number_of_runs": 2,
-        "algorithm_list": ["QMIX", "MADQN", "VDN"],
+        "algorithm_list": ["algo_1", "algo_2", "algo_3"],
         "metric_list": {
-            "SMAC": [
+            "env_1": [
                 "return",
                 "win_rate",
                 "mean_return",
@@ -1318,33 +1318,33 @@ expected_processed_data = {
                 "mean_win_rate",
             ]
         },
-        "evaluation_interval": {"SMAC": 10000},
+        "evaluation_interval": {"env_1": 10000},
     },
 }
 
 expected_single_task_ci_data_returns = {
-    "QMIX": {
+    "algo_1": {
         "mean": [0.20833333333333334, 0.2222222222222222, 0.3472222222222222],
         "ci": [0.04304211259673628, 0.03443369007738902, 0.025825267558041775],
     },
-    "MADQN": {
+    "algo_2": {
         "mean": [0.3194444444444445, 0.3194444444444444, 0.5138888888888888],
         "ci": [0.14634318282890332, 0.04304211259673628, 0.008608422519347275],
     },
-    "VDN": {
+    "algo_3": {
         "mean": [0.3888888888888889, 0.45833333333333337, 0.2222222222222222],
         "ci": [0.20660214046433414, 0.21521056298368135, 0.017216845038694507],
     },
 }
 
 expected_single_task_ci_data_win_rates = {
-    "QMIX": {
+    "algo_1": {
         "mean": [0.30000000000000004, 0.44999999999999996, 0.5],
         "ci": [0.061980642139300234, 0.09297096320895035, 0.18594192641790072],
     },
-    "MADQN": {
+    "algo_2": {
         "mean": [0.15000000000000002, 0.3, 0.3],
         "ci": [0.030990321069650117, 0.0, 0.12396128427860047],
     },
-    "VDN": {"mean": [0.3, 0.3, 0.25], "ci": [0.0, 0.0, 0.030990321069650106]},
+    "algo_3": {"mean": [0.3, 0.3, 0.25], "ci": [0.0, 0.0, 0.030990321069650106]},
 }

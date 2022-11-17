@@ -202,8 +202,8 @@ def test_single_task_data_aggregation(
         processed_data=processed_data,
         metric_name="return",
         metrics_to_normalize=["return"],
-        environment_name="SMAC",
-        task_name="3m",
+        environment_name="env_1",
+        task_name="task_1",
     )
 
     del task_return_ci_data["extra"]
@@ -219,8 +219,8 @@ def test_single_task_data_aggregation(
         processed_data=processed_data,
         metric_name="win_rate",
         metrics_to_normalize=["return"],
-        environment_name="SMAC",
-        task_name="8m",
+        environment_name="env_1",
+        task_name="task_3",
     )
 
     del task_win_rate_ci_data["extra"]
