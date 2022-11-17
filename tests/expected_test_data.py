@@ -18,26 +18,26 @@ import numpy as np
 # Full dataset tests
 matrix_1_expected_data = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [[0.40277778, 0.51388889, 0.76388889], [0.20833333, 0.33333333, 0.375]]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [[0.36111111, 0.36111111, 0.43055556], [0.33333333, 0.43055556, 0.43055556]]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [[0.43055556, 0.40277778, 0.76388889], [0.47222222, 0.58333333, 0.5]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
-        "MADQN": np.array([[0.6, 0.9, 0.3], [0.4, 0.8, 0.3]]),
-        "VDN": np.array([[0.1, 0.5, 0.2], [0.1, 0.2, 0.1]]),
+        "algo_1": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
+        "algo_2": np.array([[0.6, 0.9, 0.3], [0.4, 0.8, 0.3]]),
+        "algo_3": np.array([[0.1, 0.5, 0.2], [0.1, 0.2, 0.1]]),
     },
 }
 
 sample_efficiency_matrix_expected_data = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [
                     [0.27777778, 0.16666667, 0.30555556],
@@ -51,7 +51,7 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [
                 [
                     [0.08333333, 0.38888889, 0.5],
@@ -65,7 +65,7 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [
                 [
                     [0.05555556, 0.11111111, 0.19444444],
@@ -81,7 +81,7 @@ sample_efficiency_matrix_expected_data = {
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.8, 0.5, 0.4], [0.2, 0.5, 0.1], [0.2, 0.6, 0.8]],
                 [
@@ -91,13 +91,13 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [
                 [[0.4, 0.7, 0.4], [0.9, 0.1, 0.1], [0.1, 0.3, 0.1]],
                 [[0.2, 0.8, 0.1], [0.2, 0.8, 0.8], [0.2, 0.3, 0.5]],
             ]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [
                 [
                     [
@@ -126,54 +126,54 @@ sample_efficiency_matrix_expected_data = {
 
 matrix_1_expected_data_single_task = {
     "mean_norm_return": {
-        "QMIX": np.array([[0.40277778], [0.20833333]]),
-        "MADQN": np.array([[0.36111111], [0.33333333]]),
-        "VDN": np.array([[0.43055556], [0.47222222]]),
+        "algo_1": np.array([[0.40277778], [0.20833333]]),
+        "algo_2": np.array([[0.36111111], [0.33333333]]),
+        "algo_3": np.array([[0.43055556], [0.47222222]]),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2], [0.8]]),
-        "MADQN": np.array([[0.6], [0.4]]),
-        "VDN": np.array([[0.1], [0.1]]),
+        "algo_1": np.array([[0.2], [0.8]]),
+        "algo_2": np.array([[0.6], [0.4]]),
+        "algo_3": np.array([[0.1], [0.1]]),
     },
 }
 
 sample_efficiency_matrix_expected_data_single_task = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.27777778, 0.16666667, 0.30555556]],
                 [[0.13888889, 0.27777778, 0.38888889]],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [[[0.08333333, 0.38888889, 0.5]], [[0.55555556, 0.25, 0.52777778]]]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [[[0.05555556, 0.11111111, 0.19444444]], [[0.72222222, 0.80555556, 0.25]]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[[0.8, 0.5, 0.4]], [[0.7, 0.8, 0.4]]]),
-        "MADQN": np.array([[[0.4, 0.7, 0.4]], [[0.2, 0.8, 0.1]]]),
-        "VDN": np.array([[[0.1, 0.3, 0.5]], [[0.3, 0.2, 0.7]]]),
+        "algo_1": np.array([[[0.8, 0.5, 0.4]], [[0.7, 0.8, 0.4]]]),
+        "algo_2": np.array([[[0.4, 0.7, 0.4]], [[0.2, 0.8, 0.1]]]),
+        "algo_3": np.array([[[0.1, 0.3, 0.5]], [[0.3, 0.2, 0.7]]]),
     },
 }
 
 # Single algorithm multiple task test data
 matrix_1_expected_data_single_algorithm = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [[0.453125, 0.51388889, 0.76388889], [0.234375, 0.33333333, 0.375]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
+        "algo_1": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
     },
 }
 
 sample_efficiency_matrix_expected_data_single_algorithm = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [
                     [0.3125, 0.1875, 0.34375],
@@ -189,7 +189,7 @@ sample_efficiency_matrix_expected_data_single_algorithm = {
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.8, 0.5, 0.4], [0.2, 0.5, 0.1], [0.2, 0.6, 0.8]],
                 [[0.7, 0.8, 0.4], [0.5, 0.1, 0.2], [0.4, 0.3, 0.2]],

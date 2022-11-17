@@ -66,7 +66,7 @@ def test_matrices_for_rliable_full_environment_dataset(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
@@ -92,11 +92,11 @@ def test_matrices_for_rliable_single_environment_task(
     """Tests that arrays for rliable are created correctly for \
         a dataset containing multiple algorithms but only a single task."""
 
-    # Select only one task (3m) from the full environment (SMAC)
+    # Select only one task (task_1) from the full environment (env_1)
     filtered_raw_data: Dict[Any, Any] = {}
-    filtered_raw_data["SMAC"] = {}
-    filtered_raw_data["SMAC"]["3m"] = {}
-    filtered_raw_data["SMAC"]["3m"] = raw_data["SMAC"]["3m"]
+    filtered_raw_data["env_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = raw_data["env_1"]["task_1"]
     raw_data = filtered_raw_data
 
     processed_data = data_process_pipeline(
@@ -105,7 +105,7 @@ def test_matrices_for_rliable_single_environment_task(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
@@ -131,17 +131,17 @@ def test_matrices_for_rliable_single_algorithm(
     """Tests that arrays for rliable are created correctly for \
         a dataset containing a single algorithms but multiple tasks."""
 
-    # select only one algorithm (QMIX) over multiple tasks
+    # select only one algorithm (algo_1) over multiple tasks
     filtered_raw_data: Dict[Any, Any] = {}
-    filtered_raw_data["SMAC"] = {}
-    filtered_raw_data["SMAC"]["3m"] = {}
-    filtered_raw_data["SMAC"]["3m"]["QMIX"] = raw_data["SMAC"]["3m"]["QMIX"]
+    filtered_raw_data["env_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = {}
+    filtered_raw_data["env_1"]["task_1"]["algo_1"] = raw_data["env_1"]["task_1"]["algo_1"]
 
-    filtered_raw_data["SMAC"]["3s5z"] = {}
-    filtered_raw_data["SMAC"]["3s5z"]["QMIX"] = raw_data["SMAC"]["3s5z"]["QMIX"]
+    filtered_raw_data["env_1"]["task_2"] = {}
+    filtered_raw_data["env_1"]["task_2"]["algo_1"] = raw_data["env_1"]["task_2"]["algo_1"]
 
-    filtered_raw_data["SMAC"]["8m"] = {}
-    filtered_raw_data["SMAC"]["8m"]["QMIX"] = raw_data["SMAC"]["8m"]["QMIX"]
+    filtered_raw_data["env_1"]["task_3"] = {}
+    filtered_raw_data["env_1"]["task_3"]["algo_1"] = raw_data["env_1"]["task_3"]["algo_1"]
     raw_data = filtered_raw_data
 
     processed_data = data_process_pipeline(
@@ -150,7 +150,7 @@ def test_matrices_for_rliable_single_algorithm(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
