@@ -208,14 +208,14 @@ for env in environments:
                     )
 
                 if (
-                    "ABSOLUTE_METRICS"
+                    "absolute_metrics"
                     not in runs_dictionary[env][scenario][algorithm][run]
                 ):
                     runs_dictionary[env][scenario][algorithm][run][
-                        "ABSOLUTE_METRICS"
+                        "absolute_metrics"
                     ] = {}
 
-                runs_dictionary[env][scenario][algorithm][run]["ABSOLUTE_METRICS"][
+                runs_dictionary[env][scenario][algorithm][run]["absolute_metrics"][
                     "return"
                 ] = generate_return_absolute_metric(
                     max_value=max_return,
@@ -223,7 +223,7 @@ for env in environments:
                     mean=max_return,
                     num_vals=eval_length * 10,
                 )
-                runs_dictionary[env][scenario][algorithm][run]["ABSOLUTE_METRICS"][
+                runs_dictionary[env][scenario][algorithm][run]["absolute_metrics"][
                     "win_rate"
                 ] = generate_win_rate_absolute_metric(
                     max_value=max_win_rate,

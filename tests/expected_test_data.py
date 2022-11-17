@@ -245,7 +245,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3055555555555555,
                         "mean_win_rate": 0.4,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [5, 8, 4, 1, 2, 3, 5, 1],
                         "win_rate": [0.2],
                         "mean_return": 3.625,
@@ -306,7 +306,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3888888888888889,
                         "mean_win_rate": 0.4,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 5, 1, 1, 0, 0, 5, 2],
                         "win_rate": [0.8],
                         "mean_return": 1.875,
@@ -364,7 +364,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.49999999999999994,
                         "mean_win_rate": 0.4,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 1, 8, 5, 1, 2, 0, 8],
                         "win_rate": [0.6],
                         "mean_return": 3.25,
@@ -425,7 +425,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5277777777777778,
                         "mean_win_rate": 0.1,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 2, 1, 2, 2, 3, 8, 5],
                         "win_rate": [0.4],
                         "mean_return": 3.0,
@@ -483,7 +483,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.19444444444444445,
                         "mean_win_rate": 0.5,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 0, 2, 5, 0, 6, 9, 8],
                         "win_rate": [0.1],
                         "mean_return": 3.875,
@@ -544,7 +544,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.25,
                         "mean_win_rate": 0.7,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 6, 8, 9, 0, 5, 2, 3],
                         "win_rate": [0.1],
                         "mean_return": 4.25,
@@ -609,7 +609,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.2777777777777778,
                         "mean_win_rate": 0.1,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 5, 8, 9, 4, 2, 8, 0],
                         "win_rate": [0.5],
                         "mean_return": 4.625,
@@ -670,7 +670,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6111111111111112,
                         "mean_win_rate": 0.2,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 1, 5, 6, 1, 1, 1, 8],
                         "win_rate": [0.7],
                         "mean_return": 3.0,
@@ -733,7 +733,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3611111111111111,
                         "mean_win_rate": 0.1,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 1, 0, 1, 2, 5, 9, 7],
                         "win_rate": [0.9],
                         "mean_return": 3.25,
@@ -794,7 +794,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3333333333333333,
                         "mean_win_rate": 0.8,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 0, 1, 0, 5, 8, 9, 7],
                         "win_rate": [0.8],
                         "mean_return": 3.875,
@@ -857,7 +857,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.9444444444444444,
                         "mean_win_rate": 0.2,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 1, 2, 4, 7, 7, 7, 0],
                         "win_rate": [0.5],
                         "mean_return": 3.625,
@@ -918,7 +918,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.4166666666666667,
                         "mean_win_rate": 0.5,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [0, 5, 6, 6, 8, 9, 8, 0],
                         "win_rate": [0.2],
                         "mean_return": 5.25,
@@ -983,7 +983,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6944444444444444,
                         "mean_win_rate": 0.8,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [1, 2, 9, 9, 9, 9, 9, 7],
                         "win_rate": [0.7],
                         "mean_return": 6.875,
@@ -1044,7 +1044,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6388888888888888,
                         "mean_win_rate": 0.2,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [5, 5, 5, 4, 2, 3, 2, 1],
                         "win_rate": [0.6],
                         "mean_return": 3.375,
@@ -1102,7 +1102,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.9166666666666666,
                         "mean_win_rate": 0.1,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [5, 6, 8, 9, 1, 2, 0, 0],
                         "win_rate": [0.1, 0.5],
                         "mean_return": 3.875,
@@ -1158,7 +1158,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6666666666666666,
                         "mean_win_rate": 0.5,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [0, 0, 2, 3, 5, 4, 8, 9],
                         "win_rate": [0.3],
                         "mean_return": 3.875,
@@ -1221,7 +1221,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6944444444444444,
                         "mean_win_rate": 0.2,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [7, 8, 9, 7, 8, 9, 7, 0],
                         "win_rate": [0.2],
                         "mean_return": 6.875,
@@ -1282,7 +1282,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6388888888888888,
                         "mean_win_rate": 0.3,
                     },
-                    "ABSOLUTE_METRICS": {
+                    "absolute_metrics": {
                         "return": [8, 9, 7, 5, 2, 2, 1, 2],
                         "win_rate": [0.1],
                         "mean_return": 4.5,
