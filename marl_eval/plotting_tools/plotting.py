@@ -24,6 +24,9 @@ from matplotlib.figure import Figure
 from rliable import library as rly
 from rliable import metrics, plot_utils
 
+from marl_eval.plotting_tools.plot_utils import plot_single_task_curve
+from marl_eval.utils.data_processing_utils import get_and_aggregate_data_single_task
+
 """Tools for plotting MARL experiments based on rliable."""
 
 
@@ -300,4 +303,52 @@ def sample_efficiency_curves(
         color_palette=cc.glasbey_category10,
     )
 
+    dictionary["extra"] = extra  # type: ignore
+
     return fig, iqm_scores, iqm_cis
+
+
+def plot_single_task(
+    processed_data: Mapping[str, Dict[str, Any]],
+    environment_name: str,
+    task_name: str,
+    metric_name: str,
+    metrics_to_normalize: List[str],
+) -> Figure:
+    """Produces aggregated plot for a single task in an environment.
+
+    Args:
+        processed_data: Dictionary containing processed data.
+        environment_name: Name of environment to produce plots for.
+        task_name: Name of task to produce plots for.
+        metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
+    """
+
+    task_mean_ci_data = get_and_aggregate_data_single_task(
+        processed_data=processed_data,
+        environment_name=environment_name,
+        metric_name=metric_name,
+        task_name=task_name,
+        metrics_to_normalize=metrics_to_normalize,
+    )
+
+    if metric_name in metrics_to_normalize:
+        ylabel = "Normalized " + " ".join(metric_name.split("_"))
+    else:
+        ylabel = " ".join(metric_name.split("_")).capitalize()
+
+    algorithms = list(task_mean_ci_data.keys())
+    algorithms.remove("extra")
+
+    fig = plot_single_task_curve(
+        task_mean_ci_data,
+        algorithms=algorithms,
+        xlabel="Number of timesteps (Millions)",
+        ylabel=ylabel,
+        legend=algorithms,
+        figsize=(15, 8),
+        color_palette=cc.glasbey_category10,
+    )
+
+    return fig

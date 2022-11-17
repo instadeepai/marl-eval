@@ -74,6 +74,7 @@ setup(
         "jax==0.3.15",
         "jaxlib==0.3.15",
         "pandas==1.4.4",
+        "Jinja2",
         "importlib-metadata<5.0",
     ],
     extras_require={
