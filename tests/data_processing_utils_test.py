@@ -16,7 +16,7 @@
 """Tests for data processing utils"""
 
 import json
-from typing import Any, Dict, Mapping
+from typing import Any, Dict
 
 import jax
 import numpy as np
@@ -41,7 +41,7 @@ from marl_eval.utils.data_processing_utils import (
 
 
 @pytest.fixture
-def raw_data() -> Mapping[str, Dict[str, Any]]:
+def raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -50,9 +50,7 @@ def raw_data() -> Mapping[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def processed_data(
-    raw_data: Mapping[str, Dict[str, Any]]
-) -> Mapping[str, Dict[str, Any]]:
+def processed_data(raw_data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     """Fixture for processed experiment data"""
 
     processed_data = data_process_pipeline(
@@ -62,7 +60,7 @@ def processed_data(
     return processed_data
 
 
-def test_data_processing_pipeline(processed_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_data_processing_pipeline(processed_data: Dict[str, Dict[str, Any]]) -> None:
     """Tests whether data processing pipeline runs and aggregates \
         data correctly."""
 
@@ -70,7 +68,7 @@ def test_data_processing_pipeline(processed_data: Mapping[str, Dict[str, Any]]) 
 
 
 def test_matrices_for_rliable_full_environment_dataset(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a full dataset containing multiple algorithms and tasks \
@@ -87,7 +85,7 @@ def test_matrices_for_rliable_full_environment_dataset(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -103,7 +101,7 @@ def test_matrices_for_rliable_full_environment_dataset(
 
 
 def test_matrices_for_rliable_single_environment_task(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing multiple algorithms but only a single task."""
@@ -126,7 +124,7 @@ def test_matrices_for_rliable_single_environment_task(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -142,7 +140,7 @@ def test_matrices_for_rliable_single_environment_task(
 
 
 def test_matrices_for_rliable_single_algorithm(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing a single algorithms but multiple tasks."""
@@ -177,7 +175,7 @@ def test_matrices_for_rliable_single_algorithm(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -193,7 +191,7 @@ def test_matrices_for_rliable_single_algorithm(
 
 
 def test_single_task_data_aggregation(
-    processed_data: Mapping[str, Dict[str, Any]]
+    processed_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that single task aggregation is done correctly."""
 

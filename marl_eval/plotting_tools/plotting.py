@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import colorcet as cc
 import matplotlib.pyplot as plt
@@ -31,7 +31,7 @@ from marl_eval.utils.data_processing_utils import get_and_aggregate_data_single_
 
 
 def performance_profiles(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
 ) -> Figure:
@@ -79,13 +79,13 @@ def performance_profiles(
 
 
 def aggregate_scores(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
     tabular_results_file_path: str = "./aggregated_score",
     save_tabular_as_latex: Optional[bool] = False,
-) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
+) -> Tuple[Figure, Dict[str, Dict[str, int]], Dict[str, Dict[str, float]]]:
     """Produces aggregated score plots.
 
     Args:
@@ -204,7 +204,7 @@ def aggregate_scores(
 
 
 def probability_of_improvement(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
     algorithms_to_compare: List[List],
@@ -242,7 +242,7 @@ def probability_of_improvement(
 
 
 def sample_efficiency_curves(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
 ) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
@@ -260,7 +260,7 @@ def sample_efficiency_curves(
         iqm_cis: IQM score score confidence intervals used in plots.
     """
     # Extract the extra info
-    extra = dictionary.pop("extra")  # type: ignore
+    extra = dictionary.pop("extra")
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -303,13 +303,13 @@ def sample_efficiency_curves(
         color_palette=cc.glasbey_category10,
     )
 
-    dictionary["extra"] = extra  # type: ignore
+    dictionary["extra"] = extra
 
     return fig, iqm_scores, iqm_cis
 
 
 def plot_single_task(
-    processed_data: Mapping[str, Dict[str, Any]],
+    processed_data: Dict[str, Dict[str, Any]],
     environment_name: str,
     task_name: str,
     metric_name: str,
