@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Mapping
 
 
 class DiagnoseData:
-    """Class to diagnose the errors and"""
+    """Class to diagnose the errors."""
 
     def __init__(self, raw_data: Mapping[str, Dict[str, Any]]) -> None:
         """Init"""
@@ -108,10 +108,11 @@ class DiagnoseData:
         )
         return False, min(list_nb_steps)
 
-    def diagnose_error(self) -> Mapping[str, Dict[str, Any]]:  # noqa: C901
-        """Check if there is any issue related to the format of the json file"""
+    def data_format(self) -> Dict[str, Any]:  # noqa: C901
+        """Get the necessary details to figure if there is an issue with the json"""
 
         processed_data = copy.deepcopy(self.raw_data)
+        data_used: Dict[str, Any] = {}
 
         for env in self.raw_data.keys():
 
@@ -199,14 +200,34 @@ class DiagnoseData:
                                     algorithm.upper()
                                 ][run][step]
 
-            # Check that the format don't issued any issue while using the tools
-            valid_algo, _ = self.check_algo(list_algo=algorithms_used)
-            valid_runs, _ = self.check_runs(list_nb_runs=runs_used)
-            valid_steps, _ = self.check_steps(list_nb_steps=steps_used)
-            valid_metric, _ = self.check_metric(list_metric=metrics_used)
+            data_used[env] = {
+                "algorithms": algorithms_used,
+                "nb_runs": runs_used,
+                "nb_steps": steps_used,
+                "metrics": metrics_used,
+            }
+
+        return data_used
+
+    def check_data(self) -> Dict[str, Any]:
+        """Check that the format don't issued any issue while using the tools"""
+        data_used = self.data_format()
+        check_data_results: Dict[str, Any] = {}
+        for env in self.raw_data.keys():
+            valid_algo, _ = self.check_algo(list_algo=data_used[env]["algorithms"])
+            valid_runs, _ = self.check_runs(list_nb_runs=data_used[env]["nb_runs"])
+            valid_steps, _ = self.check_steps(list_nb_steps=data_used[env]["nb_steps"])
+            valid_metrics, _ = self.check_metric(list_metric=data_used[env]["metrics"])
 
             # Check that we have valid json file
-            if valid_algo and valid_runs and valid_steps and valid_metric:
-                print("Valid format for the task " + task + "!")
-
-        return processed_data
+            if valid_algo and valid_runs and valid_steps and valid_metrics:
+                print("Valid format for the environment " + env + "!")
+            else:
+                print("Unvalid format for the environment " + env + "!")
+            check_data_results[env] = {
+                "valid_algorithms": valid_algo,
+                "valid_runs": valid_runs,
+                "valid_steps": valid_steps,
+                "valid_metrics": valid_metrics,
+            }
+        return check_data_results
