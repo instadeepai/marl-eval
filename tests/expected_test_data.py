@@ -18,26 +18,26 @@ import numpy as np
 # Full dataset tests
 matrix_1_expected_data = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [[0.40277778, 0.51388889, 0.76388889], [0.20833333, 0.33333333, 0.375]]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [[0.36111111, 0.36111111, 0.43055556], [0.33333333, 0.43055556, 0.43055556]]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [[0.43055556, 0.40277778, 0.76388889], [0.47222222, 0.58333333, 0.5]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
-        "MADQN": np.array([[0.6, 0.9, 0.3], [0.4, 0.8, 0.3]]),
-        "VDN": np.array([[0.1, 0.5, 0.2], [0.1, 0.2, 0.1]]),
+        "algo_1": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
+        "algo_2": np.array([[0.6, 0.9, 0.3], [0.4, 0.8, 0.3]]),
+        "algo_3": np.array([[0.1, 0.5, 0.2], [0.1, 0.2, 0.1]]),
     },
 }
 
 sample_efficiency_matrix_expected_data = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [
                     [0.27777778, 0.16666667, 0.30555556],
@@ -51,7 +51,7 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [
                 [
                     [0.08333333, 0.38888889, 0.5],
@@ -65,7 +65,7 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [
                 [
                     [0.05555556, 0.11111111, 0.19444444],
@@ -81,7 +81,7 @@ sample_efficiency_matrix_expected_data = {
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.8, 0.5, 0.4], [0.2, 0.5, 0.1], [0.2, 0.6, 0.8]],
                 [
@@ -91,13 +91,13 @@ sample_efficiency_matrix_expected_data = {
                 ],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [
                 [[0.4, 0.7, 0.4], [0.9, 0.1, 0.1], [0.1, 0.3, 0.1]],
                 [[0.2, 0.8, 0.1], [0.2, 0.8, 0.8], [0.2, 0.3, 0.5]],
             ]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [
                 [
                     [
@@ -126,54 +126,54 @@ sample_efficiency_matrix_expected_data = {
 
 matrix_1_expected_data_single_task = {
     "mean_norm_return": {
-        "QMIX": np.array([[0.40277778], [0.20833333]]),
-        "MADQN": np.array([[0.36111111], [0.33333333]]),
-        "VDN": np.array([[0.43055556], [0.47222222]]),
+        "algo_1": np.array([[0.40277778], [0.20833333]]),
+        "algo_2": np.array([[0.36111111], [0.33333333]]),
+        "algo_3": np.array([[0.43055556], [0.47222222]]),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2], [0.8]]),
-        "MADQN": np.array([[0.6], [0.4]]),
-        "VDN": np.array([[0.1], [0.1]]),
+        "algo_1": np.array([[0.2], [0.8]]),
+        "algo_2": np.array([[0.6], [0.4]]),
+        "algo_3": np.array([[0.1], [0.1]]),
     },
 }
 
 sample_efficiency_matrix_expected_data_single_task = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.27777778, 0.16666667, 0.30555556]],
                 [[0.13888889, 0.27777778, 0.38888889]],
             ]
         ),
-        "MADQN": np.array(
+        "algo_2": np.array(
             [[[0.08333333, 0.38888889, 0.5]], [[0.55555556, 0.25, 0.52777778]]]
         ),
-        "VDN": np.array(
+        "algo_3": np.array(
             [[[0.05555556, 0.11111111, 0.19444444]], [[0.72222222, 0.80555556, 0.25]]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[[0.8, 0.5, 0.4]], [[0.7, 0.8, 0.4]]]),
-        "MADQN": np.array([[[0.4, 0.7, 0.4]], [[0.2, 0.8, 0.1]]]),
-        "VDN": np.array([[[0.1, 0.3, 0.5]], [[0.3, 0.2, 0.7]]]),
+        "algo_1": np.array([[[0.8, 0.5, 0.4]], [[0.7, 0.8, 0.4]]]),
+        "algo_2": np.array([[[0.4, 0.7, 0.4]], [[0.2, 0.8, 0.1]]]),
+        "algo_3": np.array([[[0.1, 0.3, 0.5]], [[0.3, 0.2, 0.7]]]),
     },
 }
 
 # Single algorithm multiple task test data
 matrix_1_expected_data_single_algorithm = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [[0.453125, 0.51388889, 0.76388889], [0.234375, 0.33333333, 0.375]]
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
+        "algo_1": np.array([[0.2, 0.5, 0.7], [0.8, 0.7, 0.6]]),
     },
 }
 
 sample_efficiency_matrix_expected_data_single_algorithm = {
     "mean_norm_return": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [
                     [0.3125, 0.1875, 0.34375],
@@ -189,7 +189,7 @@ sample_efficiency_matrix_expected_data_single_algorithm = {
         ),
     },
     "mean_win_rate": {
-        "QMIX": np.array(
+        "algo_1": np.array(
             [
                 [[0.8, 0.5, 0.4], [0.2, 0.5, 0.1], [0.2, 0.6, 0.8]],
                 [[0.7, 0.8, 0.4], [0.5, 0.1, 0.2], [0.4, 0.3, 0.2]],
@@ -199,9 +199,9 @@ sample_efficiency_matrix_expected_data_single_algorithm = {
 }
 
 expected_processed_data = {
-    "SMAC": {
-        "3m": {
-            "QMIX": {
+    "env_1": {
+        "task_1": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -325,7 +325,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -444,7 +444,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -564,8 +564,8 @@ expected_processed_data = {
                 },
             },
         },
-        "3s5z": {
-            "QMIX": {
+        "task_2": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -689,7 +689,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -813,7 +813,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -938,8 +938,8 @@ expected_processed_data = {
                 },
             },
         },
-        "8m": {
-            "QMIX": {
+        "task_3": {
+            "algo_1": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1063,7 +1063,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "MADQN": {
+            "algo_2": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1177,7 +1177,7 @@ expected_processed_data = {
                     },
                 },
             },
-            "VDN": {
+            "algo_3": {
                 "43289": {
                     "STEP_1": {
                         "step_count": 10006,
@@ -1304,12 +1304,12 @@ expected_processed_data = {
         },
     },
     "extra": {
-        "environment_list": {"SMAC": ["3m", "3s5z", "8m"]},
+        "environment_list": {"env_1": ["task_1", "task_2", "task_3"]},
         "number_of_steps": 3,
         "number_of_runs": 2,
-        "algorithm_list": ["QMIX", "MADQN", "VDN"],
+        "algorithm_list": ["algo_1", "algo_2", "algo_3"],
         "metric_list": {
-            "SMAC": [
+            "env_1": [
                 "return",
                 "win_rate",
                 "mean_return",
@@ -1318,33 +1318,33 @@ expected_processed_data = {
                 "mean_win_rate",
             ]
         },
-        "evaluation_interval": {"SMAC": 10000},
+        "evaluation_interval": {"env_1": 10000},
     },
 }
 
 expected_single_task_ci_data_returns = {
-    "QMIX": {
+    "algo_1": {
         "mean": [0.20833333333333334, 0.2222222222222222, 0.3472222222222222],
         "ci": [0.04304211259673628, 0.03443369007738902, 0.025825267558041775],
     },
-    "MADQN": {
+    "algo_2": {
         "mean": [0.3194444444444445, 0.3194444444444444, 0.5138888888888888],
         "ci": [0.14634318282890332, 0.04304211259673628, 0.008608422519347275],
     },
-    "VDN": {
+    "algo_3": {
         "mean": [0.3888888888888889, 0.45833333333333337, 0.2222222222222222],
         "ci": [0.20660214046433414, 0.21521056298368135, 0.017216845038694507],
     },
 }
 
 expected_single_task_ci_data_win_rates = {
-    "QMIX": {
+    "algo_1": {
         "mean": [0.30000000000000004, 0.44999999999999996, 0.5],
         "ci": [0.061980642139300234, 0.09297096320895035, 0.18594192641790072],
     },
-    "MADQN": {
+    "algo_2": {
         "mean": [0.15000000000000002, 0.3, 0.3],
         "ci": [0.030990321069650117, 0.0, 0.12396128427860047],
     },
-    "VDN": {"mean": [0.3, 0.3, 0.25], "ci": [0.0, 0.0, 0.030990321069650106]},
+    "algo_3": {"mean": [0.3, 0.3, 0.25], "ci": [0.0, 0.0, 0.030990321069650106]},
 }

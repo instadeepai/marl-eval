@@ -16,7 +16,7 @@
 """Tests for data processing utils"""
 
 import json
-from typing import Any, Dict, Mapping
+from typing import Any, Dict
 
 import jax
 import numpy as np
@@ -41,7 +41,7 @@ from marl_eval.utils.data_processing_utils import (
 
 
 @pytest.fixture
-def raw_data() -> Mapping[str, Dict[str, Any]]:
+def raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -50,9 +50,7 @@ def raw_data() -> Mapping[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def processed_data(
-    raw_data: Mapping[str, Dict[str, Any]]
-) -> Mapping[str, Dict[str, Any]]:
+def processed_data(raw_data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     """Fixture for processed experiment data"""
 
     processed_data = data_process_pipeline(
@@ -62,7 +60,7 @@ def processed_data(
     return processed_data
 
 
-def test_data_processing_pipeline(processed_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_data_processing_pipeline(processed_data: Dict[str, Dict[str, Any]]) -> None:
     """Tests whether data processing pipeline runs and aggregates \
         data correctly."""
 
@@ -70,7 +68,7 @@ def test_data_processing_pipeline(processed_data: Mapping[str, Dict[str, Any]]) 
 
 
 def test_matrices_for_rliable_full_environment_dataset(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a full dataset containing multiple algorithms and tasks \
@@ -82,12 +80,12 @@ def test_matrices_for_rliable_full_environment_dataset(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -103,16 +101,16 @@ def test_matrices_for_rliable_full_environment_dataset(
 
 
 def test_matrices_for_rliable_single_environment_task(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing multiple algorithms but only a single task."""
 
-    # Select only one task (3m) from the full environment (SMAC)
+    # Select only one task (task_1) from the full environment (env_1)
     filtered_raw_data: Dict[Any, Any] = {}
-    filtered_raw_data["SMAC"] = {}
-    filtered_raw_data["SMAC"]["3m"] = {}
-    filtered_raw_data["SMAC"]["3m"] = raw_data["SMAC"]["3m"]
+    filtered_raw_data["env_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = raw_data["env_1"]["task_1"]
     raw_data = filtered_raw_data
 
     processed_data = data_process_pipeline(
@@ -121,12 +119,12 @@ def test_matrices_for_rliable_single_environment_task(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -142,22 +140,28 @@ def test_matrices_for_rliable_single_environment_task(
 
 
 def test_matrices_for_rliable_single_algorithm(
-    raw_data: Mapping[str, Dict[str, Any]]
+    raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a dataset containing a single algorithms but multiple tasks."""
 
-    # select only one algorithm (QMIX) over multiple tasks
+    # select only one algorithm (algo_1) over multiple tasks
     filtered_raw_data: Dict[Any, Any] = {}
-    filtered_raw_data["SMAC"] = {}
-    filtered_raw_data["SMAC"]["3m"] = {}
-    filtered_raw_data["SMAC"]["3m"]["QMIX"] = raw_data["SMAC"]["3m"]["QMIX"]
+    filtered_raw_data["env_1"] = {}
+    filtered_raw_data["env_1"]["task_1"] = {}
+    filtered_raw_data["env_1"]["task_1"]["algo_1"] = raw_data["env_1"]["task_1"][
+        "algo_1"
+    ]
 
-    filtered_raw_data["SMAC"]["3s5z"] = {}
-    filtered_raw_data["SMAC"]["3s5z"]["QMIX"] = raw_data["SMAC"]["3s5z"]["QMIX"]
+    filtered_raw_data["env_1"]["task_2"] = {}
+    filtered_raw_data["env_1"]["task_2"]["algo_1"] = raw_data["env_1"]["task_2"][
+        "algo_1"
+    ]
 
-    filtered_raw_data["SMAC"]["8m"] = {}
-    filtered_raw_data["SMAC"]["8m"]["QMIX"] = raw_data["SMAC"]["8m"]["QMIX"]
+    filtered_raw_data["env_1"]["task_3"] = {}
+    filtered_raw_data["env_1"]["task_3"]["algo_1"] = raw_data["env_1"]["task_3"][
+        "algo_1"
+    ]
     raw_data = filtered_raw_data
 
     processed_data = data_process_pipeline(
@@ -166,12 +170,12 @@ def test_matrices_for_rliable_single_algorithm(
 
     m1, m2 = create_matrices_for_rliable(
         data_dictionary=processed_data,
-        environment_name="SMAC",
+        environment_name="env_1",
         metrics_to_normalize=["return"],
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -187,7 +191,7 @@ def test_matrices_for_rliable_single_algorithm(
 
 
 def test_single_task_data_aggregation(
-    processed_data: Mapping[str, Dict[str, Any]]
+    processed_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Tests that single task aggregation is done correctly."""
 
@@ -196,8 +200,8 @@ def test_single_task_data_aggregation(
         processed_data=processed_data,
         metric_name="return",
         metrics_to_normalize=["return"],
-        environment_name="SMAC",
-        task_name="3m",
+        environment_name="env_1",
+        task_name="task_1",
     )
 
     del task_return_ci_data["extra"]
@@ -213,8 +217,8 @@ def test_single_task_data_aggregation(
         processed_data=processed_data,
         metric_name="win_rate",
         metrics_to_normalize=["return"],
-        environment_name="SMAC",
-        task_name="8m",
+        environment_name="env_1",
+        task_name="task_3",
     )
 
     del task_win_rate_ci_data["extra"]
