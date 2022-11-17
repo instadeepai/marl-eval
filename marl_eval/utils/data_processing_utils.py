@@ -21,6 +21,20 @@ import numpy as np
 """Tools for processing MARL experiment data."""
 
 
+def lower_case_dictionary_keys(
+    dictionary: Dict[str, Dict[str, Any]]
+) -> Dict[str, Dict[str, Any]]:
+    """Recursively make all keys in a nested dictionary lower case."""
+
+    new_dict = {}
+    for key, value in dictionary.items():
+        if isinstance(value, dict):
+            new_dict[key.lower()] = lower_case_dictionary_keys(value)
+        else:
+            new_dict[key.lower()] = value
+    return new_dict
+
+
 def get_and_aggregate_data_single_task(
     processed_data: Dict[str, Any],
     metric_name: str,
