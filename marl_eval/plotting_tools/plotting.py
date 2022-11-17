@@ -260,7 +260,7 @@ def sample_efficiency_curves(
 
     frames = np.arange(0, min_run_length, 1)
 
-    # Filling the x-axes with the evaluation steps interval.
+    # Create x-axis values that match evaluation step intervals.
     x_axis_values = frames * extra["evaluation_interval"]
 
     scores_dict = {
