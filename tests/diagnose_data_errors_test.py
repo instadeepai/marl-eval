@@ -16,7 +16,7 @@
 """Unit tests for the DiagnoseData component"""
 
 import json
-from typing import Any, Dict, Mapping
+from typing import Any, Dict
 
 import pytest
 
@@ -24,7 +24,7 @@ from marl_eval.utils.diagnose_data_errors import DiagnoseData
 
 
 @pytest.fixture
-def valid_raw_data() -> Mapping[str, Dict[str, Any]]:
+def valid_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -33,54 +33,62 @@ def valid_raw_data() -> Mapping[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_algo_raw_data() -> Mapping[str, Dict[str, Any]]:
+def unvalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_unvalid_algo.json", "r") as f:
+    with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
 
+    del read_in_data["env_1"]["task_1"]["algo_1"]
     return read_in_data
 
 
 @pytest.fixture
-def unvalid_metrics_raw_data() -> Mapping[str, Dict[str, Any]]:
+def unvalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_unvalid_metrics.json", "r") as f:
+    with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
 
+    del read_in_data["env_1"]["task_1"]["algo_1"]["43289"]["STEP_1"]["return"]
     return read_in_data
 
 
 @pytest.fixture
-def unvalid_runs_raw_data() -> Mapping[str, Dict[str, Any]]:
+def unvalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_unvalid_runs.json", "r") as f:
+    with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
 
+    del read_in_data["env_1"]["task_2"]["algo_1"]["43289"]
     return read_in_data
 
 
 @pytest.fixture
-def unvalid_steps_raw_data() -> Mapping[str, Dict[str, Any]]:
+def unvalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_unvalid_steps.json", "r") as f:
+    with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
 
+    del read_in_data["env_1"]["task_1"]["algo_1"]["42"]["STEP_1"]
     return read_in_data
 
 
 @pytest.fixture
-def unvalid_raw_data() -> Mapping[str, Dict[str, Any]]:
+def unvalid_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_multi_unvalid.json", "r") as f:
+    with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
 
+    del read_in_data["env_1"]["task_2"]["algo_1"]
+    del read_in_data["env_1"]["task_2"]["algo_2"]["43289"]
+    del read_in_data["env_1"]["task_1"]["algo_1"]["42"]["STEP_1"]
+    del read_in_data["env_1"]["task_1"]["algo_1"]["43289"]["STEP_2"]["return"]
     return read_in_data
 
 
-def test_valid_data(valid_raw_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_valid_data(valid_raw_data: Dict[str, Dict[str, Any]]) -> None:
     """Test valid data"""
     data_diag_tools = DiagnoseData(raw_data=valid_raw_data)
-    check_data_results = data_diag_tools.check_data()["SMAC"]
+    check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
         "valid_runs": True,
@@ -89,10 +97,10 @@ def test_valid_data(valid_raw_data: Mapping[str, Dict[str, Any]]) -> None:
     }
 
 
-def test_unvalid_algo_data(unvalid_algo_raw_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_unvalid_algo_data(unvalid_algo_raw_data: Dict[str, Dict[str, Any]]) -> None:
     """Test unvalid data"""
     data_diag_tools = DiagnoseData(raw_data=unvalid_algo_raw_data)
-    check_data_results = data_diag_tools.check_data()["SMAC"]
+    check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,
         "valid_runs": True,
@@ -101,10 +109,10 @@ def test_unvalid_algo_data(unvalid_algo_raw_data: Mapping[str, Dict[str, Any]]) 
     }
 
 
-def test_unvalid_runs_data(unvalid_runs_raw_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_unvalid_runs_data(unvalid_runs_raw_data: Dict[str, Dict[str, Any]]) -> None:
     """Test unvalid data"""
     data_diag_tools = DiagnoseData(raw_data=unvalid_runs_raw_data)
-    check_data_results = data_diag_tools.check_data()["SMAC"]
+    check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
         "valid_runs": False,
@@ -114,11 +122,11 @@ def test_unvalid_runs_data(unvalid_runs_raw_data: Mapping[str, Dict[str, Any]]) 
 
 
 def test_unvalid_metrics_data(
-    unvalid_metrics_raw_data: Mapping[str, Dict[str, Any]]
+    unvalid_metrics_raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Test unvalid data"""
     data_diag_tools = DiagnoseData(raw_data=unvalid_metrics_raw_data)
-    check_data_results = data_diag_tools.check_data()["SMAC"]
+    check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
         "valid_runs": True,
@@ -127,10 +135,10 @@ def test_unvalid_metrics_data(
     }
 
 
-def test_unvalid_data(unvalid_raw_data: Mapping[str, Dict[str, Any]]) -> None:
+def test_unvalid_data(unvalid_raw_data: Dict[str, Dict[str, Any]]) -> None:
     """Test unvalid data"""
     data_diag_tools = DiagnoseData(raw_data=unvalid_raw_data)
-    check_data_results = data_diag_tools.check_data()["SMAC"]
+    check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,
         "valid_runs": False,
