@@ -79,10 +79,13 @@ def data_process_pipeline(  # noqa: C901
     metric_list: Dict[str, Any] = {}
     number_of_runs = 0
     number_of_steps = 0
+    # Get the mean evaluation interval used in the experiment
+    eval_interval: Dict[Any, Any] = {}
 
     for env, tasks in raw_data.items():
         environment_list[env] = []
         metric_list[env] = []
+        eval_interval_per_env: list = []
         for task, algorithms in tasks.items():
             environment_list[env].append(task)
             for algorithm, runs in algorithms.items():
@@ -101,6 +104,7 @@ def data_process_pipeline(  # noqa: C901
                             )
             for algorithm, runs in algorithms.items():
                 for run, steps in runs.items():
+                    step_count = 0
                     for step, metrics in steps.items():
                         for metric in metrics.keys():
                             if "step_count" not in metric:
@@ -127,13 +131,20 @@ def data_process_pipeline(  # noqa: C901
                                     processed_data[env][task][algorithm][run][step][
                                         f"mean_norm_{metric}"
                                     ] = np.mean(normed_metric_array)
+                            else:
+                                eval_interval_per_env.append(
+                                    metrics[metric] - step_count
+                                )
+                                step_count = metrics[metric]
                         if metric_list[env] == []:
                             metric_list[env] = list(
                                 processed_data[env][task][algorithm][run][step].keys()
                             )
                             if "step_count" in metric_list[env]:
                                 metric_list[env].remove("step_count")
+
             metric_min_max_info = {}
+        eval_interval[env] = round(np.mean(eval_interval_per_env))
 
     processed_data["extra"] = {  # type: ignore
         "environment_list": environment_list,
@@ -141,6 +152,7 @@ def data_process_pipeline(  # noqa: C901
         "number_of_runs": number_of_runs,
         "algorithm_list": algorithm_list,
         "metric_list": metric_list,
+        "evaluation_interval": eval_interval,
     }
     return processed_data
 
@@ -187,6 +199,9 @@ def create_matrices_for_rliable(  # noqa: C901
 
     # Extract relevant information
     data_env = data_dictionary[env_name]
+
+    # Extract the extra params
+    extra = data_dictionary.pop("extra")  # type: ignore
 
     # Making a strong assumption here that all experiments in this
     # environment will have the same number of steps, same number of tasks
@@ -288,5 +303,9 @@ def create_matrices_for_rliable(  # noqa: C901
             final_metric_tensor_dictionary[metric][algorithm] = np.stack(
                 master_metric_dictionary[metric][algorithm], axis=2
             )
+
+    # Insert the extra info to the final metric tensor dict
+    extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
+    final_metric_tensor_dictionary["extra"] = extra
 
     return metric_dictionary_return, final_metric_tensor_dictionary
