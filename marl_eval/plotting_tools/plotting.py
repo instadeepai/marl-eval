@@ -52,6 +52,9 @@ def performance_profiles(
     else:
         data_dictionary = dictionary[f"mean_{metric_name}"]
 
+    # Upper case all algorithm names
+    upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
+    data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
 
     if metric_name in metrics_to_normalize:
@@ -109,6 +112,10 @@ def aggregate_scores(
     else:
         data_dictionary = dictionary[f"mean_{metric_name}"]
         xlabel = " ".join(metric_name.split("_")).capitalize()
+
+    # Upper case all algorithm names
+    upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
+    data_dictionary = upper_algo_dict
 
     algorithms = list(data_dictionary.keys())
 
@@ -226,6 +233,15 @@ def probability_of_improvement(
     else:
         data_dictionary = dictionary[f"mean_{metric_name}"]
 
+    # Upper case all algorithm names
+    upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
+    data_dictionary = upper_algo_dict
+
+    # Upper case algorithm pairs
+    algorithms_to_compare = [
+        [pair[0].upper(), pair[1].upper()] for pair in algorithms_to_compare
+    ]
+
     algorithm_pairs = {}
     for pair in algorithms_to_compare:
         algorithm_pairs[",".join(pair)] = (
@@ -269,6 +285,9 @@ def sample_efficiency_curves(
         data_dictionary = dictionary[f"mean_{metric_name}"]
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
+    # Upper case all algorithm names
+    upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
+    data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
 
     # Find lowest values from amount of runs that have completed
@@ -338,6 +357,12 @@ def plot_single_task(
     else:
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
+    # Upper case all algorithm names
+    upper_algo_dict = {
+        (algo.upper() if algo != "extra" else algo): value
+        for algo, value in task_mean_ci_data.items()
+    }
+    task_mean_ci_data = upper_algo_dict
     algorithms = list(task_mean_ci_data.keys())
     algorithms.remove("extra")
 
