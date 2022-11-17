@@ -33,7 +33,7 @@ def valid_raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
+def invalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -43,7 +43,7 @@ def unvalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
+def invalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -53,7 +53,7 @@ def unvalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
+def invalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -63,7 +63,7 @@ def unvalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
+def invalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -73,7 +73,7 @@ def unvalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
 
 
 @pytest.fixture
-def unvalid_raw_data() -> Dict[str, Dict[str, Any]]:
+def invalid_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
     with open("tests/mock_data_test.json", "r") as f:
         read_in_data = json.load(f)
@@ -97,9 +97,9 @@ def test_valid_data(valid_raw_data: Dict[str, Dict[str, Any]]) -> None:
     }
 
 
-def test_unvalid_algo_data(unvalid_algo_raw_data: Dict[str, Dict[str, Any]]) -> None:
-    """Test unvalid data"""
-    data_diag_tools = DiagnoseData(raw_data=unvalid_algo_raw_data)
+def test_invalid_algo_data(invalid_algo_raw_data: Dict[str, Dict[str, Any]]) -> None:
+    """Test invalid data"""
+    data_diag_tools = DiagnoseData(raw_data=invalid_algo_raw_data)
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,
@@ -109,9 +109,9 @@ def test_unvalid_algo_data(unvalid_algo_raw_data: Dict[str, Dict[str, Any]]) -> 
     }
 
 
-def test_unvalid_runs_data(unvalid_runs_raw_data: Dict[str, Dict[str, Any]]) -> None:
-    """Test unvalid data"""
-    data_diag_tools = DiagnoseData(raw_data=unvalid_runs_raw_data)
+def test_invalid_runs_data(invalid_runs_raw_data: Dict[str, Dict[str, Any]]) -> None:
+    """Test invalid data"""
+    data_diag_tools = DiagnoseData(raw_data=invalid_runs_raw_data)
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
@@ -121,11 +121,11 @@ def test_unvalid_runs_data(unvalid_runs_raw_data: Dict[str, Dict[str, Any]]) -> 
     }
 
 
-def test_unvalid_metrics_data(
-    unvalid_metrics_raw_data: Dict[str, Dict[str, Any]]
+def test_invalid_metrics_data(
+    invalid_metrics_raw_data: Dict[str, Dict[str, Any]]
 ) -> None:
-    """Test unvalid data"""
-    data_diag_tools = DiagnoseData(raw_data=unvalid_metrics_raw_data)
+    """Test invalid data"""
+    data_diag_tools = DiagnoseData(raw_data=invalid_metrics_raw_data)
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
@@ -135,9 +135,9 @@ def test_unvalid_metrics_data(
     }
 
 
-def test_unvalid_data(unvalid_raw_data: Dict[str, Dict[str, Any]]) -> None:
-    """Test unvalid data"""
-    data_diag_tools = DiagnoseData(raw_data=unvalid_raw_data)
+def test_invalid_data(invalid_raw_data: Dict[str, Dict[str, Any]]) -> None:
+    """Test invalid data"""
+    data_diag_tools = DiagnoseData(raw_data=invalid_raw_data)
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,

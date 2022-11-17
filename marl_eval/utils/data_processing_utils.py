@@ -376,7 +376,7 @@ def create_matrices_for_rliable(  # noqa: C901
         extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
         final_metric_tensor_dictionary["extra"] = extra
 
-        # Add extra mack to data_dictionary
+        # Add extra back to data_dictionary
         data_dictionary["extra"] = extra
 
         return metric_dictionary_return, final_metric_tensor_dictionary

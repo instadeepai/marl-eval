@@ -40,7 +40,7 @@ class DiagnoseData:
 
         if not identical:
             print(
-                "The algorithms used accross the different tasks are not the same\n\
+                "The algorithms used across the different tasks are not the same\n\
                 The overlapping algorithms are :\n",
                 sorted(same_algos),
             )
@@ -67,7 +67,7 @@ class DiagnoseData:
 
         if not identical:
             print(
-                "The metrics used accross the different steps, runs, algorithms\
+                "The metrics used across the different steps, runs, algorithms\
                     and scenarios are not the same\n\
                     The overlapping metrics are :\n",
                 sorted(same_metrics),
@@ -226,7 +226,7 @@ class DiagnoseData:
             if valid_algo and valid_runs and valid_steps and valid_metrics:
                 print("Valid format for the environment " + env + "!")
             else:
-                print("Unvalid format for the environment " + env + "!")
+                print("invalid format for the environment " + env + "!")
             check_data_results[env] = {
                 "valid_algorithms": valid_algo,
                 "valid_runs": valid_runs,
