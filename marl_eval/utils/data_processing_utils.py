@@ -254,7 +254,7 @@ def create_matrices_for_rliable(  # noqa: C901
         in an experiment and subsequent keys corresponding to the Algorithms that were
         used in an experiment. For each metric algorithm pair a
         (number of runs x number of tasks) array is created containing as rows
-        the normalised metric values acrossall tasks for a given independent
+        the normalised metric values across all tasks for a given independent
         experiment run.
 
         The second dictionary will have root keys corresponding to the metrics used
