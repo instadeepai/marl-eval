@@ -21,6 +21,65 @@ import numpy as np
 """Tools for processing MARL experiment data."""
 
 
+def get_and_aggregate_data_single_task(
+    processed_data: Mapping[str, Any],
+    metric_name: str,
+    metrics_to_normalize: List[str],
+    task_name: str,
+    environment_name: str,
+) -> Dict[str, Any]:
+    """Compute the mean and 95% CI over all independent \
+        experiment runs at each evaluation step for a given \
+        environment and task.
+
+    Args:
+        processed_data: Dictionary containing processed data.
+        metric_name: Name of metric to aggregate.
+        metrics_to_normalize: List of metrics to normalize.
+        task_name: Name of task to aggregate.
+        environment_name: Name of environment to aggregate.
+    """
+
+    if metric_name in metrics_to_normalize:
+        metric_to_find = f"mean_norm_{metric_name}"
+    else:
+        metric_to_find = f"mean_{metric_name}"
+
+    # Get the data for the given metric and environment
+    task_data = processed_data[environment_name][task_name]
+
+    # Get the algorithm names, nuumber of runs and total steps
+    algorithms = list(task_data.keys())
+    runs = list(task_data[algorithms[0]].keys())
+    steps = list(task_data[algorithms[0]][runs[0]].keys())
+
+    # Remove absolute metric from steps.
+    steps = [step for step in steps if "absolute_metric" not in step.lower()]
+
+    # Create a dictionary to store the mean and 95% CI for each algorithm
+    mean_and_ci: Dict = {algorithm: {"mean": [], "ci": []} for algorithm in algorithms}
+
+    for step in steps:
+        # Loop over each algorithm
+        for algorithm in algorithms:
+
+            # Get the data for the given algorithm
+            algorithm_data = task_data[algorithm]
+            # Compute the mean and 95% CI for the given algorithm over all seeds
+            # at a given step
+            run_total = []
+            for run in runs:
+                run_total.append(algorithm_data[run][step][metric_to_find])
+
+            mean_and_ci[algorithm]["mean"].append(np.mean(run_total))
+            # Using central limit theorem to compute 95% CI
+            mean_and_ci[algorithm]["ci"].append(1.96 * np.std(run_total) / np.sqrt(10))
+
+    mean_and_ci["extra"] = processed_data["extra"]
+
+    return mean_and_ci
+
+
 def data_process_pipeline(  # noqa: C901
     raw_data: Mapping[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
@@ -271,7 +330,6 @@ def create_matrices_for_rliable(  # noqa: C901
 
     # exclude the absolute metrics
     for step in steps[:-1]:
-
         metric_dictionary = {}
         for metric in mean_absolute_metrics:
             metric_dictionary[metric] = {}
@@ -307,5 +365,8 @@ def create_matrices_for_rliable(  # noqa: C901
     # Insert the extra info to the final metric tensor dict
     extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
     final_metric_tensor_dictionary["extra"] = extra
+
+    # Add extra mack to data_dictionary
+    data_dictionary["extra"] = extra  # type: ignore
 
     return metric_dictionary_return, final_metric_tensor_dictionary
