@@ -135,13 +135,19 @@ def test_matrices_for_rliable_single_algorithm(
     filtered_raw_data: Dict[Any, Any] = {}
     filtered_raw_data["env_1"] = {}
     filtered_raw_data["env_1"]["task_1"] = {}
-    filtered_raw_data["env_1"]["task_1"]["algo_1"] = raw_data["env_1"]["task_1"]["algo_1"]
+    filtered_raw_data["env_1"]["task_1"]["algo_1"] = raw_data["env_1"]["task_1"][
+        "algo_1"
+    ]
 
     filtered_raw_data["env_1"]["task_2"] = {}
-    filtered_raw_data["env_1"]["task_2"]["algo_1"] = raw_data["env_1"]["task_2"]["algo_1"]
+    filtered_raw_data["env_1"]["task_2"]["algo_1"] = raw_data["env_1"]["task_2"][
+        "algo_1"
+    ]
 
     filtered_raw_data["env_1"]["task_3"] = {}
-    filtered_raw_data["env_1"]["task_3"]["algo_1"] = raw_data["env_1"]["task_3"]["algo_1"]
+    filtered_raw_data["env_1"]["task_3"]["algo_1"] = raw_data["env_1"]["task_3"][
+        "algo_1"
+    ]
     raw_data = filtered_raw_data
 
     processed_data = data_process_pipeline(
