@@ -85,7 +85,7 @@ def test_matrices_for_rliable_full_environment_dataset(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -124,7 +124,7 @@ def test_matrices_for_rliable_single_environment_task(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(
@@ -169,7 +169,7 @@ def test_matrices_for_rliable_single_algorithm(
     )
 
     # delete extra param from m2
-    del m2["extra"]  # type: ignore
+    del m2["extra"]
 
     # Test that all arrays are equal.
     jax.tree_util.tree_map(

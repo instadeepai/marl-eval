@@ -260,7 +260,7 @@ def sample_efficiency_curves(
         iqm_cis: IQM score score confidence intervals used in plots.
     """
     # Extract the extra info
-    extra = dictionary.pop("extra")  # type: ignore
+    extra = dictionary.pop("extra")
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -303,7 +303,7 @@ def sample_efficiency_curves(
         color_palette=cc.glasbey_category10,
     )
 
-    dictionary["extra"] = extra  # type: ignore
+    dictionary["extra"] = extra
 
     return fig, iqm_scores, iqm_cis
 

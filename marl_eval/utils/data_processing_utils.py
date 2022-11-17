@@ -205,7 +205,7 @@ def data_process_pipeline(  # noqa: C901
             metric_min_max_info = {}
         eval_interval[env] = round(np.mean(eval_interval_per_env))
 
-    processed_data["extra"] = {  # type: ignore
+    processed_data["extra"] = {
         "environment_list": environment_list,
         "number_of_steps": number_of_steps,
         "number_of_runs": number_of_runs,
@@ -260,7 +260,7 @@ def create_matrices_for_rliable(  # noqa: C901
     data_env = data_dictionary[env_name]
 
     # Extract the extra params
-    extra = data_dictionary.pop("extra")  # type: ignore
+    extra = data_dictionary.pop("extra")
 
     # Making a strong assumption here that all experiments in this
     # environment will have the same number of steps, same number of tasks
@@ -367,6 +367,6 @@ def create_matrices_for_rliable(  # noqa: C901
     final_metric_tensor_dictionary["extra"] = extra
 
     # Add extra mack to data_dictionary
-    data_dictionary["extra"] = extra  # type: ignore
+    data_dictionary["extra"] = extra
 
     return metric_dictionary_return, final_metric_tensor_dictionary
