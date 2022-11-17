@@ -280,6 +280,12 @@ def create_matrices_for_rliable(  # noqa: C901
         algorithms = list(data_env[tasks[0]].keys())
         runs = list(data_env[tasks[0]][algorithms[0]].keys())
         steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
+        assert (
+            "absolute_metrics" in steps
+        ), "The final logging step for\
+            a given run should contain the absolute_metrics values\
+            in a step called absolute_metrics."
+
         absolute_metrics = list(
             data_env[tasks[0]][algorithms[0]][runs[0]]["absolute_metrics"].keys()
         )
