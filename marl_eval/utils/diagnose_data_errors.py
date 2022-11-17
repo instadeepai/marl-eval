@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Tools to check the json file format and edit it."""
+"""Tools for verifying the json file formatting."""
 
 import copy
 from typing import Any, Dict, List, Mapping
@@ -41,7 +41,7 @@ class DiagnoseData:
         if not identical:
             print(
                 "The algorithms used accross the different tasks are not the same\n\
-                We will keep this list in the data:\n",
+                The overlapping algorithms are :\n",
                 sorted(same_algos),
             )
 
@@ -69,44 +69,44 @@ class DiagnoseData:
             print(
                 "The metrics used accross the different steps, runs, algorithms\
                     and scenarios are not the same\n\
-                    We will keep this list in the data:\n",
+                    The overlapping metrics are :\n",
                 sorted(same_metrics),
             )
 
         return identical, same_metrics
 
-    def check_runs(self, list_nb_runs: List) -> tuple:
-        """Check that through the algos, and tasks, the data share the same nb of run"""
-        if list_nb_runs == []:
+    def check_runs(self, num_runs: List) -> tuple:
+        """Check that through the algos, the data share the same num of run"""
+        if num_runs == []:
             return True, []
 
-        if list_nb_runs.count(list_nb_runs[0]) == len(list_nb_runs):
-            return True, list_nb_runs[0]
+        if num_runs.count(num_runs[0]) == len(num_runs):
+            return True, num_runs[0]
 
         print(
             "The number of runs is not identical through the different algorithms and scenarios.\n\
-                We will keep only "
-            + str(min(list_nb_runs))
+                The minimum number of runs is "
+            + str(min(num_runs))
             + " runs."
         )
-        return False, min(list_nb_runs)
+        return False, min(num_runs)
 
-    def check_steps(self, list_nb_steps: List) -> tuple:
+    def check_steps(self, num_steps: List) -> tuple:
         """Check that through the different runs, algo and scenarios, \
             the data share the same number of steps"""
-        if list_nb_steps == []:
+        if num_steps == []:
             return True, []
 
-        if list_nb_steps.count(list_nb_steps[0]) == len(list_nb_steps):
-            return True, list_nb_steps[0]
+        if num_steps.count(num_steps[0]) == len(num_steps):
+            return True, num_steps[0]
 
         print(
             "The number of steps is not identical through the different runs, \
-                algorithms and scenarios.\n We will keep only "
-            + str(min(list_nb_steps))
+                algorithms and scenarios.\n The minimum number of steps: "
+            + str(min(num_steps))
             + " steps."
         )
-        return False, min(list_nb_steps)
+        return False, min(num_steps)
 
     def data_format(self) -> Dict[str, Any]:  # noqa: C901
         """Get the necessary details to figure if there is an issue with the json"""
@@ -118,15 +118,15 @@ class DiagnoseData:
 
             # List of algorithms used in the experiment across the tasks
             algorithms_used = []
-            # List of nb or runs used across the algos and the tasks
+            # List of num or runs used across the algos and the tasks
             runs_used = []
-            # List of nb of steps used across the runs, the algos and the tasks
+            # List of num of steps used across the runs, the algos and the tasks
             steps_used = []
             # List of metrics used across the steps, the runs, the algos and the tasks
             metrics_used = []
 
             for task in self.raw_data[env].keys():
-                # Low-case the task names
+                # Lower the task names
                 if task.lower() != task:
                     processed_data[env][task.lower()] = copy.deepcopy(
                         self.raw_data[env][task]
@@ -139,7 +139,7 @@ class DiagnoseData:
                 )
 
                 for algorithm in self.raw_data[env][task].keys():
-                    # Up-case the algorithm name
+                    # Upper the algorithm name
                     if algorithm.upper() != algorithm:
                         processed_data[env][task.lower()][
                             algorithm.upper()
@@ -165,7 +165,7 @@ class DiagnoseData:
                             for metric in self.raw_data[env][task][algorithm][run][
                                 step
                             ].keys():
-                                # Low-case the metric names
+                                # Lower the metric names
                                 if metric.lower() != metric:
                                     processed_data[env][task.lower()][
                                         algorithm.upper()
@@ -178,7 +178,7 @@ class DiagnoseData:
                                         algorithm.upper()
                                     ][run][step][metric]
 
-                            # Append the metrics names used across the different steps..
+                            # Append the metrics names used across the different steps.
                             metrics_used.append(
                                 sorted(
                                     list(
@@ -189,11 +189,14 @@ class DiagnoseData:
                                 )
                             )
 
-                            # Up-case absolute metric
-                            if "absolute" in step.lower() and step != "ABSOLUTE_METRIC":
+                            # Upper absolute metric
+                            if (
+                                "absolute" in step.lower()
+                                and step != "absolute_metrics"
+                            ):
                                 processed_data[env][task.lower()][algorithm.upper()][
                                     run
-                                ]["ABSOLUTE_METRIC"] = copy.deepcopy(
+                                ]["absolute_metrics"] = copy.deepcopy(
                                     self.raw_data[env][task][algorithm][run][step]
                                 )
                                 del processed_data[env][task.lower()][
@@ -202,8 +205,8 @@ class DiagnoseData:
 
             data_used[env] = {
                 "algorithms": algorithms_used,
-                "nb_runs": runs_used,
-                "nb_steps": steps_used,
+                "num_runs": runs_used,
+                "num_steps": steps_used,
                 "metrics": metrics_used,
             }
 
@@ -215,8 +218,8 @@ class DiagnoseData:
         check_data_results: Dict[str, Any] = {}
         for env in self.raw_data.keys():
             valid_algo, _ = self.check_algo(list_algo=data_used[env]["algorithms"])
-            valid_runs, _ = self.check_runs(list_nb_runs=data_used[env]["nb_runs"])
-            valid_steps, _ = self.check_steps(list_nb_steps=data_used[env]["nb_steps"])
+            valid_runs, _ = self.check_runs(num_runs=data_used[env]["num_runs"])
+            valid_steps, _ = self.check_steps(num_steps=data_used[env]["num_steps"])
             valid_metrics, _ = self.check_metric(list_metric=data_used[env]["metrics"])
 
             # Check that we have valid json file

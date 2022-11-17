@@ -161,8 +161,8 @@ def data_process_pipeline(  # noqa: C901
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
         print(
-            "We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
-             to figure out the error."
+            "We recommend using the DiagnoseData class from \
+            marl_eval/utils/diagnose_data_errors.py to determine the error."
         )
         return raw_data
 
@@ -315,7 +315,7 @@ def create_matrices_for_rliable(  # noqa: C901
                     master_metric_dictionary[metric][algorithm], axis=2
                 )
 
-        # Insert the extra info to the final metric tensor dict
+        # Add extra info to the final metric tensor dict
         extra["evaluation_interval"] = extra["evaluation_interval"][env_name]
         final_metric_tensor_dictionary["extra"] = extra
 
@@ -324,7 +324,7 @@ def create_matrices_for_rliable(  # noqa: C901
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
         print(
-            "We recommand using the DiagnoseData class from marl_eval/utils/diagnose_data_errors.py\
-             to figure out the error."
+            "We recommend using the DiagnoseData class from \
+            marl_eval/utils/diagnose_data_errors.py to determine the error."
         )
         return (None, None)
