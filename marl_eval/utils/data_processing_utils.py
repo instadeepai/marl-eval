@@ -143,7 +143,10 @@ def data_process_pipeline(  # noqa: C901
                 "global_max": max_per_step,
             }
 
+    # Make all keys lower case
+    raw_data = lower_case_dictionary_keys(raw_data)
     processed_data = copy.deepcopy(raw_data)
+
     metric_min_max_info: Dict[str, Any] = {}
 
     # Extra logs
