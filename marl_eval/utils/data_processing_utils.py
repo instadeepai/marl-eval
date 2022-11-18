@@ -1,5 +1,5 @@
 # python3
-# Copyright 2021 InstaDeep Ltd. All rights reserved.
+# Copyright 2022 InstaDeep Ltd. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,19 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
 """Tools for processing MARL experiment data."""
+
+
+def check_absolute_metric(steps: List) -> Union[str, None]:
+    """Check that the absolute metric exist"""
+    for step in steps:
+        if "absolute" in step:
+            return step
+    return None
 
 
 def lower_case_dictionary_keys(
@@ -68,7 +76,7 @@ def get_and_aggregate_data_single_task(
     steps = list(task_data[algorithms[0]][runs[0]].keys())
 
     # Remove absolute metric from steps.
-    steps = [step for step in steps if "absolute_metric" not in step.lower()]
+    steps = [step for step in steps if "absolute" not in step.lower()]
 
     # Create a dictionary to store the mean and 95% CI for each algorithm
     mean_and_ci: Dict = {algorithm: {"mean": [], "ci": []} for algorithm in algorithms}
@@ -297,8 +305,18 @@ def create_matrices_for_rliable(  # noqa: C901
         algorithms = list(data_env[tasks[0]].keys())
         runs = list(data_env[tasks[0]][algorithms[0]].keys())
         steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
+
+        # Check which step is the absolute metric
+        absolute_metric_key = check_absolute_metric(steps)
+        if absolute_metric_key is None:
+            raise Exception(
+                "The final logging step for\
+            a given run should contain the absolute_metrics values\
+            in a step called absolute_metrics."
+            )
+
         absolute_metrics = list(
-            data_env[tasks[0]][algorithms[0]][runs[0]][steps[-1]].keys()
+            data_env[tasks[0]][algorithms[0]][runs[0]][absolute_metric_key].keys()
         )
 
         def _select_metrics_for_plotting(absolute_metrics: list) -> list:
@@ -342,7 +360,7 @@ def create_matrices_for_rliable(  # noqa: C901
                     for j, task in enumerate(tasks):
                         metric_dictionary[metric][algorithm][i][j] = data_env[task][
                             algorithm
-                        ][run][steps[-1]][metric]
+                        ][run][absolute_metric_key][metric]
 
         metric_dictionary_return = metric_dictionary
 
@@ -357,7 +375,8 @@ def create_matrices_for_rliable(  # noqa: C901
                 master_metric_dictionary[metric][algorithm] = []
 
         # exclude the absolute metrics
-        for step in steps[:-1]:
+        steps.remove(absolute_metric_key)
+        for step in steps:
             metric_dictionary = {}
             for metric in mean_absolute_metrics:
                 metric_dictionary[metric] = {}
