@@ -40,9 +40,6 @@ processed_data = data_process_pipeline(
     raw_data=raw_data, metrics_to_normalize=METRICS_TO_NORMALIZE
 )
 
-with open("examples/processed_example_results.json", "w+") as f:
-    json.dump(processed_data, f, indent=4)
-
 environment_comparison_matrix, sample_effeciency_matrix = create_matrices_for_rliable(
     data_dictionary=processed_data,
     environment_name="env_1",
