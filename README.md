@@ -19,11 +19,8 @@ The tools here build upon the tools in the [rliable](https://github.com/google-r
 
 
 ## Installation 🎬
-The latest release of the `marl-eval` can be installed as follows:
-```bash
-pip install id-marl-eval
-```
-Or to install directly from source:
+
+Currently `marl-eval` can be installed directly from source as follows:
 
 ```bash
 pip install "git+https://github.com/instadeepai/marl-eval.git"
