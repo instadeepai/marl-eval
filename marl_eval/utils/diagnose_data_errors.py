@@ -16,7 +16,7 @@
 """Tools for verifying the json file formatting."""
 
 import copy
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 from marl_eval.utils.data_processing_utils import lower_case_dictionary_keys
 
@@ -195,10 +195,3 @@ class DiagnoseData:
                 "valid_metrics": valid_metrics,
             }
         return check_data_results
-
-    @staticmethod
-    def check_absolute_metric(steps: List) -> Union[str, None]:
-        for step in steps:
-            if "absolute" in step:
-                return step
-        return None

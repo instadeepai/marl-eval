@@ -14,13 +14,19 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
-from marl_eval.utils.diagnose_data_errors import DiagnoseData
-
 """Tools for processing MARL experiment data."""
+
+
+def check_absolute_metric(steps: List) -> Union[str, None]:
+    """Check that the absolute metric exist"""
+    for step in steps:
+        if "absolute" in step:
+            return step
+    return None
 
 
 def lower_case_dictionary_keys(
@@ -301,12 +307,13 @@ def create_matrices_for_rliable(  # noqa: C901
         steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
 
         # Check which step is the absolute metric
-        absolute_metric_key = DiagnoseData.check_absolute_metric(steps)
-        assert (
-            absolute_metric_key is not None
-        ), "The final logging step for\
+        absolute_metric_key = check_absolute_metric(steps)
+        if absolute_metric_key is None:
+            raise Exception(
+                "The final logging step for\
             a given run should contain the absolute_metrics values\
             in a step called absolute_metrics."
+            )
 
         absolute_metrics = list(
             data_env[tasks[0]][algorithms[0]][runs[0]][absolute_metric_key].keys()
