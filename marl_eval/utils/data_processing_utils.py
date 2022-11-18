@@ -23,6 +23,20 @@ from marl_eval.utils.diagnose_data_errors import DiagnoseData
 """Tools for processing MARL experiment data."""
 
 
+def lower_case_dictionary_keys(
+    dictionary: Dict[str, Dict[str, Any]]
+) -> Dict[str, Dict[str, Any]]:
+    """Recursively make all keys in a nested dictionary lower case."""
+
+    new_dict = {}
+    for key, value in dictionary.items():
+        if isinstance(value, dict):
+            new_dict[key.lower()] = lower_case_dictionary_keys(value)
+        else:
+            new_dict[key.lower()] = value
+    return new_dict
+
+
 def get_and_aggregate_data_single_task(
     processed_data: Dict[str, Any],
     metric_name: str,
@@ -132,7 +146,10 @@ def data_process_pipeline(  # noqa: C901
                     "global_max": max_per_step,
                 }
 
+        # Make all keys lower case
+        raw_data = lower_case_dictionary_keys(raw_data)
         processed_data = copy.deepcopy(raw_data)
+
         metric_min_max_info: Dict[str, Any] = {}
         # Extra logs
         environment_list: Dict[str, Any] = {}
@@ -239,7 +256,7 @@ def create_matrices_for_rliable(  # noqa: C901
         in an experiment and subsequent keys corresponding to the Algorithms that were
         used in an experiment. For each metric algorithm pair a
         (number of runs x number of tasks) array is created containing as rows
-        the normalised metric values acrossall tasks for a given independent
+        the normalised metric values across all tasks for a given independent
         experiment run.
 
         The second dictionary will have root keys corresponding to the metrics used
@@ -297,6 +314,7 @@ def create_matrices_for_rliable(  # noqa: C901
 
         def _select_metrics_for_plotting(absolute_metrics: list) -> list:
             """Select absolute metrics for plotting.
+
             Here only normalised versions of metrics that should be normalised
             should be chosen.
             """

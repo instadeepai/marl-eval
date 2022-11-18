@@ -203,7 +203,7 @@ expected_processed_data = {
         "task_1": {
             "algo_1": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 2, 3, 4],
                         "win_rate": [0.8],
@@ -217,7 +217,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.2777777777777778,
                         "mean_win_rate": 0.8,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 2, 1, 2],
                         "win_rate": [0.5],
@@ -231,7 +231,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.16666666666666666,
                         "mean_win_rate": 0.5,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [0, 1, 2, 8],
                         "win_rate": [0.4],
@@ -264,7 +264,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 1, 2, 1],
                         "win_rate": [0.7],
@@ -278,7 +278,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.1388888888888889,
                         "mean_win_rate": 0.7,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 2, 5, 2],
                         "win_rate": [0.8],
@@ -292,7 +292,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.2777777777777778,
                         "mean_win_rate": 0.8,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [3, 1, 6, 4],
                         "win_rate": [0.4],
@@ -327,7 +327,7 @@ expected_processed_data = {
             },
             "algo_2": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 1, 1, 0],
                         "win_rate": [0.4],
@@ -341,7 +341,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.08333333333333333,
                         "mean_win_rate": 0.4,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [0, 5, 0, 9],
                         "win_rate": [0.7],
@@ -350,7 +350,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3888888888888889,
                         "mean_win_rate": 0.7,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [8, 5, 2, 3],
                         "win_rate": [0.4],
@@ -383,7 +383,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 5, 8, 6],
                         "win_rate": [0.2],
@@ -397,7 +397,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5555555555555556,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [2, 2, 2, 3],
                         "win_rate": [0.8],
@@ -411,7 +411,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.25,
                         "mean_win_rate": 0.8,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 1, 8, 9],
                         "win_rate": [0.1],
@@ -446,7 +446,7 @@ expected_processed_data = {
             },
             "algo_3": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [0, 0, 2, 0],
                         "win_rate": [0.1],
@@ -455,7 +455,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.05555555555555555,
                         "mean_win_rate": 0.1,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [0, 1, 1, 2],
                         "win_rate": [0.3],
@@ -469,7 +469,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.1111111111111111,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [0, 0, 2, 5],
                         "win_rate": [0.5],
@@ -502,7 +502,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 8, 9, 8],
                         "win_rate": [0.3],
@@ -516,7 +516,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.7222222222222222,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [8, 9, 7, 5],
                         "win_rate": [0.2],
@@ -530,7 +530,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.8055555555555556,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [2, 1, 1, 5],
                         "win_rate": [0.7],
@@ -567,7 +567,7 @@ expected_processed_data = {
         "task_2": {
             "algo_1": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 2, 3, 1],
                         "win_rate": [0.2],
@@ -581,7 +581,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.19444444444444442,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 2, 5, 6],
                         "win_rate": [0.5],
@@ -595,7 +595,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.38888888888888884,
                         "mean_win_rate": 0.5,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 2, 5, 2],
                         "win_rate": [0.1],
@@ -628,7 +628,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [0, 5, 6, 7],
                         "win_rate": [0.5],
@@ -642,7 +642,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5,
                         "mean_win_rate": 0.5,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [5, 8, 7, 9],
                         "win_rate": [0.1],
@@ -656,7 +656,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.8055555555555556,
                         "mean_win_rate": 0.1,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [0, 8, 9, 5],
                         "win_rate": [0.2],
@@ -691,7 +691,7 @@ expected_processed_data = {
             },
             "algo_2": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [2, 5, 4, 3],
                         "win_rate": [0.9],
@@ -705,7 +705,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3888888888888889,
                         "mean_win_rate": 0.9,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 1, 6, 9],
                         "win_rate": [0.1],
@@ -719,7 +719,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.4722222222222222,
                         "mean_win_rate": 0.1,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [3, 5, 4, 1],
                         "win_rate": [0.1],
@@ -752,7 +752,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [5, 6, 8, 7],
                         "win_rate": [0.2],
@@ -766,7 +766,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.7222222222222222,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 0, 8, 9],
                         "win_rate": [0.8],
@@ -780,7 +780,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5,
                         "mean_win_rate": 0.8,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 2, 5, 4],
                         "win_rate": [0.8],
@@ -815,7 +815,7 @@ expected_processed_data = {
             },
             "algo_3": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 8, 9, 7],
                         "win_rate": [0.6],
@@ -829,7 +829,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6944444444444444,
                         "mean_win_rate": 0.6,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [6, 5, 5, 5],
                         "win_rate": [0.2],
@@ -843,7 +843,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5833333333333334,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [9, 8, 9, 8],
                         "win_rate": [0.2],
@@ -876,7 +876,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 8, 8, 9],
                         "win_rate": [0.1],
@@ -890,7 +890,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.7222222222222222,
                         "mean_win_rate": 0.1,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [8, 2, 2, 2],
                         "win_rate": [0.4],
@@ -904,7 +904,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.38888888888888895,
                         "mean_win_rate": 0.4,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 4, 5, 5],
                         "win_rate": [0.5],
@@ -941,7 +941,7 @@ expected_processed_data = {
         "task_3": {
             "algo_1": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 1, 2, 9],
                         "win_rate": [0.2],
@@ -955,7 +955,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3611111111111111,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [8, 8, 9, 8],
                         "win_rate": [0.6],
@@ -969,7 +969,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.9166666666666666,
                         "mean_win_rate": 0.6,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [5, 5, 6, 9],
                         "win_rate": [0.8],
@@ -1002,7 +1002,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [0, 0, 1, 2],
                         "win_rate": [0.4],
@@ -1016,7 +1016,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.08333333333333333,
                         "mean_win_rate": 0.4,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [6, 6, 5, 6],
                         "win_rate": [0.3],
@@ -1030,7 +1030,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6388888888888888,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [7, 6, 6, 4],
                         "win_rate": [0.2],
@@ -1065,7 +1065,7 @@ expected_processed_data = {
             },
             "algo_2": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 0, 0, 0],
                         "win_rate": [0.1],
@@ -1074,7 +1074,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.027777777777777776,
                         "mean_win_rate": 0.1,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [0, 2, 5, 6],
                         "win_rate": [0.3],
@@ -1088,7 +1088,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.3611111111111111,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [8, 8, 8, 9],
                         "win_rate": [0.1],
@@ -1121,7 +1121,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [1, 2, 2, 2],
                         "win_rate": [0.2],
@@ -1135,7 +1135,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.19444444444444445,
                         "mean_win_rate": 0.2,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [0, 0, 0, 6],
                         "win_rate": [0.3],
@@ -1144,7 +1144,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.16666666666666666,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [0, 7, 8, 9],
                         "win_rate": [0.5],
@@ -1179,7 +1179,7 @@ expected_processed_data = {
             },
             "algo_3": {
                 "43289": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [8, 9, 7, 7],
                         "win_rate": [0.3],
@@ -1193,7 +1193,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.861111111111111,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [1, 2, 5, 7],
                         "win_rate": [0.3],
@@ -1207,7 +1207,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.41666666666666663,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 8, 9, 7],
                         "win_rate": [0.2],
@@ -1240,7 +1240,7 @@ expected_processed_data = {
                     },
                 },
                 "42": {
-                    "STEP_1": {
+                    "step_1": {
                         "step_count": 10006,
                         "return": [5, 6, 6, 7],
                         "win_rate": [0.3],
@@ -1254,7 +1254,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.6666666666666666,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_2": {
+                    "step_2": {
                         "step_count": 20008,
                         "return": [0, 5, 6, 9],
                         "win_rate": [0.3],
@@ -1268,7 +1268,7 @@ expected_processed_data = {
                         "mean_norm_return": 0.5555555555555556,
                         "mean_win_rate": 0.3,
                     },
-                    "STEP_3": {
+                    "step_3": {
                         "step_count": 30000,
                         "return": [1, 5, 8, 9],
                         "win_rate": [0.3],
