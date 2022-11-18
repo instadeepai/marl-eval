@@ -18,6 +18,8 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
+from marl_eval.utils.diagnose_data_errors import DiagnoseData
+
 """Tools for processing MARL experiment data."""
 
 
@@ -280,14 +282,17 @@ def create_matrices_for_rliable(  # noqa: C901
         algorithms = list(data_env[tasks[0]].keys())
         runs = list(data_env[tasks[0]][algorithms[0]].keys())
         steps = list(data_env[tasks[0]][algorithms[0]][runs[0]].keys())
+
+        # Check which step is the absolute metric
+        absolute_metric_key = DiagnoseData.check_absolute_metric(steps)
         assert (
-            "absolute_metrics" in steps
+            absolute_metric_key is not None
         ), "The final logging step for\
             a given run should contain the absolute_metrics values\
             in a step called absolute_metrics."
 
         absolute_metrics = list(
-            data_env[tasks[0]][algorithms[0]][runs[0]]["absolute_metrics"].keys()
+            data_env[tasks[0]][algorithms[0]][runs[0]][absolute_metric_key].keys()
         )
 
         def _select_metrics_for_plotting(absolute_metrics: list) -> list:
@@ -345,7 +350,7 @@ def create_matrices_for_rliable(  # noqa: C901
                 master_metric_dictionary[metric][algorithm] = []
 
         # exclude the absolute metrics
-        steps.remove("absolute_metrics")
+        steps.remove(absolute_metric_key)
         for step in steps:
             metric_dictionary = {}
             for metric in mean_absolute_metrics:

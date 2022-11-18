@@ -16,13 +16,13 @@
 """Tools for verifying the json file formatting."""
 
 import copy
-from typing import Any, Dict, List, Mapping
+from typing import Any, Dict, List, Union
 
 
 class DiagnoseData:
     """Class to diagnose the errors."""
 
-    def __init__(self, raw_data: Mapping[str, Dict[str, Any]]) -> None:
+    def __init__(self, raw_data: Dict[str, Dict[str, Any]]) -> None:
         """Init"""
         self.raw_data = raw_data
 
@@ -234,3 +234,10 @@ class DiagnoseData:
                 "valid_metrics": valid_metrics,
             }
         return check_data_results
+
+    @staticmethod
+    def check_absolute_metric(steps: List) -> Union[str, None]:
+        for step in steps:
+            if "absolute" in step:
+                return step
+        return None
