@@ -32,7 +32,7 @@ It should be noted that we have tested `marl-eval` on Python 3.8.
 
 ## Quickstart ⚡
 
-We have a quickstart notebook available here, alternatively please see the following code snippet for an example of how to process data and to produce a performance profile plot:
+We have a quickstart notebook available [here](examples/quickstart.ipynb), alternatively please see the following code snippet for an example of how to process data and to produce a performance profile plot:
 
 ```python
 # Relevant imports
@@ -78,7 +78,7 @@ Leading to the following plot:
     </a>
 </p>
 
-For a more detailed example illustrating how multiple plots may be made for various metrics as well as how to aggregate data for a single task in a given environment, please see our quickstart notebook or the following [example script](https://github.com/instadeepai/marl-eval/blob/develop/examples/simple_example.py).
+For a more detailed example illustrating how multiple plots may be made for various metrics as well as how to aggregate data for a single task in a given environment, please see our [quickstart notebook](examples/quickstart.ipynb) or the following [example script](https://github.com/instadeepai/marl-eval/blob/develop/examples/simple_example.py).
 
 ## Usage 🧑‍💻
 
@@ -86,7 +86,7 @@ In order to use the tools, raw experiment data must be in the suggested format a
 
 ### Data Structure for Raw Experiment data 📒
 
-In order to use the tools we suggest effectively, raw data JSON files are required to have the following structure :
+In order to use the tools we suggest effectively, raw data json files are required to have the following structure :
 
 ```
 {
