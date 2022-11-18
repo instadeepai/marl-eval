@@ -25,7 +25,10 @@ from rliable import library as rly
 from rliable import metrics, plot_utils
 
 from marl_eval.plotting_tools.plot_utils import plot_single_task_curve
-from marl_eval.utils.data_processing_utils import get_and_aggregate_data_single_task
+from marl_eval.utils.data_processing_utils import (
+    get_and_aggregate_data_single_task,
+    lower_case_inputs,
+)
 
 """Tools for plotting MARL experiments based on rliable."""
 
@@ -46,6 +49,10 @@ def performance_profiles(
     Returns:
         fig: Matplotlib figure for storing.
     """
+
+    metric_name, metrics_to_normalize = lower_case_inputs(
+        metric_name, metrics_to_normalize
+    )
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -102,6 +109,10 @@ def aggregate_scores(
         aggregate_scores_dict: Aggregated score values
         aggregate_score_cis_dict: Aggregated score confidence intervals
     """
+
+    metric_name, metrics_to_normalize = lower_case_inputs(
+        metric_name, metrics_to_normalize
+    )
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -221,6 +232,10 @@ def probability_of_improvement(
         fig: Matplotlib figure for storing.
     """
 
+    metric_name, metrics_to_normalize = lower_case_inputs(
+        metric_name, metrics_to_normalize
+    )
+
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
     else:
@@ -259,6 +274,11 @@ def sample_efficiency_curves(
         iqm_scores: IQM score values used in plots.
         iqm_cis: IQM score score confidence intervals used in plots.
     """
+
+    metric_name, metrics_to_normalize = lower_case_inputs(
+        metric_name, metrics_to_normalize
+    )
+
     # Extract the extra info
     extra = dictionary.pop("extra")
 
@@ -324,6 +344,9 @@ def plot_single_task(
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
     """
+    metric_name, task_name, environment_name, metrics_to_normalize = lower_case_inputs(
+        metric_name, task_name, environment_name, metrics_to_normalize
+    )
 
     task_mean_ci_data = get_and_aggregate_data_single_task(
         processed_data=processed_data,
