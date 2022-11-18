@@ -21,6 +21,24 @@ import numpy as np
 """Tools for processing MARL experiment data."""
 
 
+def lower_case_inputs(*args: Union[str, List[str]]) -> List:
+    """Lower case all inputs.
+
+    These inputs could be strings or lists of strings.
+    """
+
+    lower_case_data = [
+        arg.lower() if isinstance(arg, str) else [a.lower() for a in arg]
+        for arg in args
+    ]
+
+    # If lower cases data only contains one list, return the list.
+    if len(lower_case_data) == 1 and isinstance(lower_case_data[0], list):
+        return lower_case_data[0]
+
+    return lower_case_data
+
+
 def check_absolute_metric(steps: List) -> Union[str, None]:
     """Check that the absolute metric exist"""
     for step in steps:
@@ -61,6 +79,10 @@ def get_and_aggregate_data_single_task(
         task_name: Name of task to aggregate.
         environment_name: Name of environment to aggregate.
     """
+
+    metrics_to_normalize, metric_name, task_name, environment_name = lower_case_inputs(
+        metrics_to_normalize, metric_name, task_name, environment_name
+    )
 
     if metric_name in metrics_to_normalize:
         metric_to_find = f"mean_norm_{metric_name}"
@@ -120,6 +142,9 @@ def data_process_pipeline(  # noqa: C901
             metrics have been min/max normalised and the mean of all arrays in the
             dataset have been computed and added to the dataset.
     """
+
+    metrics_to_normalize = lower_case_inputs(metrics_to_normalize)
+
     try:
 
         def _compare_values(
@@ -286,6 +311,10 @@ def create_matrices_for_rliable(  # noqa: C901
         metric_dictionary_return: dictionary to be used by rliable tools
         final_metric_tensor_dictionary: dictionary to be used by rliable tools
     """
+    environment_name, metrics_to_normalize = lower_case_inputs(
+        environment_name, metrics_to_normalize
+    )
+
     try:
         # Compute first arrays
 
