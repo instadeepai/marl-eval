@@ -19,7 +19,7 @@ The tools here build upon the tools in the [rliable](https://github.com/google-r
 
 
 ## Installation 🎬
-The latest release of the MARL-eval can be installed as follows:
+The latest release of the `marl-eval` can be installed as follows:
 ```bash
 pip install id-marl-eval
 ```
@@ -32,7 +32,7 @@ It should be noted that we have tested `marl-eval` on Python 3.8.
 
 ## Quickstart ⚡
 
-We have a Google Colab quickstart notebook available here, alternatively please see the following code snippet for an example of how to process data and for produce a performance profile plot:
+We have a quickstart notebook available here, alternatively please see the following code snippet for an example of how to process data and to produce a performance profile plot:
 
 ```python
 # Relevant imports
@@ -78,7 +78,7 @@ Leading to the following plot:
     </a>
 </p>
 
-For a more detailed example showing multiple plots made for various metrics please see the quickstart notebook or the following [example script](https://github.com/instadeepai/marl-eval/blob/develop/examples/simple_example.py).
+For a more detailed example illustrating how multiple plots may be made for various metrics as well as how to aggregate data for a single task in a given environment, please see our quickstart notebook or the following [example script](https://github.com/instadeepai/marl-eval/blob/develop/examples/simple_example.py).
 
 ## Usage 🧑‍💻
 
@@ -141,6 +141,10 @@ In order to use the tools we suggest effectively, raw data JSON files are requir
 }
 ```
 Here `run_1` to `run_n` correspond to the number of independent runs in a given experiment and `step_1` to `step_k` correspond to the number of logged steps in a given environment. We do not require an independent run to explicitly be named run, users may also name a run using the value of a particular seed that was used as a string. `step_count` corresponds to the amount of steps taken by agents in the environment when logging occurs and the values logged for each relevant metric for a given logging step should be a list containing either 1 element for a metric such as a win rate which gets computed over multiple episodes or as many elements as evaluation episodes that we run at the logging step. The final logging step for a given run should contain the `absolute_metrics` values for the given metric in an experiment with these lists containing either 1 element or 10 times as many elements as evaluation episodes at each logging step. For an explanation of the `absolute metric` please see [paragraph 1 on page 9 here](https://arxiv.org/pdf/2209.10485.pdf).
+
+> 🚧 **Important note on data structure** 🚧
+>
+> Due to the underlying statistical aggregation relying on `numpy` array operations it is required that all that all data contain the same number of data points. This implies that, for a given environment, it is required that all experiment trials should be done using the same algorithms, on the same tasks, for the same number of independent runs and for the same amount of evaluation steps. The code will currently check that these conditions are met and will not be able to progress otherwise. In the case that this happens, the `check_data` method of the [`DiagnoseData`](marl_eval/utils/diagnose_data_errors.py) class will be able to tell a user exactly what is causing the issues in their raw experiment data.
 
 ### Metrics to be normalised during data processing ⚗️
 Certain metrics, like episode returns, are required to be normalised during data processing. In order to achieve this it is required that users give these metric names, in the form of strings in a python list, to the `data_process_pipeline` function, the `create_matrices_for_rliable` function and all plotting functions as an argument. In the case where no normalisation is required this argument may be omitted.
