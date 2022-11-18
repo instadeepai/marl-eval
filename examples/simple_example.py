@@ -1,5 +1,5 @@
 # python3
-# Copyright 2021 InstaDeep Ltd. All rights reserved.
+# Copyright 2022 InstaDeep Ltd. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ from marl_eval.utils.data_processing_utils import (
     data_process_pipeline,
 )
 
+##############################
 # Read in and process data
+##############################
 METRICS_TO_NORMALIZE = ["return"]
 
 with open("examples/example_results.json", "r") as f:
@@ -51,9 +53,12 @@ environment_comparison_matrix, sample_effeciency_matrix = create_matrices_for_rl
 if not os.path.exists("examples/plots/"):
     os.makedirs("examples/plots/")
 
+##############################
 # Plot success rate data
+##############################
 
-# Aggregate data over a single task
+# Aggregate data over a single task.
+
 task = "task_1"
 fig = plot_single_task(
     processed_data=processed_data,
@@ -66,6 +71,8 @@ fig = plot_single_task(
 fig.figure.savefig(
     f"examples/plots/env_1_{task}_agg_success_rate.png", bbox_inches="tight"
 )
+
+# Aggregate data over all environment tasks.
 
 fig = performance_profiles(
     environment_comparison_matrix,
@@ -109,9 +116,12 @@ fig.figure.savefig(
     "examples/plots/success_rate_sample_effeciency_curve.png", bbox_inches="tight"
 )
 
+##############################
 # Plot episode return data
+##############################
 
 # Aggregate data over a single task
+
 task = "task_1"
 fig = plot_single_task(
     processed_data=processed_data,
@@ -122,6 +132,8 @@ fig = plot_single_task(
 )
 
 fig.figure.savefig(f"examples/plots/env_1_{task}_agg_return.png", bbox_inches="tight")
+
+# Aggregate data over all environment tasks.
 
 fig = performance_profiles(
     environment_comparison_matrix,
