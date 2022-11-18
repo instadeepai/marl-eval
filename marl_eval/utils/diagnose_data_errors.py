@@ -16,11 +16,9 @@
 """Tools for verifying the json file formatting."""
 
 import copy
-
 from typing import Any, Dict, List, Union
 
 from marl_eval.utils.data_processing_utils import lower_case_dictionary_keys
-
 
 
 class DiagnoseData:
@@ -30,7 +28,6 @@ class DiagnoseData:
         """Initialise and make all dictionary strings lower case."""
 
         self.raw_data = lower_case_dictionary_keys(raw_data)
-
 
     def check_algo(self, list_algo: List) -> tuple:
         """Check that through the scenarios, the data share the same algorithms"""
