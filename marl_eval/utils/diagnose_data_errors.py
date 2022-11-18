@@ -1,5 +1,5 @@
 # python3
-# Copyright 2021 InstaDeep Ltd. All rights reserved.
+# Copyright 2022 InstaDeep Ltd. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,15 +16,18 @@
 """Tools for verifying the json file formatting."""
 
 import copy
-from typing import Any, Dict, List, Mapping
+from typing import Any, Dict, List
+
+from marl_eval.utils.data_processing_utils import lower_case_dictionary_keys
 
 
 class DiagnoseData:
     """Class to diagnose the errors."""
 
-    def __init__(self, raw_data: Mapping[str, Dict[str, Any]]) -> None:
-        """Init"""
-        self.raw_data = raw_data
+    def __init__(self, raw_data: Dict[str, Dict[str, Any]]) -> None:
+        """Initialise and make all dictionary strings lower case."""
+
+        self.raw_data = lower_case_dictionary_keys(raw_data)
 
     def check_algo(self, list_algo: List) -> tuple:
         """Check that through the scenarios, the data share the same algorithms"""
@@ -126,82 +129,40 @@ class DiagnoseData:
             metrics_used = []
 
             for task in self.raw_data[env].keys():
-                # Lower the task names
-                if task.lower() != task:
-                    processed_data[env][task.lower()] = copy.deepcopy(
-                        self.raw_data[env][task]
-                    )
-                    del processed_data[env][task]
 
                 # Append the list of used algorithms across the tasks
-                algorithms_used.append(
-                    sorted(list(processed_data[env][task.lower()].keys()))
-                )
+                algorithms_used.append(sorted(list(processed_data[env][task].keys())))
 
                 for algorithm in self.raw_data[env][task].keys():
-                    # Upper the algorithm name
-                    if algorithm.upper() != algorithm:
-                        processed_data[env][task.lower()][
-                            algorithm.upper()
-                        ] = copy.deepcopy(self.raw_data[env][task][algorithm])
-                        del processed_data[env][task.lower()][algorithm]
 
                     # Append the number of runs used across the different algos
-                    runs_used.append(
-                        len(processed_data[env][task.lower()][algorithm.upper()].keys())
-                    )
+                    runs_used.append(len(processed_data[env][task][algorithm].keys()))
 
                     for run in self.raw_data[env][task][algorithm].keys():
                         # Append the number of steps used across the different runs.
                         steps_used.append(
-                            len(
-                                processed_data[env][task.lower()][algorithm.upper()][
-                                    run
-                                ].keys()
-                            )
+                            len(processed_data[env][task][algorithm][run].keys())
                         )
 
                         for step in self.raw_data[env][task][algorithm][run].keys():
-                            for metric in self.raw_data[env][task][algorithm][run][
-                                step
-                            ].keys():
-                                # Lower the metric names
-                                if metric.lower() != metric:
-                                    processed_data[env][task.lower()][
-                                        algorithm.upper()
-                                    ][run][step][metric.lower()] = copy.deepcopy(
-                                        self.raw_data[env][task][algorithm][run][step][
-                                            metric
-                                        ]
-                                    )
-                                    del processed_data[env][task.lower()][
-                                        algorithm.upper()
-                                    ][run][step][metric]
-
                             # Append the metrics names used across the different steps.
                             metrics_used.append(
                                 sorted(
                                     list(
-                                        processed_data[env][task.lower()][
-                                            algorithm.upper()
-                                        ][run][step].keys()
+                                        processed_data[env][task][algorithm][run][
+                                            step
+                                        ].keys()
                                     )
                                 )
                             )
 
-                            # Upper absolute metric
-                            if (
-                                "absolute" in step.lower()
-                                and step != "absolute_metrics"
-                            ):
-                                processed_data[env][task.lower()][algorithm.upper()][
-                                    run
-                                ]["absolute_metrics"] = copy.deepcopy(
+                            # Standardise absolute_metrics key.
+                            if "absolute" in step and step != "absolute_metrics":
+                                processed_data[env][task][algorithm][run][
+                                    "absolute_metrics"
+                                ] = copy.deepcopy(
                                     self.raw_data[env][task][algorithm][run][step]
                                 )
-                                del processed_data[env][task.lower()][
-                                    algorithm.upper()
-                                ][run][step]
 
             data_used[env] = {
                 "algorithms": algorithms_used,
