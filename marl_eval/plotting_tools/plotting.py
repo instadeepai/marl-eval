@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import colorcet as cc
 import matplotlib.pyplot as plt
@@ -24,11 +24,14 @@ from matplotlib.figure import Figure
 from rliable import library as rly
 from rliable import metrics, plot_utils
 
+from marl_eval.plotting_tools.plot_utils import plot_single_task_curve
+from marl_eval.utils.data_processing_utils import get_and_aggregate_data_single_task
+
 """Tools for plotting MARL experiments based on rliable."""
 
 
 def performance_profiles(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
 ) -> Figure:
@@ -76,12 +79,13 @@ def performance_profiles(
 
 
 def aggregate_scores(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
     rounding_decimals: Optional[int] = 2,
     tabular_results_file_path: str = "./aggregated_score",
-) -> Tuple[Figure, Mapping[str, Mapping[str, int]], Mapping[str, Mapping[str, float]]]:
+    save_tabular_as_latex: Optional[bool] = False,
+) -> Tuple[Figure, Dict[str, Dict[str, int]], Dict[str, Dict[str, float]]]:
     """Produces aggregated score plots.
 
     Args:
@@ -89,8 +93,9 @@ def aggregate_scores(
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
-        rounding_decimals: number up to which the results values are rounded.
+        rounding_decimals:number up to which the results values are rounded.
         tabular_results_file_path: location to store the tabular results.
+        save_tabular_as_latex: store tabular results in latex format in a .txt file.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -168,8 +173,8 @@ def aggregate_scores(
             result = str(value) + " " + ci_str
             tabular_results[algorithm][metric] = result
 
-    result_csv = pd.DataFrame(tabular_results, columns=algorithms)
-    result_csv.to_csv(
+    tabular_results_df = pd.DataFrame(tabular_results, columns=algorithms)
+    tabular_results_df.to_csv(
         tabular_results_file_path + "_" + metric_name + ".csv", index=False, header=True
     )
     print(
@@ -179,14 +184,27 @@ def aggregate_scores(
         + metric_name
         + ".csv"
         + " and they are the following\n",
-        result_csv,
+        tabular_results_df,
     )
+
+    if save_tabular_as_latex:
+        with open(
+            tabular_results_file_path + "_" + metric_name + "_latex.txt", "a"
+        ) as f:
+            print(tabular_results_df.style.to_latex(), file=f)
+            print(
+                "The latex tabular results are stored in "
+                + tabular_results_file_path
+                + "_"
+                + metric_name
+                + "_latex.txt"
+            )
 
     return fig, aggregate_scores_dict, aggregate_score_cis_dict
 
 
 def probability_of_improvement(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
     algorithms_to_compare: List[List],
@@ -224,7 +242,7 @@ def probability_of_improvement(
 
 
 def sample_efficiency_curves(
-    dictionary: Mapping[str, Dict[str, Any]],
+    dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
 ) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
@@ -241,6 +259,8 @@ def sample_efficiency_curves(
         iqm_scores: IQM score values used in plots.
         iqm_cis: IQM score score confidence intervals used in plots.
     """
+    # Extract the extra info
+    extra = dictionary.pop("extra")
 
     if metric_name in metrics_to_normalize:
         data_dictionary = dictionary[f"mean_norm_{metric_name}"]
@@ -258,6 +278,9 @@ def sample_efficiency_curves(
 
     frames = np.arange(0, min_run_length, 1)
 
+    # Create x-axis values that match evaluation step intervals.
+    x_axis_values = frames * extra["evaluation_interval"]
+
     scores_dict = {
         algorithm: score[:, :, frames] for algorithm, score in data_dictionary.items()
     }
@@ -269,7 +292,7 @@ def sample_efficiency_curves(
     iqm_scores, iqm_cis = rly.get_interval_estimates(scores_dict, iqm, reps=5000)
 
     fig = plot_utils.plot_sample_efficiency_curve(
-        (frames + 1) / 100,
+        x_axis_values,
         iqm_scores,
         iqm_cis,
         algorithms=algorithms,
@@ -280,4 +303,52 @@ def sample_efficiency_curves(
         color_palette=cc.glasbey_category10,
     )
 
+    dictionary["extra"] = extra
+
     return fig, iqm_scores, iqm_cis
+
+
+def plot_single_task(
+    processed_data: Dict[str, Dict[str, Any]],
+    environment_name: str,
+    task_name: str,
+    metric_name: str,
+    metrics_to_normalize: List[str],
+) -> Figure:
+    """Produces aggregated plot for a single task in an environment.
+
+    Args:
+        processed_data: Dictionary containing processed data.
+        environment_name: Name of environment to produce plots for.
+        task_name: Name of task to produce plots for.
+        metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
+    """
+
+    task_mean_ci_data = get_and_aggregate_data_single_task(
+        processed_data=processed_data,
+        environment_name=environment_name,
+        metric_name=metric_name,
+        task_name=task_name,
+        metrics_to_normalize=metrics_to_normalize,
+    )
+
+    if metric_name in metrics_to_normalize:
+        ylabel = "Normalized " + " ".join(metric_name.split("_"))
+    else:
+        ylabel = " ".join(metric_name.split("_")).capitalize()
+
+    algorithms = list(task_mean_ci_data.keys())
+    algorithms.remove("extra")
+
+    fig = plot_single_task_curve(
+        task_mean_ci_data,
+        algorithms=algorithms,
+        xlabel="Number of timesteps (Millions)",
+        ylabel=ylabel,
+        legend=algorithms,
+        figsize=(15, 8),
+        color_palette=cc.glasbey_category10,
+    )
+
+    return fig

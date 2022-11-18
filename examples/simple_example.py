@@ -19,6 +19,7 @@ import os
 from marl_eval.plotting_tools.plotting import (
     aggregate_scores,
     performance_profiles,
+    plot_single_task,
     probability_of_improvement,
     sample_efficiency_curves,
 )
@@ -51,6 +52,21 @@ if not os.path.exists("examples/plots/"):
     os.makedirs("examples/plots/")
 
 # Plot success rate data
+
+# Aggregate data over a single task
+task = "task_1"
+fig = plot_single_task(
+    processed_data=processed_data,
+    environment_name="env_1",
+    task_name=task,
+    metric_name="success_rate",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
+)
+
+fig.figure.savefig(
+    f"examples/plots/env_1_{task}_agg_success_rate.png", bbox_inches="tight"
+)
+
 fig = performance_profiles(
     environment_comparison_matrix,
     metric_name="success_rate",
@@ -64,6 +80,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    save_tabular_as_latex=True,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_aggregate_scores.png", bbox_inches="tight"
@@ -93,6 +110,19 @@ fig.figure.savefig(
 )
 
 # Plot episode return data
+
+# Aggregate data over a single task
+task = "task_1"
+fig = plot_single_task(
+    processed_data=processed_data,
+    environment_name="env_1",
+    task_name=task,
+    metric_name="return",
+    metrics_to_normalize=METRICS_TO_NORMALIZE,
+)
+
+fig.figure.savefig(f"examples/plots/env_1_{task}_agg_return.png", bbox_inches="tight")
+
 fig = performance_profiles(
     environment_comparison_matrix,
     metric_name="return",
@@ -104,6 +134,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     environment_comparison_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    save_tabular_as_latex=True,
 )
 fig.figure.savefig("examples/plots/return_aggregate_scores.png", bbox_inches="tight")
 

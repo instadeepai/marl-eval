@@ -1,7 +1,7 @@
 {
-    "SMAC": {
-        "3m": {
-            "QMIX":{
+    "env_1": {
+        "task_1": {
+            "algo_1":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -18,7 +18,7 @@
                         "return": [0,1,2,8],
                         "win_rate":[0.4]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[5,8,4,1,2,3,5,1],
                         "win_rate":[0.2]
                     }
@@ -39,13 +39,13 @@
                         "return": [3,1,6,4],
                         "win_rate":[0.4]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,5,1,1,0,0,5,2],
                         "win_rate":[0.8]
                     }
                 }
             },
-            "MADQN":{
+            "algo_2":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -62,7 +62,7 @@
                         "return": [8,5,2,3],
                         "win_rate":[0.4]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,1,8,5,1,2,0,8],
                         "win_rate":[0.6]
                     }
@@ -83,13 +83,13 @@
                         "return": [1,1,8,9],
                         "win_rate":[0.1]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,2,1,2,2,3,8,5],
                         "win_rate":[0.4]
                     }
                 }
             },
-            "VDN":{
+            "algo_3":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -106,7 +106,7 @@
                         "return": [0,0,2,5],
                         "win_rate":[0.5]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,0,2,5,0,6,9,8],
                         "win_rate":[0.1]
                     }
@@ -127,15 +127,15 @@
                         "return": [2,1,1,5],
                         "win_rate":[0.7]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,6,8,9,0,5,2,3],
                         "win_rate":[0.1]
                     }
                 }
             }
         },
-        "3s5z": {
-            "QMIX":{
+        "task_2": {
+            "algo_1":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -152,7 +152,7 @@
                         "return": [1,2,5,2],
                         "win_rate":[0.1]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,5,8,9,4,2,8,0],
                         "win_rate":[0.5]
                     }
@@ -173,13 +173,13 @@
                         "return": [0,8,9,5],
                         "win_rate":[0.2]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,1,5,6,1,1,1,8],
                         "win_rate":[0.7]
                     }
                 }
             },
-            "MADQN":{
+            "algo_2":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -196,7 +196,7 @@
                         "return": [3,5,4,1],
                         "win_rate":[0.1]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,1,0,1,2,5,9,7],
                         "win_rate":[0.9]
                     }
@@ -217,13 +217,13 @@
                         "return": [1,2,5,4],
                         "win_rate":[0.8]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,0,1,0,5,8,9,7],
                         "win_rate":[0.8]
                     }
                 }
             },
-            "VDN":{
+            "algo_3":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -240,7 +240,7 @@
                         "return": [9,8,9,8],
                         "win_rate":[0.2]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,1,2,4,7,7,7,0],
                         "win_rate":[0.5]
                     }
@@ -261,15 +261,15 @@
                         "return": [1,4,5,5],
                         "win_rate":[0.5]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[0,5,6,6,8,9,8,0],
                         "win_rate":[0.2]
                     }
                 }
             }
         },
-        "8m": {
-            "QMIX":{
+        "task_3": {
+            "algo_1":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -286,7 +286,7 @@
                         "return": [5,5,6,9],
                         "win_rate":[0.8]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[1,2,9,9,9,9,9,7],
                         "win_rate":[0.7]
                     }
@@ -307,13 +307,13 @@
                         "return": [7,6,6,4],
                         "win_rate":[0.2]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[5,5,5,4,2,3,2,1],
                         "win_rate":[0.6]
                     }
                 }
             },
-            "MADQN":{
+            "algo_2":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -330,7 +330,7 @@
                         "return": [8,8,8,9],
                         "win_rate":[0.1]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[5,6,8,9,1,2,0,0],
                         "win_rate":[0.1,0.5]
                     }
@@ -351,13 +351,13 @@
                         "return": [0,7,8,9],
                         "win_rate":[0.5]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[0,0,2,3,5,4,8,9],
                         "win_rate":[0.3]
                     }
                 }
             },
-            "VDN":{
+            "algo_3":{
                 "43289":{
                     "STEP_1":{
                         "step_count": 10006,
@@ -374,7 +374,7 @@
                         "return": [1,8,9,7],
                         "win_rate":[0.2]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[7,8,9,7,8,9,7,0],
                         "win_rate":[0.2]
                     }
@@ -395,7 +395,7 @@
                         "return": [1,5,8,9],
                         "win_rate":[0.3]
                     },
-                    "ABSOLUTE_METRIC":{
+                    "absolute_metrics":{
                         "return":[8,9,7,5,2,2,1,2],
                         "win_rate":[0.1]
                     }
