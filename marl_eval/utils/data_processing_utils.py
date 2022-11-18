@@ -56,7 +56,7 @@ def get_and_aggregate_data_single_task(
     steps = list(task_data[algorithms[0]][runs[0]].keys())
 
     # Remove absolute metric from steps.
-    steps = [step for step in steps if "absolute_metric" not in step.lower()]
+    steps = [step for step in steps if "absolute" not in step.lower()]
 
     # Create a dictionary to store the mean and 95% CI for each algorithm
     mean_and_ci: Dict = {algorithm: {"mean": [], "ci": []} for algorithm in algorithms}
@@ -335,7 +335,7 @@ def create_matrices_for_rliable(  # noqa: C901
                     for j, task in enumerate(tasks):
                         metric_dictionary[metric][algorithm][i][j] = data_env[task][
                             algorithm
-                        ][run]["absolute_metrics"][metric]
+                        ][run][absolute_metric_key][metric]
 
         metric_dictionary_return = metric_dictionary
 
