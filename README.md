@@ -15,12 +15,16 @@ The tools here build upon the tools in the [rliable](https://github.com/google-r
 ## Overview 🦜
 
 - 🪄 **Easy data processing**: Easy-to-use functions that will process all raw experiment data and prepare it for downstream use of the `rliable` tools.
-- 📊 **Easy data plotting**: Easy-to-use functions built on top of the `rlibale` tools which will handle the plotting of all processed data and produce tabular results in both `.csv` and `LaTeX` formats.
+- 📊 **Easy data plotting**: Easy-to-use functions built on top of the `rliable` tools which will handle the plotting of all processed data and produce tabular results in both `.csv` and `LaTeX` formats.
 
 
 ## Installation 🎬
 
-Currently `marl-eval` can be installed directly from source as follows:
+The latest release of the `marl-eval` can be installed as follows:
+```bash
+pip install id-marl-eval
+```
+Or to install directly from source:
 
 ```bash
 pip install "git+https://github.com/instadeepai/marl-eval.git"
