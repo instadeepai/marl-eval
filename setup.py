@@ -62,7 +62,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="InstaDeep Ltd",
-    license="MIT License",
+    license="Apache License, Version 2.0",
     keywords="multi-agent reinforcement-learning python machine learning",
     packages=find_packages(),
     install_requires=[
@@ -84,7 +84,7 @@ setup(
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
