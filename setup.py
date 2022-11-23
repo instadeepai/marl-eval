@@ -15,6 +15,7 @@
 
 """Install script for setuptools."""
 
+import os
 from importlib import util as import_util
 
 from setuptools import find_packages, setup
@@ -22,6 +23,8 @@ from setuptools import find_packages, setup
 spec = import_util.spec_from_file_location("_metadata", "marl_eval/_metadata.py")
 _metadata = import_util.module_from_spec(spec)  # type: ignore
 spec.loader.exec_module(_metadata)  # type: ignore
+
+_CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 long_description = """marl_eval is a repo implementing experiment data processing
 that goes along with the work done by Gorsane et al. (2022) on standardising
@@ -59,7 +62,7 @@ setup(
     name="id-marl-eval",
     version=version,
     description="A Python library for Multi-Agent Reinforcement Learning evaluation.",
-    long_description=long_description,
+    long_description=open(os.path.join(_CURRENT_DIR, "README.md")).read(),
     long_description_content_type="text/markdown",
     author="InstaDeep Ltd",
     license="Apache License, Version 2.0",
