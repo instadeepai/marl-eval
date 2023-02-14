@@ -18,7 +18,10 @@
 import copy
 from typing import Any, Dict, List
 
-from marl_eval.utils.data_processing_utils import lower_case_dictionary_keys
+from marl_eval.utils.data_processing_utils import (
+    check_comma_in_algo_names,
+    lower_case_dictionary_keys,
+)
 
 
 class DiagnoseData:
@@ -30,7 +33,8 @@ class DiagnoseData:
         self.raw_data = lower_case_dictionary_keys(raw_data)
 
     def check_algo(self, list_algo: List) -> tuple:
-        """Check that through the scenarios, the data share the same algorithms"""
+        """Check that through the scenarios, the data share the same algorithms \
+        and that algorithm names are of the correct format."""
         if list_algo == []:
             return True, []
         identical = True
@@ -48,7 +52,18 @@ class DiagnoseData:
                 sorted(same_algos),
             )
 
-        return identical, same_algos
+        algo_names_valid, valid_algo_names = check_comma_in_algo_names(
+            algos=same_algos,
+            get_valid=True,
+        )
+
+        if not algo_names_valid:
+            print(
+                "Some algorithm names contain commas, which is not permitted."
+                + f"Valid algorithm names are {valid_algo_names}."
+            )
+
+        return identical, algo_names_valid, same_algos, valid_algo_names
 
     def check_metric(self, list_metric: List) -> tuple:
         """Check that through the steps, runs, algo and scenarios, the data share \
@@ -178,18 +193,27 @@ class DiagnoseData:
         data_used = self.data_format()
         check_data_results: Dict[str, Any] = {}
         for env in self.raw_data.keys():
-            valid_algo, _ = self.check_algo(list_algo=data_used[env]["algorithms"])
+            valid_algo, valid_algo_names, _, _ = self.check_algo(
+                list_algo=data_used[env]["algorithms"]
+            )
             valid_runs, _ = self.check_runs(num_runs=data_used[env]["num_runs"])
             valid_steps, _ = self.check_steps(num_steps=data_used[env]["num_steps"])
             valid_metrics, _ = self.check_metric(list_metric=data_used[env]["metrics"])
 
             # Check that we have valid json file
-            if valid_algo and valid_runs and valid_steps and valid_metrics:
+            if (
+                valid_algo
+                and valid_runs
+                and valid_steps
+                and valid_metrics
+                and valid_algo_names
+            ):
                 print("Valid format for the environment " + env + "!")
             else:
                 print("invalid format for the environment " + env + "!")
             check_data_results[env] = {
                 "valid_algorithms": valid_algo,
+                "valid_algorithm_names": valid_algo_names,
                 "valid_runs": valid_runs,
                 "valid_steps": valid_steps,
                 "valid_metrics": valid_metrics,
