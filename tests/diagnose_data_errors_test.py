@@ -91,6 +91,7 @@ def test_valid_data(valid_raw_data: Dict[str, Dict[str, Any]]) -> None:
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
+        "valid_algorithm_names": True,
         "valid_runs": True,
         "valid_steps": True,
         "valid_metrics": True,
@@ -103,6 +104,7 @@ def test_invalid_algo_data(invalid_algo_raw_data: Dict[str, Dict[str, Any]]) -> 
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,
+        "valid_algorithm_names": True,
         "valid_runs": True,
         "valid_steps": True,
         "valid_metrics": True,
@@ -115,6 +117,7 @@ def test_invalid_runs_data(invalid_runs_raw_data: Dict[str, Dict[str, Any]]) -> 
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
+        "valid_algorithm_names": True,
         "valid_runs": False,
         "valid_steps": True,
         "valid_metrics": True,
@@ -129,6 +132,7 @@ def test_invalid_metrics_data(
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": True,
+        "valid_algorithm_names": True,
         "valid_runs": True,
         "valid_steps": True,
         "valid_metrics": False,
@@ -141,6 +145,7 @@ def test_invalid_data(invalid_raw_data: Dict[str, Dict[str, Any]]) -> None:
     check_data_results = data_diag_tools.check_data()["env_1"]
     assert check_data_results == {
         "valid_algorithms": False,
+        "valid_algorithm_names": True,
         "valid_runs": False,
         "valid_steps": False,
         "valid_metrics": False,

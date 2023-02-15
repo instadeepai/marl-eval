@@ -47,6 +47,29 @@ def check_absolute_metric(steps: List) -> Union[str, None]:
     return None
 
 
+def check_comma_in_algo_names(
+    algos: List, get_valid: bool = False
+) -> Tuple[bool, list]:
+    """Check that no algorithm names contain commas.
+
+    Args:
+        algos: list containing names of algorithms in experiment.
+        get_valid: boolean dictating whether valid or invalid
+            algorithm names should be returned. If `True` the names
+            of valid algorithms will be returned and if `False` the
+            names of invalid algorithms will be returned.
+    """
+    comma_in_names = [("," not in str(name)) for name in algos]
+    names_valid = all(comma_in_names)
+
+    if get_valid:
+        names = [algos[i] for i in range(len(algos)) if comma_in_names[i] is True]
+    else:
+        names = [algos[i] for i in range(len(algos)) if comma_in_names[i] is False]
+
+    return names_valid, names
+
+
 def lower_case_dictionary_keys(
     dictionary: Dict[str, Dict[str, Any]]
 ) -> Dict[str, Dict[str, Any]]:
@@ -92,7 +115,7 @@ def get_and_aggregate_data_single_task(
     # Get the data for the given metric and environment
     task_data = processed_data[environment_name][task_name]
 
-    # Get the algorithm names, nuumber of runs and total steps
+    # Get the algorithm names, number of runs and total steps
     algorithms = list(task_data.keys())
     runs = list(task_data[algorithms[0]].keys())
     steps = list(task_data[algorithms[0]][runs[0]].keys())
@@ -265,13 +288,22 @@ def data_process_pipeline(  # noqa: C901
             "metric_list": metric_list,
             "evaluation_interval": eval_interval,
         }
+
+        # Check that algorithm names do not contain commas
+        algo_names_valid, invalid_algo_names = check_comma_in_algo_names(algorithm_list)
+        if not algo_names_valid:
+            raise ValueError(
+                "Algorithm names must not contain commas."
+                + f" Please update the following invalid names: {invalid_algo_names}\n"
+            )
+
         return processed_data
 
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
         print(
-            "We recommend using the DiagnoseData class from \
-            marl_eval/utils/diagnose_data_errors.py to determine the error."
+            "We recommend using the DiagnoseData class from "
+            + "marl_eval/utils/diagnose_data_errors.py to determine the error."
         )
         return raw_data
 
@@ -450,7 +482,7 @@ def create_matrices_for_rliable(  # noqa: C901
     except Exception as e:
         print(e, ": There is an issue related to the format of the json file!")
         print(
-            "We recommend using the DiagnoseData class from \
-            marl_eval/utils/diagnose_data_errors.py to determine the error."
+            "We recommend using the DiagnoseData class from "
+            + "marl_eval/utils/diagnose_data_errors.py to determine the error."
         )
         return ({}, {})
