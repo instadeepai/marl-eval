@@ -34,6 +34,7 @@ from expected_test_data import (
 )
 
 from marl_eval.utils.data_processing_utils import (
+    check_comma_in_algo_names,
     create_matrices_for_rliable,
     data_process_pipeline,
     get_and_aggregate_data_single_task,
@@ -228,3 +229,38 @@ def test_single_task_data_aggregation(
         task_win_rate_ci_data,
         expected_single_task_ci_data_win_rates,
     )
+
+
+@pytest.mark.parametrize(
+    "algorithm_names, should_get_valid, names_valid, returned_names",
+    [
+        (["algo_1", "algo_2", "algo_3"], True, True, ["algo_1", "algo_2", "algo_3"]),
+        (["algo_1", "algo_2", "algo_3"], False, True, []),
+        (["algo,_1", "algo,_2", "algo_3"], True, False, ["algo_3"]),
+        (["algo,_1", "algo_2", "algo_3"], False, False, ["algo,_1"]),
+    ],
+)
+def test_check_comma_in_algo_names(
+    algorithm_names: list,
+    should_get_valid: bool,
+    names_valid: bool,
+    returned_names: list,
+) -> None:
+    """Tests that the check_comma_in_algo_names function works \
+    as expected.
+
+    Args:
+        algorithm_names: names of algorithms to be checked.
+        should_get_valid: whether valid names should be returned.
+        names_valid: whether algorithm names are valid.
+        returned_names: either the valid or invalid names as
+            returned by the function.
+    """
+
+    names_valid_output, names_output = check_comma_in_algo_names(
+        algos=algorithm_names,
+        get_valid=should_get_valid,
+    )
+
+    assert names_valid_output == names_valid
+    assert names_output == returned_names
