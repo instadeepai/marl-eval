@@ -420,11 +420,15 @@ def create_matrices_for_rliable(  # noqa: C901
                 for i, run in enumerate(runs):
                     for j, task in enumerate(tasks):
                         # Get the metric data
-                        metric_data = data_env[task][algorithm][run][absolute_metric_key][metric]
-                        
+                        metric_data = data_env[task][algorithm][run][
+                            absolute_metric_key
+                        ][metric]
                         # Compute the mean if it's a list, otherwise use as is
-                        data = np.mean(metric_data) if isinstance(metric_data, list) else metric_data
-                        
+                        data = (
+                            np.mean(metric_data)
+                            if isinstance(metric_data, list)
+                            else metric_data
+                        )
                         # Store the data in the metric dictionary
                         metric_dictionary[metric][algorithm][i][j] = data
 
@@ -458,10 +462,12 @@ def create_matrices_for_rliable(  # noqa: C901
                         for j, task in enumerate(tasks):
                             # Get the metric data
                             metric_data = data_env[task][algorithm][run][step][metric]
-                            
                             # Compute the mean if it's a list, otherwise use as is
-                            data = np.mean(metric_data) if isinstance(metric_data, list) else metric_data
-                            
+                            data = (
+                                np.mean(metric_data)
+                                if isinstance(metric_data, list)
+                                else metric_data
+                            )
                             # Store the data in the metric dictionary
                             metric_dictionary[metric][algorithm][i][j] = data
 
