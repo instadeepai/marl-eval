@@ -15,6 +15,7 @@
 
 import copy
 from typing import Any, Dict, List, Tuple, Union
+from colorama import Fore, Style
 
 import numpy as np
 
@@ -480,9 +481,9 @@ def create_matrices_for_rliable(  # noqa: C901
         return metric_dictionary_return, final_metric_tensor_dictionary
 
     except Exception as e:
-        print(e, ": There is an issue related to the format of the json file!")
+        print(f"\n{Fore.RED}Unexpected error: {e}. There is an issue related to the format of the json file!")
         print(
             "We recommend using the DiagnoseData class from "
-            + "marl_eval/utils/diagnose_data_errors.py to determine the error."
+            + f"`marl_eval/utils/diagnose_data_errors.py` for further investigation.\n{Style.RESET_ALL}"
         )
-        return ({}, {})
+        raise
