@@ -276,6 +276,7 @@ def sample_efficiency_curves(
     dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
+    xlabel: str = "Timesteps",
 ) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
     """Produces sample efficiency curve plots.
 
@@ -284,6 +285,7 @@ def sample_efficiency_curves(
              metric scores for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
+        xlabel: Label for x-axis.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -335,7 +337,7 @@ def sample_efficiency_curves(
         iqm_scores,
         iqm_cis,
         algorithms=algorithms,
-        xlabel=r"Number of timesteps (Millions)",
+        xlabel=xlabel,
         ylabel=ylabel,
         legend=algorithms,
         figsize=(15, 8),
@@ -353,6 +355,7 @@ def plot_single_task(
     task_name: str,
     metric_name: str,
     metrics_to_normalize: List[str],
+    xlabel: str = "Timesteps",
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -362,6 +365,7 @@ def plot_single_task(
         task_name: Name of task to produce plots for.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
+        xlabel: Label for x-axis.
     """
     metric_name, task_name, environment_name, metrics_to_normalize = lower_case_inputs(
         metric_name, task_name, environment_name, metrics_to_normalize
@@ -392,7 +396,7 @@ def plot_single_task(
     fig = plot_single_task_curve(
         task_mean_ci_data,
         algorithms=algorithms,
-        xlabel="Number of timesteps (Millions)",
+        xlabel=xlabel,
         ylabel=ylabel,
         legend=algorithms,
         figsize=(15, 8),
