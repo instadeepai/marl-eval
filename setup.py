@@ -17,6 +17,7 @@
 
 import os
 from importlib import util as import_util
+from typing import List
 
 from setuptools import find_packages, setup
 
@@ -26,15 +27,15 @@ spec.loader.exec_module(_metadata)  # type: ignore
 
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-long_description = """marl_eval is a repo implementing experiment data processing
+long_description = """`marl_eval` is a repo implementing experiment data processing
 that goes along with the work done by Gorsane et al. (2022) on standardising
 the way in which multi-agent reinforcement learning evaluation is done.
-This repo builds on the work done by Agarwal et al. (2022) with the rliable
+This repo builds on the work done by Agarwal et al. (2022) with the `rliable`
 repo which may be found at [https://github.com/google-research/rliable].
-What marl_eval adds is extra data processing functionality on top of the
-rliable tools for particular use in multi-agent reinforcement learning.
-Given data in the correct json format marl_eval will process all data for
-downstream statistical aggregation by rliable. Marl-eval will also plot
+What `marl_eval` adds is extra data processing functionality on top of the
+`rliable` tools for particular use in multi-agent reinforcement learning.
+Given data in the correct json format `marl_eval` will process all data for
+downstream statistical aggregation by `rliable`. `marl-eval` will also plot
 all aggregated data and produce tabular results which may be easily used
 by researchers in order to present clear work which may be easily compared
 to by others. For for information please see the associated paper
@@ -45,18 +46,14 @@ to by others. For for information please see the associated paper
 # Get the version from metadata.
 version = _metadata.__version__  # type: ignore
 
-testing_formatting_requirements = [
-    "pre-commit",
-    "mypy==0.941",
-    "flake8==3.8.2",
-    "black==22.3.0",
-    "interrogate",
-    "pydocstyle",
-    "types-six",
-    "toml",
-    "pytest==6.2.4",
-    "pytest-xdist",
-]
+
+def _parse_requirements(path: str) -> List[str]:
+    """Returns content of given requirements file."""
+    with open(os.path.join(path)) as f:
+        return [
+            line.rstrip() for line in f if not (line.isspace() or line.startswith("#"))
+        ]
+
 
 setup(
     name="id-marl-eval",
@@ -68,20 +65,9 @@ setup(
     license="Apache License, Version 2.0",
     keywords="multi-agent reinforcement-learning python machine learning",
     packages=find_packages(),
-    install_requires=[
-        "colorcet==3.0.0",
-        "matplotlib==3.5.3",
-        "numpy==1.21.4",
-        "rliable==1.0.7",
-        "seaborn",
-        "jax",
-        "jaxlib",
-        "pandas==1.4.4",
-        "Jinja2",
-        "importlib-metadata<5.0",
-    ],
+    install_requires=_parse_requirements("requirements/requirements.txt"),
     extras_require={
-        "testing_formatting": testing_formatting_requirements,
+        "dev": _parse_requirements("requirements/requirements-dev.txt"),
     },
     classifiers=[
         "Development Status :: 3 - Alpha",

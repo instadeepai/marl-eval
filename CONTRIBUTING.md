@@ -16,7 +16,7 @@ pip install -e .
 
 Install the pre-commit hooks and testing dependencies:
 ```bash
-pip install .[testing_formatting]
+pip install .[dev]
 pre-commit install
 pre-commit install -t commit-msg
 ```
