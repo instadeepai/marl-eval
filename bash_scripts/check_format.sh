@@ -33,7 +33,7 @@ pip install virtualenv
 virtualenv marl_eval_testing
 source marl_eval_testing/bin/activate
 
-pip install .[testing_formatting]
+pip install .[dev]
 
 # Check code follows black formatting.
 black --check .

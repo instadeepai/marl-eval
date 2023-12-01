@@ -1,14 +1,10 @@
 name: format_and_test
 
-on:
-  push:
-    branches: [develop]
-  pull_request:
-    branches: [develop]
+on: [ push, pull_request ]
 
 jobs:
   test-ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 45
     strategy:
       fail-fast: false
