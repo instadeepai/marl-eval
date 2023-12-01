@@ -35,7 +35,7 @@ virtualenv marl_eval_testing
 source marl_eval_testing/bin/activate
 
 # Install depedencies
-pip install .[testing_formatting]
+pip install .[dev]
 
 # Run tests
 N_CPU=$(grep -c ^processor /proc/cpuinfo)
