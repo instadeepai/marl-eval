@@ -15,9 +15,9 @@
 
 import copy
 from typing import Any, Dict, List, Tuple, Union
-from colorama import Fore, Style
 
 import numpy as np
+from colorama import Fore, Style
 
 """Tools for processing MARL experiment data."""
 
@@ -482,10 +482,12 @@ def create_matrices_for_rliable(  # noqa: C901
 
     except Exception as e:
         print(
-            f"\n{Fore.RED}Unexpected error: {e}. There is an issue related to the format of the json file!"
+            f"\n{Fore.RED}Unexpected error: {e}. There is an issue related to the "
+            + "format of the json file!"
         )
         print(
             "We recommend using the DiagnoseData class from "
-            + f"`marl_eval/utils/diagnose_data_errors.py` for further investigation.\n{Style.RESET_ALL}"
+            + "`marl_eval/utils/diagnose_data_errors.py` for further "
+            + f"investigation.\n{Style.RESET_ALL}"
         )
         raise
