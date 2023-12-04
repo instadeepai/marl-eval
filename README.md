@@ -176,10 +176,10 @@ If you use any of these tools in your work and find them useful, please cite the
 MARL-eval forms part of **InstaDeep's MARL ecosystem in JAX.** In particular, we suggest users check out the following sister repositories that form a collection of libraries useful for MARL research that integrate well with each other and with MARL-eval:
 
 * 🦁 [Mava](https://github.com/instadeepai/Mava): a research-friendly codebase for distributed MARL in JAX.
+* 🔌 [OG-MARL](https://github.com/instadeepai/og-marl): datasets with baselines for offline MARL in JAX.
 * 🌴 [Jumanji](https://github.com/instadeepai/jumanji): a diverse suite of scalable reinforcement learning environments in JAX.
 * 😎 [Matrax](https://github.com/instadeepai/matrax): a collection of matrix games in JAX.
 * 🔦 [Flashbax](https://github.com/instadeepai/flashbax): accelerated replay buffers in JAX.
-* 📈 [MARL-eval](https://github.com/instadeepai/marl-eval): standardised experiment data aggregation and visualisation for MARL.
 
 **Related.** Other libraries related to standardised benchmarking in MARL:
 
