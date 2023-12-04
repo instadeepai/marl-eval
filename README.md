@@ -185,4 +185,3 @@ MARL-eval forms part of **InstaDeep's MARL ecosystem in JAX.** In particular, we
 
 * 🤖 [BenchMARL](https://github.com/facebookresearch/BenchMARL): a collection of MARL benchmarks based on TorchRL.
 * 🦊 [JaxMARL](https://github.com/flairox/jaxmarl): accelerated MARL environments with baselines in JAX.
-
