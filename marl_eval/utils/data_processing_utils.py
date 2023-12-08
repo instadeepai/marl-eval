@@ -419,9 +419,18 @@ def create_matrices_for_rliable(  # noqa: C901
             for algorithm in algorithms:
                 for i, run in enumerate(runs):
                     for j, task in enumerate(tasks):
-                        metric_dictionary[metric][algorithm][i][j] = data_env[task][
-                            algorithm
-                        ][run][absolute_metric_key][metric]
+                        # Get the metric data
+                        metric_data = data_env[task][algorithm][run][
+                            absolute_metric_key
+                        ][metric]
+                        # Compute the mean if it's a list, otherwise use as is
+                        data = (
+                            np.mean(metric_data)
+                            if isinstance(metric_data, list)
+                            else metric_data
+                        )
+                        # Store the data in the metric dictionary
+                        metric_dictionary[metric][algorithm][i][j] = data
 
         metric_dictionary_return = metric_dictionary
 
@@ -451,9 +460,16 @@ def create_matrices_for_rliable(  # noqa: C901
                 for algorithm in algorithms:
                     for i, run in enumerate(runs):
                         for j, task in enumerate(tasks):
-                            metric_dictionary[metric][algorithm][i][j] = data_env[task][
-                                algorithm
-                            ][run][step][metric]
+                            # Get the metric data
+                            metric_data = data_env[task][algorithm][run][step][metric]
+                            # Compute the mean if it's a list, otherwise use as is
+                            data = (
+                                np.mean(metric_data)
+                                if isinstance(metric_data, list)
+                                else metric_data
+                            )
+                            # Store the data in the metric dictionary
+                            metric_dictionary[metric][algorithm][i][j] = data
 
             for metric in mean_absolute_metrics:
                 for algorithm in algorithms:
