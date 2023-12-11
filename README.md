@@ -9,7 +9,6 @@
 
 This repo is the official implementation of the data aggregation guideline proposed in the paper titled _Towards a Standardised Performance Evaluation Protocol for Cooperative MARL_ by [Gorsane et al. (2022)](https://arxiv.org/abs/2209.10485) published at the 36th Conference on Neural Information Processing Systems.
 
-## Standing on the shoulders of giants ⛰️
 The tools here build upon the tools in the [rliable](https://github.com/google-research/rliable) repo which goes along with the work done by [Agarwal et al. (2022)](https://arxiv.org/abs/2108.13264) in the paper titled _Deep Reinforcement Learning at the Edge of the Statistical Precipice_. For any details on the types of plots produced, please see their work.
 
 ## Overview 🦜
@@ -170,3 +169,18 @@ If you use any of these tools in your work and find them useful, please cite the
   year={2022}
 }
 ```
+
+## See Also 🔎
+
+MARL-eval forms part of **InstaDeep's MARL ecosystem in JAX.** In particular, we suggest users check out the following sister repositories that form a collection of libraries useful for MARL research that integrate well with each other and with MARL-eval:
+
+* 🦁 [Mava](https://github.com/instadeepai/Mava): a research-friendly codebase for distributed MARL in JAX.
+* 🔌 [OG-MARL](https://github.com/instadeepai/og-marl): datasets with baselines for offline MARL in JAX.
+* 🌴 [Jumanji](https://github.com/instadeepai/jumanji): a diverse suite of scalable reinforcement learning environments in JAX.
+* 😎 [Matrax](https://github.com/instadeepai/matrax): a collection of matrix games in JAX.
+* 🔦 [Flashbax](https://github.com/instadeepai/flashbax): accelerated replay buffers in JAX.
+
+**Related.** Other libraries related to standardised benchmarking in MARL:
+
+* 🤖 [BenchMARL](https://github.com/facebookresearch/BenchMARL): a collection of MARL benchmarks based on TorchRL.
+* 🦊 [JaxMARL](https://github.com/flairox/jaxmarl): accelerated MARL environments with baselines in JAX.
