@@ -358,6 +358,7 @@ def plot_single_task(
     xlabel: str = "Timesteps",
     legend_map: Optional[Dict[str, str]] = None,
     run_times: Optional[Dict[str, float]] = None,
+    base_line_values: Optional[Dict[str, Dict[str, float]]] = None,
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -372,6 +373,9 @@ def plot_single_task(
             If None, then this mapping is created based on `algorithms`.
         run_times: Dictionary that maps each algorithm to the number of seconds it
             took to run. If None, then environment steps will be displayed.
+        base_line_values: Dictionary that maps each algorithm to known baseline
+            performance for the metric. This can then get added to plots for
+            easy comparison.
     """
     metric_name, task_name, environment_name, metrics_to_normalize = lower_case_inputs(
         metric_name, task_name, environment_name, metrics_to_normalize
@@ -406,6 +410,10 @@ def plot_single_task(
         run_times = {algo.upper(): value for algo, value in run_times.items()}
         xlabel = "Time (Minutes)"
 
+    if base_line_values is not None:
+        task_baseline: Dict[str, float] = base_line_values[task_name]
+        task_baseline = {algo.upper(): value for algo, value in task_baseline.items()}
+
     fig = plot_single_task_curve(
         task_mean_ci_data,
         algorithms=algorithms,
@@ -417,6 +425,7 @@ def plot_single_task(
         legend_map=legend_map,
         run_times=run_times,
         marker="",
+        task_baseline=task_baseline,
     )
 
     return fig

@@ -35,6 +35,7 @@ def plot_single_task_curve(
     ticklabelsize: str = "xx-large",
     legend_map: Optional[Dict] = None,
     run_times: Optional[Dict] = None,
+    task_baseline: Optional[Dict[str, float]] = None,
     **kwargs: Any,
 ) -> Axes:
     """Plots an aggregate metric with CIs as a function of environment frames.
@@ -59,6 +60,8 @@ def plot_single_task_curve(
         If None, then this mapping is created based on `algorithms`.
       run_times: Dictionary that maps each algorithm to the number of seconds it
         took to run. If None, then environment steps will be displayed.
+      task_baseline: Baseline scores for algorithms on a particular task. If None,
+        then no baseline is plotted.
       **kwargs: Arbitrary keyword arguments.
 
     Returns:
@@ -109,6 +112,17 @@ def plot_single_task_curve(
         ax.fill_between(
             x_axis_values, y1=lower, y2=upper, color=colors[algorithm], alpha=0.2
         )
+
+        if task_baseline is not None:
+            ax.hlines(
+                task_baseline[algorithm],
+                xmin=0,
+                xmax=x_axis_values[-1],
+                color=colors[algorithm],
+                linestyle="--",
+                linewidth=linewidth,
+                label=f"JAXMarl {algorithm_name}",
+            )
 
     return _annotate_and_decorate_axis(
         ax,
