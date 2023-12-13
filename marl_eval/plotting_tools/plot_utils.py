@@ -74,6 +74,9 @@ def plot_single_task_curve(
         color_palette = sns.color_palette(color_palette, n_colors=len(algorithms))
         colors = dict(zip(algorithms, color_palette))
 
+    marker = kwargs.pop("marker", "o")
+    linewidth = kwargs.pop("linewidth", 2)
+
     for algorithm in algorithms:
         x_axis_len = len(aggregated_data[algorithm]["mean"])
 
@@ -99,8 +102,8 @@ def plot_single_task_curve(
             x_axis_values,
             metric_values,
             color=colors[algorithm],
-            marker=kwargs.pop("marker", "o"),
-            linewidth=kwargs.pop("linewidth", 2),
+            marker=marker,
+            linewidth=linewidth,
             label=algorithm_name,
         )
         ax.fill_between(
