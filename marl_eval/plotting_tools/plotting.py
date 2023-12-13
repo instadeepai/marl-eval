@@ -416,6 +416,7 @@ def plot_single_task(
         color_palette=cc.glasbey_category10,
         legend_map=legend_map,
         run_times=run_times,
+        marker="",
     )
 
     return fig
