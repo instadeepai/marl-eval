@@ -356,6 +356,8 @@ def plot_single_task(
     metric_name: str,
     metrics_to_normalize: List[str],
     xlabel: str = "Timesteps",
+    legend_map: Optional[Dict[str, str]] = None,
+    run_times: Optional[Dict[str, float]] = None,
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -366,6 +368,10 @@ def plot_single_task(
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
         xlabel: Label for x-axis.
+        legend_map: Dictionary that maps each algorithm to a label in the legend.
+            If None, then this mapping is created based on `algorithms`.
+        run_times: Dictionary that maps each algorithm to the number of seconds it
+            took to run. If None, then environment steps will be displayed.
     """
     metric_name, task_name, environment_name, metrics_to_normalize = lower_case_inputs(
         metric_name, task_name, environment_name, metrics_to_normalize
@@ -393,6 +399,13 @@ def plot_single_task(
     algorithms = list(task_mean_ci_data.keys())
     algorithms.remove("extra")
 
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+
+    if run_times is not None:
+        run_times = {algo.upper(): value for algo, value in run_times.items()}
+        xlabel = "Time (Minutes)"
+
     fig = plot_single_task_curve(
         task_mean_ci_data,
         algorithms=algorithms,
@@ -401,6 +414,8 @@ def plot_single_task(
         legend=algorithms,
         figsize=(15, 8),
         color_palette=cc.glasbey_category10,
+        legend_map=legend_map,
+        run_times=run_times,
     )
 
     return fig
