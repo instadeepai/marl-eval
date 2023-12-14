@@ -359,6 +359,7 @@ def plot_single_task(
     legend_map: Optional[Dict[str, str]] = None,
     run_times: Optional[Dict[str, float]] = None,
     base_line_values: Optional[Dict[str, Dict[str, float]]] = None,
+    x_axis_name: Optional[str] = None,
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -409,6 +410,8 @@ def plot_single_task(
     if run_times is not None:
         run_times = {algo.upper(): value for algo, value in run_times.items()}
         xlabel = "Time (Minutes)"
+    if x_axis_name is not None:
+        xlabel = x_axis_name
 
     if base_line_values is not None:
         task_baseline: Dict[str, float] = base_line_values[task_name]
