@@ -34,7 +34,7 @@ pip install virtualenv
 virtualenv marl_eval_testing
 source marl_eval_testing/bin/activate
 
-# Install depedencies
+# Install dependencies
 pip install .[dev]
 
 # Run tests

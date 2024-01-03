@@ -33,7 +33,7 @@ from marl_eval.utils.data_processing_utils import (
 ##############################
 METRICS_TO_NORMALIZE = ["return"]
 
-with open("examples/example_results.json", "r") as f:
+with open("examples/example_results.json") as f:
     raw_data = json.load(f)
 
 processed_data = data_process_pipeline(
