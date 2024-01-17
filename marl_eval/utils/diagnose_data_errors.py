@@ -102,10 +102,8 @@ class DiagnoseData:
             return True, num_runs[0]
 
         print(
-            "The number of runs is not identical through the different algorithms and scenarios.\n\
-                The minimum number of runs is "
-            + str(min(num_runs))
-            + " runs."
+            "The number of runs is not identical through the different algorithms and "
+            "scenarios.\nThe minimum number of runs is " + str(min(num_runs)) + " runs."
         )
         return False, min(num_runs)
 
@@ -133,7 +131,6 @@ class DiagnoseData:
         data_used: Dict[str, Any] = {}
 
         for env in self.raw_data.keys():
-
             # List of algorithms used in the experiment across the tasks
             algorithms_used = []
             # List of num or runs used across the algos and the tasks
@@ -144,12 +141,10 @@ class DiagnoseData:
             metrics_used = []
 
             for task in self.raw_data[env].keys():
-
                 # Append the list of used algorithms across the tasks
                 algorithms_used.append(sorted(list(processed_data[env][task].keys())))
 
                 for algorithm in self.raw_data[env][task].keys():
-
                     # Append the number of runs used across the different algos
                     runs_used.append(len(processed_data[env][task][algorithm].keys()))
 
