@@ -3,7 +3,7 @@
 We'd love to accept your patches and contributions to this project as it will take the joint efforts of the MARL community to ensure that the evaluation standard is raised! There are
 just a few small guidelines you need to follow.
 
-## Installing MARL-eval for developement
+## Installing MARL-eval for development
 
 To develop features for marl-eval, clone the repository and install all the dependencies as follows:
 

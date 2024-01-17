@@ -129,7 +129,6 @@ def get_and_aggregate_data_single_task(
     for step in steps:
         # Loop over each algorithm
         for algorithm in algorithms:
-
             # Get the data for the given algorithm
             algorithm_data = task_data[algorithm]
             # Compute the mean and 95% CI for the given algorithm over all seeds
@@ -481,7 +480,6 @@ def create_matrices_for_rliable(  # noqa: C901
         for metric in mean_absolute_metrics:
             final_metric_tensor_dictionary[metric] = {}
             for algorithm in algorithms:
-
                 final_metric_tensor_dictionary[metric][algorithm] = np.stack(
                     master_metric_dictionary[metric][algorithm], axis=2
                 )

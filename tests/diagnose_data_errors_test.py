@@ -26,7 +26,7 @@ from marl_eval.utils.diagnose_data_errors import DiagnoseData
 @pytest.fixture
 def valid_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     return read_in_data
@@ -35,7 +35,7 @@ def valid_raw_data() -> Dict[str, Dict[str, Any]]:
 @pytest.fixture
 def invalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     del read_in_data["env_1"]["task_1"]["algo_1"]
@@ -45,7 +45,7 @@ def invalid_algo_raw_data() -> Dict[str, Dict[str, Any]]:
 @pytest.fixture
 def invalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     del read_in_data["env_1"]["task_1"]["algo_1"]["43289"]["STEP_1"]["return"]
@@ -55,7 +55,7 @@ def invalid_metrics_raw_data() -> Dict[str, Dict[str, Any]]:
 @pytest.fixture
 def invalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     del read_in_data["env_1"]["task_2"]["algo_1"]["43289"]
@@ -65,7 +65,7 @@ def invalid_runs_raw_data() -> Dict[str, Dict[str, Any]]:
 @pytest.fixture
 def invalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     del read_in_data["env_1"]["task_1"]["algo_1"]["42"]["STEP_1"]
@@ -75,7 +75,7 @@ def invalid_steps_raw_data() -> Dict[str, Dict[str, Any]]:
 @pytest.fixture
 def invalid_raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     del read_in_data["env_1"]["task_2"]["algo_1"]

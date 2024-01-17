@@ -44,7 +44,7 @@ from marl_eval.utils.data_processing_utils import (
 @pytest.fixture
 def raw_data() -> Dict[str, Dict[str, Any]]:
     """Fixture for raw experiment data."""
-    with open("tests/mock_data_test.json", "r") as f:
+    with open("tests/mock_data_test.json") as f:
         read_in_data = json.load(f)
 
     return read_in_data
@@ -73,7 +73,7 @@ def test_matrices_for_rliable_full_environment_dataset(
 ) -> None:
     """Tests that arrays for rliable are created correctly for \
         a full dataset containing multiple algorithms and tasks \
-            for a given envionment."""
+            for a given environment."""
 
     processed_data = data_process_pipeline(
         raw_data=raw_data, metrics_to_normalize=["return"]
