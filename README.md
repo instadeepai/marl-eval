@@ -143,9 +143,13 @@ In order to use the tools we suggest effectively, raw data json files are requir
 Here `run_1` to `run_n` correspond to the number of independent runs in a given experiment and `step_1` to `step_k` correspond to the number of logged steps in a given environment. We do not require an independent run to explicitly be named run, users may also name a run using the value of a particular seed that was used as a string. `step_count` corresponds to the amount of steps taken by agents in the environment when logging occurs and the values logged for each relevant metric for a given logging step should be a list containing either 1 element for a metric such as a win rate which gets computed over multiple episodes or as many elements as evaluation episodes that we run at the logging step. The final logging step for a given run should contain the `absolute_metrics` values for the given metric in an experiment with these lists containing either 1 element or 10 times as many elements as evaluation episodes at each logging step. For an explanation of the `absolute metric` please see [paragraph 1 on page 9 here](https://arxiv.org/pdf/2209.10485.pdf).
 
 #### Data Tooling
-[**JSON Files Merging Script**](marl_eval/utils/merge_json_files.py): We offer a function called `concatenate_files` that reads json files from a specified directory, concatenates their contents into a single structured dictionary,
+[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from specific systems and tags, and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments.
+
+[**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): We offer a function called `concatenate_files` that reads json files from a specified directory, concatenates their contents into a single structured dictionary,
 and ensures uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated
 result into a new json file. Designed primarily for managing and aggregating json data from multiple files in experimental setups.
+
+> 📌 Using `pull_neptune_data` alongside `concatenate_files` forms an effective workflow, first generating multiple JSON files from experiments and then merging them into a single file, ready for use in marl-eval. This approach streamlines data preparation.
 
 > 🚧 **Important note on data structure** 🚧
 >
