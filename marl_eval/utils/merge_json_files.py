@@ -23,11 +23,13 @@ def _read_json_files(directory: str) -> list:
     """Reads all JSON files in a directory and returns a list of JSON objects."""
     json_data = []
 
-    for filename in os.listdir(directory):
-        if filename.endswith(".json"):
-            file_path = os.path.join(directory, filename)
-            with open(file_path) as file:
-                json_data.append(json.load(file))
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith(".json"):
+                file_path = os.path.join(root, filename)
+                with open(file_path) as file:
+                    json_data.append(json.load(file))
+
     return json_data
 
 
