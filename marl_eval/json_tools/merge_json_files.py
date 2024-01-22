@@ -17,6 +17,7 @@ import json
 import os
 from collections import defaultdict
 from typing import Dict, Tuple
+
 from colorama import Fore, Style
 
 
@@ -87,6 +88,9 @@ def concatenate_files(directory: str, json_path: str = "./concatenation") -> Dic
     # Save concatenated data in a json file
     with open(f"{json_path}.json", "w") as f:
         json.dump(concatenated_data, f, indent=4)
-    
-    print(f"{Fore.CYAN}{Style.BRIGHT}Concatenated data saved in {json_path}.json successfully!{Style.RESET_ALL}")
+
+    print(
+        f"{Fore.CYAN}{Style.BRIGHT}Concatenated data saved in {json_path}.json\
+        successfully!{Style.RESET_ALL}"
+    )
     return concatenated_data
