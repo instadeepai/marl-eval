@@ -64,7 +64,9 @@ def concatenate_files(directory: str, json_path: str = "./concatenation") -> Dic
     """Concatenate all json files in a directory and save the result in a json file."""
     # Read all json files in a directory
     json_data = _read_json_files(directory)
-
+# Create target folder
+    if not os.path.exists(json_path):
+        os.makedirs(json_path)
     # Using defaultdict for automatic handling of missing keys
     concatenated_data: Dict = defaultdict(
         lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
