@@ -33,6 +33,8 @@ def plot_single_task_curve(
     ax: Optional[Axes] = None,
     labelsize: str = "xx-large",
     ticklabelsize: str = "xx-large",
+    legend_map: Optional[Dict] = None,
+    run_times: Optional[Dict] = None,
     **kwargs: Any,
 ) -> Axes:
     """Plots an aggregate metric with CIs as a function of environment frames.
@@ -53,6 +55,10 @@ def plot_single_task_curve(
       ax: `matplotlib.axes` object.
       labelsize: Font size of the x-axis label.
       ticklabelsize: Font size of the ticks.
+      legend_map: Dictionary that maps each algorithm to a label in the legend.
+        If None, then this mapping is created based on `algorithms`.
+      run_times: Dictionary that maps each algorithm to the number of seconds it
+        took to run. If None, then environment steps will be displayed.
       **kwargs: Arbitrary keyword arguments.
 
     Returns:
@@ -68,24 +74,37 @@ def plot_single_task_curve(
         color_palette = sns.color_palette(color_palette, n_colors=len(algorithms))
         colors = dict(zip(algorithms, color_palette))
 
+    marker = kwargs.pop("marker", "o")
+    linewidth = kwargs.pop("linewidth", 2)
+
     for algorithm in algorithms:
         x_axis_len = len(aggregated_data[algorithm]["mean"])
 
         # Set x-axis values to match evaluation interval steps.
         x_axis_values = np.arange(x_axis_len) * extra_info["evaluation_interval"]
+
+        if run_times is not None:
+            x_axis_values = np.linspace(0, run_times[algorithm] / 60, x_axis_len)
+
         metric_values = np.array(aggregated_data[algorithm]["mean"])
         confidence_interval = np.array(aggregated_data[algorithm]["ci"])
         lower, upper = (
             metric_values - confidence_interval,
             metric_values + confidence_interval,
         )
+
+        if legend_map is not None:
+            algorithm_name = legend_map[algorithm]
+        else:
+            algorithm_name = algorithm
+
         ax.plot(
             x_axis_values,
             metric_values,
             color=colors[algorithm],
-            marker=kwargs.pop("marker", "o"),
-            linewidth=kwargs.pop("linewidth", 2),
-            label=algorithm,
+            marker=marker,
+            linewidth=linewidth,
+            label=algorithm_name,
         )
         ax.fill_between(
             x_axis_values, y1=lower, y2=upper, color=colors[algorithm], alpha=0.2
