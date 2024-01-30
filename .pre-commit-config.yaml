@@ -88,6 +88,6 @@ repos:
       - id: codespell
         name: codespell
         description: Checks for common misspellings in text files.
-        entry: codespell --ignore-words=.codespell-ignore.txt
+        entry: codespell --ignore-words=.codespell-ignore.txt --skip=*.ipynb
         language: python
         types: [text]

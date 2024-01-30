@@ -32,6 +32,13 @@ from marl_eval.utils.data_processing_utils import (
 # Read in and process data
 ##############################
 METRICS_TO_NORMALIZE = ["return"]
+LEGEND_MAP = {
+    "algo_1": "Algorithm 1",
+    "algo_2": "Algorithm 2",
+    "algo_3": "Algorithm 3",
+    "algo_4": "Algorithm 4",
+    "algo_5": "Algorithm 5",
+}
 
 with open("examples/example_results.json") as f:
     raw_data = json.load(f)
@@ -63,6 +70,7 @@ fig = plot_single_task(
     task_name=task,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 
 fig.figure.savefig(
@@ -75,6 +83,7 @@ fig = performance_profiles(
     environment_comparison_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_performance_profile.png", bbox_inches="tight"
@@ -85,6 +94,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
     save_tabular_as_latex=True,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_aggregate_scores.png", bbox_inches="tight"
@@ -99,6 +109,7 @@ fig = probability_of_improvement(
         ["algo_1", "algo_3"],
         ["algo_2", "algo_4"],
     ],
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_prob_of_improvement.png", bbox_inches="tight"
@@ -108,6 +119,7 @@ fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
     metric_name="success_rate",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig(
     "examples/plots/success_rate_sample_effeciency_curve.png", bbox_inches="tight"
@@ -126,6 +138,7 @@ fig = plot_single_task(
     task_name=task,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 
 fig.figure.savefig(f"examples/plots/env_1_{task}_agg_return.png", bbox_inches="tight")
@@ -136,6 +149,7 @@ fig = performance_profiles(
     environment_comparison_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig("examples/plots/return_performance_profile.png", bbox_inches="tight")
 
@@ -144,6 +158,7 @@ fig, _, _ = aggregate_scores(  # type: ignore
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
     save_tabular_as_latex=True,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig("examples/plots/return_aggregate_scores.png", bbox_inches="tight")
 
@@ -156,6 +171,7 @@ fig = probability_of_improvement(
         ["algo_1", "algo_3"],
         ["algo_2", "algo_4"],
     ],
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig("examples/plots/return_prob_of_improvement.png", bbox_inches="tight")
 
@@ -163,6 +179,7 @@ fig, _, _ = sample_efficiency_curves(  # type: ignore
     sample_effeciency_matrix,
     metric_name="return",
     metrics_to_normalize=METRICS_TO_NORMALIZE,
+    legend_map=LEGEND_MAP,
 )
 fig.figure.savefig(
     "examples/plots/return_sample_effeciency_curve.png", bbox_inches="tight"
