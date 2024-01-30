@@ -22,7 +22,7 @@ from colorama import Fore, Style
 from tqdm import tqdm
 
 
-def pull_neptune_data(project_name: str, tag: List, store_directory: str = ".") -> None:
+def pull_neptune_data(project_name: str, tag: List, store_directory: str = "./downloaded_json_data") -> None:
     """Pulls the experiments data from Neptune to local directory.
 
     Args:
