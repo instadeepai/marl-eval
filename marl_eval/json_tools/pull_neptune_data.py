@@ -22,13 +22,19 @@ from colorama import Fore, Style
 from tqdm import tqdm
 
 
-def pull_neptune_data(project_name: str, tag: List, store_directory: str = "./downloaded_json_data") -> None:
+def pull_neptune_data(
+    project_name: str,
+    tag: List,
+    store_directory: str = "./downloaded_json_data",
+    neptune_data_directory: str = "metrics",
+) -> None:
     """Pulls the experiments data from Neptune to local directory.
 
     Args:
         project_name (str): Name of the Neptune project.
         tag (List): List of tags.
         store_directory (str, optional): Directory to store the data.
+        neptune_data_directory (str): Directory in Neptune where the data is stored.
     """
     # Get the run ids
     project = neptune.init_project(project=project_name)
@@ -43,9 +49,9 @@ def pull_neptune_data(project_name: str, tag: List, store_directory: str = "./do
     itr = 0  # To create a unique directory for each unzipped file
     for run_id in tqdm(run_ids, desc="Downloading Neptune Data"):
         run = neptune.init_run(project=project_name, with_id=run_id, mode="read-only")
-        for data_key in run.get_structure()["metrics"].keys():
+        for data_key in run.get_structure()[neptune_data_directory].keys():
             file_path = f"{store_directory}/{data_key}"
-            run[f"metrics/{data_key}"].download(destination=file_path)
+            run[f"{neptune_data_directory}/{data_key}"].download(destination=file_path)
             try:
                 with zipfile.ZipFile(file_path, "r") as zip_ref:
                     # Create a directory with to store unzipped data
