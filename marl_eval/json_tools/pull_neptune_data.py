@@ -46,26 +46,26 @@ def pull_neptune_data(
         os.makedirs(store_directory)
 
     # Download and unzip the data
-    itr = 0  # To create a unique directory for each unzipped file
     for run_id in tqdm(run_ids, desc="Downloading Neptune Data"):
         run = neptune.init_run(project=project_name, with_id=run_id, mode="read-only")
         for data_key in run.get_structure()[neptune_data_directory].keys():
             file_path = f"{store_directory}/{data_key}"
             run[f"{neptune_data_directory}/{data_key}"].download(destination=file_path)
+            # Try to unzip the file else continue to the next file
             try:
                 with zipfile.ZipFile(file_path, "r") as zip_ref:
                     # Create a directory with to store unzipped data
-                    os.makedirs(f"{store_directory}/{itr}", exist_ok=True)
+                    os.makedirs(f"{file_path}_unzip", exist_ok=True)
                     # Unzip the data
-                    zip_ref.extractall(f"{store_directory}/{itr}")
+                    zip_ref.extractall(f"{file_path}_unzip")
                     # Remove the zip file
                     os.remove(file_path)
             except zipfile.BadZipFile:
-                # If it's not a zip file, just continue to the next file
+                # If it's not a zip file, but a json file.
+                # Continue as the file is already downloaded!
                 continue
             except Exception as e:
                 print(f"An error occurred while unzipping or storing {file_path}: {e}")
-            itr += 1
         run.stop()
 
     print(f"{Fore.CYAN}{Style.BRIGHT}Data downloaded successfully!{Style.RESET_ALL}")
