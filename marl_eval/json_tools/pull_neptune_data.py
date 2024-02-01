@@ -61,7 +61,7 @@ def pull_neptune_data(
                     # Remove the zip file
                     os.remove(file_path)
             except zipfile.BadZipFile:
-                # If it's not a zip file, but a json file.
+                # If the file is not zipped continue to the next file
                 # Continue as the file is already downloaded!
                 continue
             except Exception as e:
