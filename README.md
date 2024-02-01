@@ -147,7 +147,7 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 
 [**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_files` reads json files from a specified local directory and concatenates their contents into a single structured dictionary, while ensuring uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated result into a new single json file for downstream aggregation and plotting.
 
-> 📌 Using `pull_neptune_data` alongside `concatenate_files` forms an effective workflow, first generating multiple JSON files from experiments and then merging them into a single file, ready for use in marl-eval. This approach streamlines data preparation.
+> 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
 
 > 🚧 **Important note on data structure** 🚧
 >
