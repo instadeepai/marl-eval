@@ -28,7 +28,7 @@ def pull_neptune_data(
     store_directory: str = "./downloaded_json_data",
     neptune_data_directory: str = "metrics",
 ) -> None:
-    """Pulls the experiments data from Neptune to local directory.
+    """Pulls experiment json data from Neptune to a local directory.
 
     Args:
         project_name (str): Name of the Neptune project.
