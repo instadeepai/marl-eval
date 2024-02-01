@@ -62,7 +62,7 @@ def pull_neptune_data(
                     os.remove(file_path)
             except zipfile.BadZipFile:
                 # If the file is not zipped continue to the next file
-                # Continue as the file is already downloaded!
+                # as the file is already downloaded.
                 continue
             except Exception as e:
                 print(f"An error occurred while unzipping or storing {file_path}: {e}")
