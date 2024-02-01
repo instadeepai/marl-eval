@@ -37,6 +37,7 @@ def performance_profiles(
     dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
+    legend_map: Optional[Dict[str, str]] = None,
 ) -> Figure:
     """Produces performance profile plots.
 
@@ -45,6 +46,7 @@ def performance_profiles(
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
+        legend_map: Dictionary that maps each algorithm to a custom legend label.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -63,6 +65,14 @@ def performance_profiles(
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
+
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+        # Replace keys in data dict with corresponding key in legend map
+        data_dictionary = {
+            legend_map[algo]: value for algo, value in data_dictionary.items()
+        }
+        algorithms = list(data_dictionary.keys())
 
     if metric_name in metrics_to_normalize:
         xlabel = "Normalized " + " ".join(metric_name.split("_"))
@@ -95,6 +105,7 @@ def aggregate_scores(
     rounding_decimals: Optional[int] = 2,
     tabular_results_file_path: str = "./aggregated_score",
     save_tabular_as_latex: Optional[bool] = False,
+    legend_map: Optional[Dict[str, str]] = None,
 ) -> Tuple[Figure, Dict[str, Dict[str, int]], Dict[str, Dict[str, float]]]:
     """Produces aggregated score plots.
 
@@ -106,6 +117,7 @@ def aggregate_scores(
         rounding_decimals:number up to which the results values are rounded.
         tabular_results_file_path: location to store the tabular results.
         save_tabular_as_latex: store tabular results in latex format in a .txt file.
+        legend_map: Dictionary that maps each algorithm to a custom legend label.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -127,8 +139,15 @@ def aggregate_scores(
     # Upper case all algorithm names
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
-
     algorithms = list(data_dictionary.keys())
+
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+        # Replace keys in data dict with corresponding key in legend map
+        data_dictionary = {
+            legend_map[algo]: value for algo, value in data_dictionary.items()
+        }
+        algorithms = list(data_dictionary.keys())
 
     aggregate_func = lambda x: np.array(  # noqa: E731
         [
@@ -226,6 +245,7 @@ def probability_of_improvement(
     metric_name: str,
     metrics_to_normalize: List[str],
     algorithms_to_compare: List[List],
+    legend_map: Optional[Dict[str, str]] = None,
 ) -> Figure:
     """Produces probability of improvement plots.
 
@@ -233,7 +253,9 @@ def probability_of_improvement(
         dictionary: Dictionary containing 2D arrays of normalised absolute metric scores
             for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
+        metrics_to_normalize: List of metrics that are normalised.
         algorithms_to_compare: 2D list containing pairs of algorithms to be compared.
+        legend_map: Dictionary that maps each algorithm to a custom legend label.
 
     Returns:
         fig: Matplotlib figure for storing.
@@ -257,6 +279,17 @@ def probability_of_improvement(
         [pair[0].upper(), pair[1].upper()] for pair in algorithms_to_compare
     ]
 
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+        # Replace keys in data dict with corresponding key in legend map
+        data_dictionary = {
+            legend_map[algo]: value for algo, value in data_dictionary.items()
+        }
+        # Make sure that the algorithms to compare are also in the legend map
+        algorithms_to_compare = [
+            [legend_map[pair[0]], legend_map[pair[1]]] for pair in algorithms_to_compare
+        ]
+
     algorithm_pairs = {}
     for pair in algorithms_to_compare:
         algorithm_pairs[",".join(pair)] = (
@@ -276,6 +309,7 @@ def sample_efficiency_curves(
     dictionary: Dict[str, Dict[str, Any]],
     metric_name: str,
     metrics_to_normalize: List[str],
+    legend_map: Optional[Dict[str, str]] = None,
     xlabel: str = "Timesteps",
 ) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
     """Produces sample efficiency curve plots.
@@ -285,6 +319,7 @@ def sample_efficiency_curves(
              metric scores for metric algorithm pairs.
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
+        legend_map: Dictionary that maps each algorithm to a custom legend label.
         xlabel: Label for x-axis.
 
     Returns:
@@ -311,6 +346,14 @@ def sample_efficiency_curves(
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
+
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+        # Replace keys in data dict with corresponding key in legend map
+        data_dictionary = {
+            legend_map[algo]: value for algo, value in data_dictionary.items()
+        }
+        algorithms = list(data_dictionary.keys())
 
     # Find lowest values from amount of runs that have completed
     # across all algorithms
@@ -356,6 +399,8 @@ def plot_single_task(
     metric_name: str,
     metrics_to_normalize: List[str],
     xlabel: str = "Timesteps",
+    legend_map: Optional[Dict[str, str]] = None,
+    run_times: Optional[Dict[str, float]] = None,
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -366,6 +411,10 @@ def plot_single_task(
         metric_name: Name of metric to produce plots for.
         metrics_to_normalize: List of metrics that are normalised.
         xlabel: Label for x-axis.
+        legend_map: Dictionary that maps each algorithm to a label in the legend.
+            If None, then this mapping is created based on `algorithms`.
+        run_times: Dictionary that maps each algorithm to the number of seconds it
+            took to run. If None, then environment steps will be displayed.
     """
     metric_name, task_name, environment_name, metrics_to_normalize = lower_case_inputs(
         metric_name, task_name, environment_name, metrics_to_normalize
@@ -393,6 +442,13 @@ def plot_single_task(
     algorithms = list(task_mean_ci_data.keys())
     algorithms.remove("extra")
 
+    if legend_map is not None:
+        legend_map = {algo.upper(): value for algo, value in legend_map.items()}
+
+    if run_times is not None:
+        run_times = {algo.upper(): value for algo, value in run_times.items()}
+        xlabel = "Time (Minutes)"
+
     fig = plot_single_task_curve(
         task_mean_ci_data,
         algorithms=algorithms,
@@ -401,6 +457,9 @@ def plot_single_task(
         legend=algorithms,
         figsize=(15, 8),
         color_palette=cc.glasbey_category10,
+        legend_map=legend_map,
+        run_times=run_times,
+        marker="",
     )
 
     return fig

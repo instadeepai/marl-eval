@@ -256,7 +256,9 @@ def data_process_pipeline(  # noqa: C901
                                         ]
                                         normed_metric_array = (
                                             metric_array - metric_global_min
-                                        ) / (metric_global_max - metric_global_min)
+                                        ) / (
+                                            metric_global_max - metric_global_min + 1e-6
+                                        )
                                         processed_data[env][task][algorithm][run][step][
                                             f"norm_{metric}"
                                         ] = normed_metric_array.tolist()
