@@ -151,7 +151,7 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 > For producing probability of improvement plots, it is important that any algorithm names in the dataset do not contain any commas.
 
 ### Data Tooling
-[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags, and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
+[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
 
 [**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_files` reads multiple json files from a specified local directory and concatenates their contents into a single structured dictionary, while ensuring uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated result into a new single json file for downstream aggregation and plotting.
 
