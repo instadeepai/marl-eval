@@ -142,13 +142,6 @@ In order to use the tools we suggest effectively, raw data json files are requir
 ```
 Here `run_1` to `run_n` correspond to the number of independent runs in a given experiment and `step_1` to `step_k` correspond to the number of logged steps in a given environment. We do not require an independent run to explicitly be named run, users may also name a run using the value of a particular seed that was used as a string. `step_count` corresponds to the amount of steps taken by agents in the environment when logging occurs and the values logged for each relevant metric for a given logging step should be a list containing either 1 element for a metric such as a win rate which gets computed over multiple episodes or as many elements as evaluation episodes that we run at the logging step. The final logging step for a given run should contain the `absolute_metrics` values for the given metric in an experiment with these lists containing either 1 element or 10 times as many elements as evaluation episodes at each logging step. For an explanation of the `absolute metric` please see [paragraph 1 on page 9 here](https://arxiv.org/pdf/2209.10485.pdf).
 
-### Data Tooling
-[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags, and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune. 
-
-[**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_files` reads json files from a specified local directory and concatenates their contents into a single structured dictionary, while ensuring uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated result into a new single json file for downstream aggregation and plotting.
-
-> 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
-
 > 🚧 **Important note on data structure** 🚧
 >
 > Due to the underlying statistical aggregation relying on `numpy` array operations it is required that all data contain the same number of data points. This implies that, for a given environment, it is required that all experiment trials should be done using the same algorithms, on the same tasks, for the same number of independent runs and for the same amount of evaluation steps. The code will currently check that these conditions are met and will not be able to progress otherwise. In the case that this happens, the `check_data` method of the [`DiagnoseData`](marl_eval/utils/diagnose_data_errors.py) class will be able to tell a user exactly what is causing the issues in their raw experiment data.
@@ -156,6 +149,13 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 > 🚧 **Important note on algorithm names** 🚧
 >
 > For producing probability of improvement plots, it is important that any algorithm names in the dataset do not contain any commas.
+
+### Data Tooling
+[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags, and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
+
+[**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_files` reads json files from a specified local directory and concatenates their contents into a single structured dictionary, while ensuring uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated result into a new single json file for downstream aggregation and plotting.
+
+> 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
 
 ### Metrics to be normalised during data processing ⚗️
 Certain metrics, like episode returns, are required to be normalised during data processing. In order to achieve this it is required that users give these metric names, in the form of strings in a python list, to the `data_process_pipeline` function, the `create_matrices_for_rliable` function and all plotting functions as an argument. In the case where no normalisation is required this argument may be omitted.

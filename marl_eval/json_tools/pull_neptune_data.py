@@ -26,7 +26,7 @@ def pull_neptune_data(
     project_name: str,
     tag: List,
     store_directory: str = "./downloaded_json_data",
-    neptune_data_directory: str = "metrics",
+    neptune_data_key: str = "metrics",
 ) -> None:
     """Pulls experiment json data from Neptune to a local directory.
 
@@ -34,7 +34,7 @@ def pull_neptune_data(
         project_name (str): Name of the Neptune project.
         tag (List): List of tags.
         store_directory (str, optional): Directory to store the data.
-        neptune_data_directory (str): Directory in Neptune where the data is stored.
+        neptune_data_key (str): Key in the neptune run where the json data is stored.
     """
     # Get the run ids
     project = neptune.init_project(project=project_name)
@@ -48,9 +48,9 @@ def pull_neptune_data(
     # Download and unzip the data
     for run_id in tqdm(run_ids, desc="Downloading Neptune Data"):
         run = neptune.init_run(project=project_name, with_id=run_id, mode="read-only")
-        for data_key in run.get_structure()[neptune_data_directory].keys():
+        for data_key in run.get_structure()[neptune_data_key].keys():
             file_path = f"{store_directory}/{data_key}"
-            run[f"{neptune_data_directory}/{data_key}"].download(destination=file_path)
+            run[f"{neptune_data_key}/{data_key}"].download(destination=file_path)
             # Try to unzip the file else continue to the next file
             try:
                 with zipfile.ZipFile(file_path, "r") as zip_ref:
@@ -62,7 +62,7 @@ def pull_neptune_data(
                     os.remove(file_path)
             except zipfile.BadZipFile:
                 # If the file is not zipped continue to the next file
-                # as the file is already downloaded.
+                # as it is already downloaded.
                 continue
             except Exception as e:
                 print(f"An error occurred while unzipping or storing {file_path}: {e}")
