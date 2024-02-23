@@ -14,3 +14,4 @@
 # limitations under the License.
 
 """JSON tools for data preprocessing."""
+from .json_logger import JsonLogger
