@@ -27,11 +27,11 @@ class JsonLogger:
     https://tinyurl.com/2t6fy548
 
     Args:
-        path (str): where to write the file
-        algorithm_name (str): algorithm name
-        task_name (str): task name
-        environment_name (str): environment name
-        seed (int): random seed of the experiment
+        path (str): folder path for where to save metrics.json.
+        algorithm_name (str): algorithm name e.g PPO.
+        task_name (str): task name e.g 3s5z (for SMAC).
+        environment_name (str): environment name e.g SMAC.
+        seed (int): random seed of the experiment.
     """
 
     def __init__(
