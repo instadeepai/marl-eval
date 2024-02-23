@@ -100,7 +100,6 @@ class JsonLogger:
 
         if is_absolute_metric:
             self.run_data["absolute_metrics"].update(metrics)
-
         else:
             step_metrics = {  # type: ignore
                 "step_count": timestep,
