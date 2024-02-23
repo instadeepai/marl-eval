@@ -20,7 +20,7 @@ from typing import Dict, Optional
 
 
 class JsonLogger:
-    """Writer to create json files for reporting experiment results.
+    """Logger to create JSON files for reporting experiment results.
 
     This writer follow suggested marl-eval protocol and was adapted from
     the implementation found in BenchMARL which can be viewed
