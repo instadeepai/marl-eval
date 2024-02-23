@@ -42,7 +42,7 @@ class JsonLogger:
         environment_name: str,
         seed: int,
     ):
-        """Initialises the JsonWriter and creates the file if it doesn't exist."""
+        """Initialises the JsonLogger and creates a metrics file if it doesn't exist."""
         self.file_path = f"{path}/metrics.json"
         self.run_data: Dict = {"absolute_metrics": {}}
 
