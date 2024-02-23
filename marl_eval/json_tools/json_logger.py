@@ -82,12 +82,12 @@ class JsonLogger:
         """Writes a step to the json reporting file.
 
         Args:
-            timestep (int): the current environment timestep
-            key (str): the metric that should be logged
-            value (str): the value of the metric that should be logged
-            evaluation_step (int): the evaluation step
+            timestep (int): the current environment timestep.
+            key (str): the name of the metric to be logged.
+            value (str): the value of the metric to be logged.
+            evaluation_step (int): the number of evaluations already run.
             is_absolute_metric (bool): whether the metric being logged is
-                an absolute metric
+                an absolute metric.
         """
 
         current_time = time.time()
