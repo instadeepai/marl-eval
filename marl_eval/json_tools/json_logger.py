@@ -19,7 +19,7 @@ import time
 from typing import Dict, Optional
 
 
-class JsonWriter:
+class JsonLogger:
     """Writer to create json files for reporting experiment results.
 
     This writer follow suggested marl-eval protocol and was adapted from
