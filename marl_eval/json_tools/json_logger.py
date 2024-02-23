@@ -22,9 +22,9 @@ from typing import Dict, Optional
 class JsonLogger:
     """Logger to create JSON files for reporting experiment results.
 
-    This writer follow suggested marl-eval protocol and was adapted from
-    the implementation found in BenchMARL which can be viewed
-    at https://tinyurl.com/2t6fy548
+    This logger follows the suggested marl-eval protocol and was adapted
+    from the implementation found in BenchMARL which can be viewed at:
+    https://tinyurl.com/2t6fy548
 
     Args:
         path (str): where to write the file
