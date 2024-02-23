@@ -50,7 +50,6 @@ class JsonLogger:
         if os.path.isfile(self.file_path):
             with open(self.file_path) as f:
                 data = json.load(f)
-
         else:
             # Create the logging directory if it doesn't exist
             os.makedirs(path, exist_ok=True)
