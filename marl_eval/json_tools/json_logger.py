@@ -27,7 +27,7 @@ class JsonLogger:
     https://tinyurl.com/2t6fy548
 
     Args:
-        path (str): folder path for where to save metrics.json.
+        path (str): folder path for saving the `metrics.json` file.
         algorithm_name (str): algorithm name e.g PPO.
         task_name (str): task name e.g 3s5z (for SMAC).
         environment_name (str): environment name e.g SMAC.
