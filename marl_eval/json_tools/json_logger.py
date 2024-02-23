@@ -79,7 +79,7 @@ class JsonLogger:
         evaluation_step: Optional[int] = None,
         is_absolute_metric: bool = False,
     ) -> None:
-        """Writes a step to the json reporting file
+        """Writes a step to the json reporting file.
 
         Args:
             timestep (int): the current environment timestep
