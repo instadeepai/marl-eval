@@ -84,6 +84,7 @@ For a more detailed example illustrating how multiple plots may be made for vari
 
 In order to use the tools, raw experiment data must be in the suggested format and stored in a json file. If given in the correct format, `marl-eval` will aggregate experiment data, plot the results and produce aggregated tabular results as a `.csv` file, in LaTeX table formatting and in the terminal.
 
+<a id="exp_structure"></a>
 ### Data Structure for Raw Experiment data 📒
 
 In order to use the tools we suggest effectively, raw data json files are required to have the following structure :
@@ -152,7 +153,7 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 
 ### JSON Data Tooling
 
-[**JSON Logger**](marl_eval/json_tools/json_logger.py): `JsonLogger` handles logging data according to the structured format detailed [above](#data-structure-for-raw-experiment-data-📒).
+[**JSON Logger**](marl_eval/json_tools/json_logger.py): `JsonLogger` handles logging data according to the structured format detailed [above](#exp_structure).
 
 [**Neptune Data Pulling Script**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
 
@@ -160,7 +161,7 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 
 > 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
 
-For more details on how to use the JSON tools, please see the [detailed usage guide]().
+For more details on how to use the JSON tools, please see the [detailed usage guide](docs/json_tooling_usage.md).
 
 ### Metrics to be normalised during data processing ⚗️
 Certain metrics, like episode returns, are required to be normalised during data processing. In order to achieve this it is required that users give these metric names, in the form of strings in a python list, to the `data_process_pipeline` function, the `create_matrices_for_rliable` function and all plotting functions as an argument. In the case where no normalisation is required this argument may be omitted.
