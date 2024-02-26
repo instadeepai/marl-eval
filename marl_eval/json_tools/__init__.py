@@ -15,5 +15,4 @@
 
 """JSON tools for data preprocessing."""
 from .json_logger import JsonLogger
-from .merge_json_files import concatenate_json_files
-from .pull_neptune_data import pull_neptune_data
+from .json_utils import concatenate_json_files, pull_neptune_data

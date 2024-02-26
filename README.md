@@ -155,9 +155,9 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 
 [**JSON Logger**](marl_eval/json_tools/json_logger.py): `JsonLogger` handles logging data according to the structured format detailed [above](#exp_structure).
 
-[**Neptune Data Pulling Script**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
+[**Neptune Data Pulling Script**](marl_eval/json_tools/json_utils.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
 
-[**JSON File Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_json_files` reads multiple JSON files from a specified local directory and concatenates their contents into a single structured JSON file.
+[**JSON File Merging Script**](marl_eval/json_tools/json_utils.py): `concatenate_json_files` reads multiple JSON files from a specified local directory and concatenates their contents into a single structured JSON file.
 
 > 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
 
