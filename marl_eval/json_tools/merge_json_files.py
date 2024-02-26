@@ -62,7 +62,7 @@ def _check_seed(concatenated_data: Dict, algo_data: Dict, seed_number: str) -> s
         return seed_number
 
 
-def concatenate_files(
+def concatenate_json_files(
     input_directory: str, output_json_path: str = "concatenated_json_files/"
 ) -> Dict:
     """Concatenate all json files in a directory and save the result in a json file."""

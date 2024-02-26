@@ -83,7 +83,7 @@ class JsonLogger:
         Args:
             timestep (int): the current environment timestep.
             key (str): the name of the metric to be logged.
-            value (str): the value of the metric to be logged.
+            value (float): the value of the metric to be logged.
             evaluation_step (int): the number of evaluations already run.
             is_absolute_metric (bool): whether the metric being logged is
                 an absolute metric.

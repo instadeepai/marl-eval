@@ -150,12 +150,17 @@ Here `run_1` to `run_n` correspond to the number of independent runs in a given 
 >
 > For producing probability of improvement plots, it is important that any algorithm names in the dataset do not contain any commas.
 
-### Data Tooling
-[**Pull Neptune Data**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
+### JSON Data Tooling
 
-[**JSON Files Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_files` reads multiple json files from a specified local directory and concatenates their contents into a single structured dictionary, while ensuring uniqueness of seed numbers within the data. It handles nested json structures and saves the concatenated result into a new single json file for downstream aggregation and plotting.
+[**JSON Logger**](marl_eval/json_tools/json_logger.py): `JsonLogger` handles logging data according to the structured format detailed [above](#data-structure-for-raw-experiment-data-📒).
+
+[**Neptune Data Pulling Script**](marl_eval/json_tools/pull_neptune_data.py): `pull_neptune_data` connects to a Neptune project, retrieves experiment data from a given list of tags and downloads it to a local directory. This function is particularly useful when there is a need to pull data from multiple experiments that were logged separately on Neptune.
+
+[**JSON File Merging Script**](marl_eval/json_tools/merge_json_files.py): `concatenate_json_files` reads multiple JSON files from a specified local directory and concatenates their contents into a single structured JSON file.
 
 > 📌 Using `pull_neptune_data` followed by `concatenate_files` forms an effective workflow, where multiple JSON files from different experiment runs are first pulled from Neptune and then merged into a single file, ready for use in marl-eval.
+
+For more details on how to use the JSON tools, please see the [detailed usage guide]().
 
 ### Metrics to be normalised during data processing ⚗️
 Certain metrics, like episode returns, are required to be normalised during data processing. In order to achieve this it is required that users give these metric names, in the form of strings in a python list, to the `data_process_pipeline` function, the `create_matrices_for_rliable` function and all plotting functions as an argument. In the case where no normalisation is required this argument may be omitted.
