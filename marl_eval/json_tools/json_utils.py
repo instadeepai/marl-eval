@@ -121,7 +121,7 @@ def pull_neptune_data(
         project_name (str): Name of the Neptune project.
         tag (List): List of tags for the experiment(s) that contain the desired JSON files.
         store_directory (str, optional): Directory to store the data.
-        neptune_data_key (str): Key in the neptune run where the json data is stored.
+        neptune_data_key (str, optional): Key in the neptune run where the json data is stored. Default: metrics.
     """
     # Get the run ids
     project = neptune.init_project(project=project_name)
