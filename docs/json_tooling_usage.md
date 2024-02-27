@@ -64,7 +64,7 @@ The `pull_neptune_data` script will download JSON data for multiple experiment r
 * `store_directory`: a local directory where downloaded JSON files should be stored.
 * `neptune_data_key`: a key in a particular Neptune run where JSON data has been stored. By default this while be `metrics` implying that the JSON file will be stored as `metrics/<metric_file_name>.zip` in a given Neptune run. For an example of how data is uploaded please see [here](https://github.com/instadeepai/Mava/blob/ce9a161a0b293549b2a34cd9a8d794ba7e0c9949/mava/utils/logger.py#L182).
 
-In onrder to download data, the tool can be used as follows:
+In order to download data, the tool can be used as follows:
 
 ```python
 from marl_eval.json_tools import pull_netpune_data
