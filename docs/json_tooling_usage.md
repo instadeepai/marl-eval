@@ -32,7 +32,7 @@ To write data to the logger, the `write` method takes in the following arguments
 * `evaluation_step`: the number of evaluations that have been performed so far.
 * `is_absolute_metric`: a boolean flag indicating whether an absolute metric is being logged.
 
-Suppose a the `4`th evaluation is being performed at environment timestep `40000` for the `episode_return` metric with a value of `12.9` then the `write` method could be used as follows:
+Suppose the `4`th evaluation is being performed at environment timestep `40000` for the `episode_return` metric with a value of `12.9` then the `write` method could be used as follows:
 
 ```python
 json_logger.write(
