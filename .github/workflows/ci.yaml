@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        docker-image: ["python:3.8"]
+        docker-image: ["python:3.9", "python:3.10"]
     steps:
     - name: Checkout marl_eval
       uses: actions/checkout@v2
