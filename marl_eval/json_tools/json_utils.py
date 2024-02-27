@@ -15,10 +15,13 @@
 
 import json
 import os
+import zipfile
 from collections import defaultdict
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 
+import neptune
 from colorama import Fore, Style
+from tqdm import tqdm
 
 
 def _read_json_files(directory: str) -> list:
@@ -62,7 +65,7 @@ def _check_seed(concatenated_data: Dict, algo_data: Dict, seed_number: str) -> s
         return seed_number
 
 
-def concatenate_files(
+def concatenate_json_files(
     input_directory: str, output_json_path: str = "concatenated_json_files/"
 ) -> Dict:
     """Concatenate all json files in a directory and save the result in a json file."""
@@ -104,3 +107,56 @@ def concatenate_files(
         + f"{output_json_path}metrics.json successfully!{Style.RESET_ALL}"
     )
     return concatenated_data
+
+
+def pull_neptune_data(
+    project_name: str,
+    tag: List,
+    store_directory: str = "./downloaded_json_data",
+    neptune_data_key: str = "metrics",
+) -> None:
+    """Pulls experiment json data from Neptune to a local directory.
+
+    Args:
+        project_name (str): Name of the Neptune project.
+        tag (List): List of tags for the experiment(s) that contain the
+            desired JSON files.
+        store_directory (str, optional): Directory to store the data.
+            Default: ./downloaded_json_data.
+        neptune_data_key (str, optional): Key in the neptune run where the
+            json data is stored. Default: metrics.
+    """
+    # Get the run ids
+    project = neptune.init_project(project=project_name)
+    runs_table_df = project.fetch_runs_table(state="inactive", tag=tag).to_pandas()
+    run_ids = runs_table_df["sys/id"].values.tolist()
+
+    # Check if store_directory exists
+    if not os.path.exists(store_directory):
+        os.makedirs(store_directory)
+
+    # Download and unzip the data
+    for run_id in tqdm(run_ids, desc="Downloading Neptune Data"):
+        run = neptune.init_run(project=project_name, with_id=run_id, mode="read-only")
+        for data_key in run.get_structure()[neptune_data_key].keys():
+            file_path = f"{store_directory}/{data_key}"
+            run[f"{neptune_data_key}/{data_key}"].download(destination=file_path)
+            # Try to unzip the file else continue to the next file
+            try:
+                with zipfile.ZipFile(file_path, "r") as zip_ref:
+                    # Create a directory with to store unzipped data
+                    os.makedirs(f"{file_path}_unzip", exist_ok=True)
+                    # Unzip the data
+                    zip_ref.extractall(f"{file_path}_unzip")
+                    # Remove the zip file
+                    os.remove(file_path)
+            except zipfile.BadZipFile:
+                # If the file is not zipped continue to the next file
+                # as it is already downloaded and doesn't need to be
+                # unzipped.
+                continue
+            except Exception as e:
+                print(f"An error occurred while unzipping or storing {file_path}: {e}")
+        run.stop()
+
+    print(f"{Fore.CYAN}{Style.BRIGHT}Data downloaded successfully!{Style.RESET_ALL}")
