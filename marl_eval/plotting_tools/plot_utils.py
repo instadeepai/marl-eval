@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from rliable.plot_utils import _annotate_and_decorate_axis
 
 
@@ -36,7 +37,7 @@ def plot_single_task_curve(
     legend_map: Optional[Dict] = None,
     run_times: Optional[Dict] = None,
     **kwargs: Any,
-) -> Axes:
+) -> Figure:
     """Plots an aggregate metric with CIs as a function of environment frames.
 
     Args:
