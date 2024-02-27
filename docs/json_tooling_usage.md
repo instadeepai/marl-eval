@@ -92,3 +92,11 @@ concatenate_json_files(
     output_json_path="path/to/merged_file/folder/",
 )
 ```
+
+## An example use case:
+* Run 10 independent trials of an experiment on different cloud machines with different seeds.
+* Log each experiment using the `JsonLogger` to it's own path e.g metrics/experiment_<i>.
+* Push these JSON logs to neptune.
+* Retrieve all the JSON logs locally using the `pull_neptune_data` function.
+* Merge all the JSON logs using the `concatenate_json_files` function.
+* Use the plotting tools to visualize the full experiment results.
