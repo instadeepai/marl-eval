@@ -11,8 +11,8 @@
     <a href="https://badge.fury.io/py/id-marl-eval">
       <img src="https://badge.fury.io/py/id-marl-eval.svg" alt="PyPI version" height="18">
     </a>
-    <a href="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yml">
-      <img src="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yml/badge.svg" alt="Tests and linters">
+    <a href="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yaml">
+      <img src="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yaml/badge.svg" alt="Tests and linters">
     </a>
     <a href="https://github.com/psf/black">
       <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code Style">
