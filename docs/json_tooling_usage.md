@@ -4,7 +4,7 @@
 
 The JSON logger will write experiment data to JSON files in the format required for downstream aggregation and plotting with the MARL-eval tools. To initialise the logger the following arguments are required:
 
-* `path`: the path where a file called `metrics.json` will be stored which will contain all logged metrics for a given experiment. Data will be stored in `<path>/metrics.json` by default. If a JSON file already exists at a particular path, new experiment data will be appended to it. MARL-eval does currently **NOT SUPPORT** asynchronous logging. So if you intend to run distributed experiments, please create a unique `path` per experiment and concatenate all generated JSON files after all experiments have been run.
+* `path`: the path where a file called `metrics.json` will be stored which will contain all logged metrics for a given experiment. Data will be stored in `<path>/metrics.json` by default. If a JSON file already exists at a particular path, new experiment data will be appended to it. MARL-eval currently does not support asynchronous logging. So if you intend to run distributed experiments, please create a unique `path` per experiment and concatenate all generated JSON files after all experiments have been run with the provided `concatenate_json_files` function.
 * `algorithm_name`: the name of the algorithm being run in the current experiment.
 * `task_name`: the name of the task in the current experiment.
 * `environment_name`: the name of the environment in the current experiment.
