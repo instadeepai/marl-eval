@@ -4,6 +4,27 @@
     <p>A tool for standardised experiment data aggregation for cooperative multi-agent reinforcement learning</p>
 </h2>
 
+<p align="center">
+    <a href="https://www.python.org/doc/versions/">
+      <img src="https://img.shields.io/badge/python-3.9%20%7C%203.10-blue" alt="Python Versions">
+    </a>
+    <a href="https://badge.fury.io/py/id-marl-eval">
+      <img src="https://badge.fury.io/py/id-marl-eval.svg" alt="PyPI version" height="18">
+    </a>
+    <a href="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yaml">
+      <img src="https://github.com/instadeepai/marl-eval/actions/workflows/ci.yaml/badge.svg" alt="Tests and linters">
+    </a>
+    <a href="https://github.com/psf/black">
+      <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code Style">
+    </a>
+    <a href="http://mypy-lang.org/">
+      <img src="http://www.mypy-lang.org/static/mypy_badge.svg" alt="MyPy">
+    </a>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+      <img src="https://img.shields.io/badge/License-Apache%202.0-orange.svg" alt="License">
+    </a>
+</p>
+
 ## Welcome to MARL-eval 🧪
 `marl-eval` is an open-source Python package for simplifying and standardising the statistical aggregation and plotting of cooperative multi-agent reinforcement learning experimental data.
 
@@ -28,7 +49,7 @@ Or to install directly from source:
 ```bash
 pip install "git+https://github.com/instadeepai/marl-eval.git"
 ```
-It should be noted that we have tested `marl-eval` on Python 3.8.
+It should be noted that we have tested `marl-eval` on Python 3.9 and 3.10.
 
 ## Quickstart ⚡
 
