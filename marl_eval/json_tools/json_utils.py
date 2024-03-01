@@ -22,6 +22,7 @@ from typing import Dict, List, Tuple
 import neptune
 from colorama import Fore, Style
 from tqdm import tqdm
+import logging
 
 
 def _read_json_files(directory: str) -> list:
@@ -135,28 +136,42 @@ def pull_neptune_data(
     if not os.path.exists(store_directory):
         os.makedirs(store_directory)
 
+    # Suppress neptune logger
+    neptune_logger = logging.getLogger('neptune')
+    neptune_logger.setLevel(logging.ERROR)
+
+    # Initialise a counter to ensure unique file names
+    counter = 0
+
     # Download and unzip the data
     for run_id in tqdm(run_ids, desc="Downloading Neptune Data"):
         run = neptune.init_run(project=project_name, with_id=run_id, mode="read-only")
         for data_key in run.get_structure()[neptune_data_key].keys():
+            counter += 1
             file_path = f"{store_directory}/{data_key}"
             run[f"{neptune_data_key}/{data_key}"].download(destination=file_path)
-            # Try to unzip the file else continue to the next file
+            # Try to unzip the file else continue to the next file.
             try:
                 with zipfile.ZipFile(file_path, "r") as zip_ref:
+                    # Create a unique file name
+                    unzipped_filename = f"{file_path}_{counter}_unzip"
                     # Create a directory with to store unzipped data
-                    os.makedirs(f"{file_path}_unzip", exist_ok=True)
+                    os.makedirs(unzipped_filename, exist_ok=True)
                     # Unzip the data
                     zip_ref.extractall(f"{file_path}_unzip")
                     # Remove the zip file
                     os.remove(file_path)
             except zipfile.BadZipFile:
-                # If the file is not zipped continue to the next file
-                # as it is already downloaded and doesn't need to be
-                # unzipped.
-                continue
+                # If the file is not zipped, it is already downloaded 
+                # and doesn't need to be unzipped.
+                # Rename the file by appending run_counter to its existing name
+                renamed_file_path = f"{file_path}_{counter}"
+                os.rename(file_path, renamed_file_path)
             except Exception as e:
                 print(f"An error occurred while unzipping or storing {file_path}: {e}")
         run.stop()
+    
+    # Restore neptune logger level
+    neptune_logger.setLevel(logging.INFO)
 
     print(f"{Fore.CYAN}{Style.BRIGHT}Data downloaded successfully!{Style.RESET_ALL}")
