@@ -38,34 +38,36 @@ with open(data_dir) as f:
     raw_data = json.load(f)
 
 custom_max = {
-    "climbing-stateless-v0": 275.0,
-    "penalty-0-stateless-v0": 250.0,
-    "penalty-25-stateless-v0": 250.0,
-    "penalty-50-stateless-v0": 250.0,
-    "penalty-75-stateless-v0": 250.0,
-    "penalty-100-stateless-v0": 250.0,
-    "noconflict-15-stateless-v0": 100.0,
-    "noconflict-16-stateless-v0": 100.0,
-    "noconflict-17-stateless-v0": 100.0,
-    "noconflict-18-stateless-v0": 100.0,
-    "noconflict-19-stateless-v0": 100.0,
-    "noconflict-20-stateless-v0": 100.0,
+    "climbing-stateless-v0": {"mean_episode_return": 275.0},
+    "penalty-0-stateless-v0": {"mean_episode_return": 250.0},
+    "penalty-25-stateless-v0": {"mean_episode_return": 250.0},
+    "penalty-50-stateless-v0": {"mean_episode_return": 250.0},
+    "penalty-75-stateless-v0": {"mean_episode_return": 250.0},
+    "penalty-100-stateless-v0": {"mean_episode_return": 250.0},
+    "noconflict-15-stateless-v0": {"mean_episode_return": 100.0},
+    "noconflict-16-stateless-v0": {"mean_episode_return": 100.0},
+    "noconflict-17-stateless-v0": {"mean_episode_return": 100.0},
+    "noconflict-18-stateless-v0": {"mean_episode_return": 100.0},
+    "noconflict-19-stateless-v0": {"mean_episode_return": 100.0},
+    "noconflict-20-stateless-v0": {"mean_episode_return": 100.0},
 }
 
+
 custom_min = {
-    "climbing-stateless-v0": -750.0,
-    "penalty-0-stateless-v0": 0.0,
-    "penalty-25-stateless-v0": -625.0,
-    "penalty-50-stateless-v0": -1250.0,
-    "penalty-75-stateless-v0": -1875.0,
-    "penalty-100-stateless-v0": -2500.0,
-    "noconflict-15-stateless-v0": 25.0,
-    "noconflict-16-stateless-v0": 25.0,
-    "noconflict-17-stateless-v0": 37.5,
-    "noconflict-18-stateless-v0": 50.0,
-    "noconflict-19-stateless-v0": 37.5,
-    "noconflict-20-stateless-v0": 37.5,
+    "climbing-stateless-v0": {"mean_episode_return": -750.0},
+    "penalty-0-stateless-v0": {"mean_episode_return": 0.0},
+    "penalty-25-stateless-v0": {"mean_episode_return": -625.0},
+    "penalty-50-stateless-v0": {"mean_episode_return": -1250.0},
+    "penalty-75-stateless-v0": {"mean_episode_return": -1875.0},
+    "penalty-100-stateless-v0": {"mean_episode_return": -2500.0},
+    "noconflict-15-stateless-v0": {"mean_episode_return": 25.0},
+    "noconflict-16-stateless-v0": {"mean_episode_return": 25.0},
+    "noconflict-17-stateless-v0": {"mean_episode_return": 37.5},
+    "noconflict-18-stateless-v0": {"mean_episode_return": 50.0},
+    "noconflict-19-stateless-v0": {"mean_episode_return": 37.5},
+    "noconflict-20-stateless-v0": {"mean_episode_return": 37.5},
 }
+
 
 processed_data = data_process_pipeline(
     raw_data=raw_data,

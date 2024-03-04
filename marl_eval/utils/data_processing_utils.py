@@ -99,7 +99,7 @@ def get_and_aggregate_data_single_task(
     Args:
         processed_data: Dictionary containing processed data.
         metric_name: Name of metric to aggregate.
-        metrics_to_normalize: List of metrics to normalize.
+        metrics_to_normalize: List of metrics to normalise.
         task_name: Name of task to aggregate.
         environment_name: Name of environment to aggregate.
     """
@@ -150,6 +150,8 @@ def get_and_aggregate_data_single_task(
 def data_process_pipeline(  # noqa: C901
     raw_data: Dict[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
+    custom_min: Dict[str, float] = {},
+    custom_max: Dict[str, float] = {},
 ) -> Dict[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
@@ -159,6 +161,10 @@ def data_process_pipeline(  # noqa: C901
         metrics_to_normalize: A list of metric names for metrics that should
             be min/max normalised. These metric names should match the names as
             given in the raw dataset.
+        custom_min (optional): Dictionary containing custom global minimum values
+            for normalisation. Keys are task names and values are floats.
+        custom_max (optional): Dictionary containing custom global maximum values
+            for normalisation. Keys are task names and values are floats.
 
     Returns:
         processed_data: Dictionary containing processed experiment data where relevant
@@ -246,7 +252,7 @@ def data_process_pipeline(  # noqa: C901
                                         f"mean_{metric}"
                                     ] = mean
                                     if metric in metrics_to_normalize:
-                                        # Normalization
+                                        # Normalisation
                                         metric_array = np.array(metrics[metric])
                                         metric_global_min = metric_min_max_info[metric][
                                             "global_min"
@@ -254,6 +260,11 @@ def data_process_pipeline(  # noqa: C901
                                         metric_global_max = metric_min_max_info[metric][
                                             "global_max"
                                         ]
+                                        # Use the custom min or max if given
+                                        if task in custom_min.keys():
+                                            metric_global_min = custom_min[task]
+                                        if task in custom_max.keys():
+                                            metric_global_max = custom_max[task]
                                         normed_metric_array = (
                                             metric_array - metric_global_min
                                         ) / (
