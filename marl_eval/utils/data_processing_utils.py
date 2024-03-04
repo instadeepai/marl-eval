@@ -150,8 +150,8 @@ def get_and_aggregate_data_single_task(
 def data_process_pipeline(  # noqa: C901
     raw_data: Dict[str, Dict[str, Any]],
     metrics_to_normalize: List[str],
-    custom_min: Dict[str, float] = {},
-    custom_max: Dict[str, float] = {},
+    custom_min: Dict[str, Dict[str, float]] = {},
+    custom_max: Dict[str, Dict[str, float]] = {},
 ) -> Dict[str, Dict[str, Any]]:
     """Function for processing raw input experiment data.
 
@@ -261,9 +261,15 @@ def data_process_pipeline(  # noqa: C901
                                             "global_max"
                                         ]
                                         # Use the custom min or max if given
-                                        if task in custom_min.keys() and metric in custom_min[task].keys():
+                                        if (
+                                            task in custom_min.keys()
+                                            and metric in custom_min[task].keys()
+                                        ):
                                             metric_global_min = custom_min[task][metric]
-                                        if task in custom_max.keys() and metric in custom_max[task].keys():
+                                        if (
+                                            task in custom_max.keys()
+                                            and metric in custom_max[task].keys()
+                                        ):
                                             metric_global_max = custom_max[task][metric]
                                         normed_metric_array = (
                                             metric_array - metric_global_min
