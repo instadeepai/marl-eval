@@ -164,7 +164,10 @@ def pull_neptune_data(
                 # unzipped.
                 continue
             except Exception as e:
-                print(f"An error occurred while unzipping or storing {file_path}: {e}")
+                print(
+                    f"The following error occurred while unzipping or storing JSON \
+                        data for run {run_id} at path {file_path}: {e}"
+                )
         run.stop()
 
     # Restore neptune logger level
