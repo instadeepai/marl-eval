@@ -420,6 +420,8 @@ def plot_single_task(
         metric_name, task_name, environment_name, metrics_to_normalize
     )
 
+    fix_normed_axis = False
+
     task_mean_ci_data = get_and_aggregate_data_single_task(
         processed_data=processed_data,
         environment_name=environment_name,
@@ -430,6 +432,7 @@ def plot_single_task(
 
     if metric_name in metrics_to_normalize:
         ylabel = "Normalized " + " ".join(metric_name.split("_"))
+        fix_normed_axis = True
     else:
         ylabel = " ".join(metric_name.split("_")).capitalize()
 
@@ -460,6 +463,7 @@ def plot_single_task(
         legend_map=legend_map,
         run_times=run_times,
         marker="",
+        fix_normed_axis=fix_normed_axis,
     )
 
     return fig
