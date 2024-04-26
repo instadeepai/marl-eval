@@ -75,10 +75,15 @@ class DiagnoseData:
 
         if "step_count" in same_metrics:
             same_metrics.remove("step_count")
+        
+        if "elapsed_time" in same_metrics:
+            same_metrics.remove("elapsed_time")
 
         for i in range(1, len(list_metric)):
             if "step_count" in list_metric[i]:
                 list_metric[i].remove("step_count")
+            if "elapsed_time" in list_metric[i]:
+                list_metric[i].remove("elapsed_time")
             if sorted(same_metrics) != sorted(list_metric[i]):
                 identical = False
                 same_metrics = list(set(same_metrics) & set(list_metric[i]))
