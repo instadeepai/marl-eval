@@ -1,0 +1,998 @@
+{
+    "Matrax": {
+        "Penalty-50-stateless-v0": {
+            "rec_mappo": {
+                "seed_6": {
+                    "absolute_metrics": {
+                        "steps_per_second": [
+                            8578.023628758428
+                        ],
+                        "mean_episode_return": [
+                            32.26874923706055
+                        ]
+                    },
+                    "step_0": {
+                        "step_count": 30720,
+                        "elapsed_time": 0.0,
+                        "steps_per_second": [
+                            1216.2911463525147
+                        ],
+                        "mean_episode_return": [
+                            -207.75
+                        ]
+                    },
+                    "step_1": {
+                        "step_count": 61440,
+                        "elapsed_time": 10.085608720779419,
+                        "steps_per_second": [
+                            31237.54340560619
+                        ],
+                        "mean_episode_return": [
+                            -116.0
+                        ]
+                    },
+                    "step_2": {
+                        "step_count": 92160,
+                        "elapsed_time": 11.26462721824646,
+                        "steps_per_second": [
+                            28989.96241738304
+                        ],
+                        "mean_episode_return": [
+                            -25.8125
+                        ]
+                    },
+                    "step_3": {
+                        "step_count": 122880,
+                        "elapsed_time": 12.445821523666382,
+                        "steps_per_second": [
+                            28175.92892710494
+                        ],
+                        "mean_episode_return": [
+                            3.75
+                        ]
+                    },
+                    "step_4": {
+                        "step_count": 153600,
+                        "elapsed_time": 13.648308515548706,
+                        "steps_per_second": [
+                            31503.550840296684
+                        ],
+                        "mean_episode_return": [
+                            -22.0625
+                        ]
+                    },
+                    "step_5": {
+                        "step_count": 184320,
+                        "elapsed_time": 14.824354410171509,
+                        "steps_per_second": [
+                            29818.2102550431
+                        ],
+                        "mean_episode_return": [
+                            2.0625
+                        ]
+                    },
+                    "step_6": {
+                        "step_count": 215040,
+                        "elapsed_time": 15.997701406478882,
+                        "steps_per_second": [
+                            30453.089377768098
+                        ],
+                        "mean_episode_return": [
+                            0.0
+                        ]
+                    },
+                    "step_7": {
+                        "step_count": 245760,
+                        "elapsed_time": 17.17525815963745,
+                        "steps_per_second": [
+                            29476.89334375796
+                        ],
+                        "mean_episode_return": [
+                            -4.0625
+                        ]
+                    },
+                    "step_8": {
+                        "step_count": 276480,
+                        "elapsed_time": 18.355210304260254,
+                        "steps_per_second": [
+                            28571.553133514986
+                        ],
+                        "mean_episode_return": [
+                            7.4375
+                        ]
+                    },
+                    "step_9": {
+                        "step_count": 307200,
+                        "elapsed_time": 19.541486501693726,
+                        "steps_per_second": [
+                            28828.565291727165
+                        ],
+                        "mean_episode_return": [
+                            -9.3125
+                        ]
+                    },
+                    "step_10": {
+                        "step_count": 337920,
+                        "elapsed_time": 20.72626781463623,
+                        "steps_per_second": [
+                            28289.71587555855
+                        ],
+                        "mean_episode_return": [
+                            8.1875
+                        ]
+                    },
+                    "step_11": {
+                        "step_count": 368640,
+                        "elapsed_time": 21.908048391342163,
+                        "steps_per_second": [
+                            30603.909121587727
+                        ],
+                        "mean_episode_return": [
+                            17.125
+                        ]
+                    },
+                    "step_12": {
+                        "step_count": 399360,
+                        "elapsed_time": 23.09549570083618,
+                        "steps_per_second": [
+                            29141.530097357198
+                        ],
+                        "mean_episode_return": [
+                            11.75
+                        ]
+                    },
+                    "step_13": {
+                        "step_count": 430080,
+                        "elapsed_time": 24.278005123138428,
+                        "steps_per_second": [
+                            29451.53821172464
+                        ],
+                        "mean_episode_return": [
+                            14.625
+                        ]
+                    },
+                    "step_14": {
+                        "step_count": 460800,
+                        "elapsed_time": 25.459712266921997,
+                        "steps_per_second": [
+                            29918.97709338303
+                        ],
+                        "mean_episode_return": [
+                            4.3125
+                        ]
+                    },
+                    "step_15": {
+                        "step_count": 491520,
+                        "elapsed_time": 26.646865606307983,
+                        "steps_per_second": [
+                            28978.195384827966
+                        ],
+                        "mean_episode_return": [
+                            6.0
+                        ]
+                    },
+                    "step_16": {
+                        "step_count": 522240,
+                        "elapsed_time": 27.834155559539795,
+                        "steps_per_second": [
+                            29649.844038561798
+                        ],
+                        "mean_episode_return": [
+                            9.4375
+                        ]
+                    },
+                    "step_17": {
+                        "step_count": 552960,
+                        "elapsed_time": 29.03708052635193,
+                        "steps_per_second": [
+                            21745.10200378464
+                        ],
+                        "mean_episode_return": [
+                            8.0
+                        ]
+                    },
+                    "step_18": {
+                        "step_count": 583680,
+                        "elapsed_time": 30.223767042160034,
+                        "steps_per_second": [
+                            31662.29334943761
+                        ],
+                        "mean_episode_return": [
+                            9.75
+                        ]
+                    },
+                    "step_19": {
+                        "step_count": 614400,
+                        "elapsed_time": 31.40949034690857,
+                        "steps_per_second": [
+                            30783.600150457336
+                        ],
+                        "mean_episode_return": [
+                            7.5
+                        ]
+                    },
+                    "step_20": {
+                        "step_count": 645120,
+                        "elapsed_time": 32.59826064109802,
+                        "steps_per_second": [
+                            31342.585725361256
+                        ],
+                        "mean_episode_return": [
+                            -2.875
+                        ]
+                    },
+                    "step_21": {
+                        "step_count": 675840,
+                        "elapsed_time": 33.78310513496399,
+                        "steps_per_second": [
+                            31367.197330167426
+                        ],
+                        "mean_episode_return": [
+                            5.4375
+                        ]
+                    },
+                    "step_22": {
+                        "step_count": 706560,
+                        "elapsed_time": 34.96826958656311,
+                        "steps_per_second": [
+                            31915.871173930413
+                        ],
+                        "mean_episode_return": [
+                            -5.6875
+                        ]
+                    },
+                    "step_23": {
+                        "step_count": 737280,
+                        "elapsed_time": 36.15377855300903,
+                        "steps_per_second": [
+                            31460.721016361163
+                        ],
+                        "mean_episode_return": [
+                            7.375
+                        ]
+                    },
+                    "step_24": {
+                        "step_count": 768000,
+                        "elapsed_time": 37.343355894088745,
+                        "steps_per_second": [
+                            29654.56071974618
+                        ],
+                        "mean_episode_return": [
+                            3.625
+                        ]
+                    },
+                    "step_25": {
+                        "step_count": 798720,
+                        "elapsed_time": 38.532023668289185,
+                        "steps_per_second": [
+                            28670.670061691475
+                        ],
+                        "mean_episode_return": [
+                            7.25
+                        ]
+                    },
+                    "step_26": {
+                        "step_count": 829440,
+                        "elapsed_time": 39.72306680679321,
+                        "steps_per_second": [
+                            28880.424154788954
+                        ],
+                        "mean_episode_return": [
+                            16.5625
+                        ]
+                    },
+                    "step_27": {
+                        "step_count": 860160,
+                        "elapsed_time": 40.91264247894287,
+                        "steps_per_second": [
+                            28758.39454219769
+                        ],
+                        "mean_episode_return": [
+                            17.5625
+                        ]
+                    },
+                    "step_28": {
+                        "step_count": 890880,
+                        "elapsed_time": 42.09958243370056,
+                        "steps_per_second": [
+                            29175.22998000174
+                        ],
+                        "mean_episode_return": [
+                            2.875
+                        ]
+                    },
+                    "step_29": {
+                        "step_count": 921600,
+                        "elapsed_time": 43.291370153427124,
+                        "steps_per_second": [
+                            29020.049297297297
+                        ],
+                        "mean_episode_return": [
+                            9.0625
+                        ]
+                    },
+                    "step_30": {
+                        "step_count": 952320,
+                        "elapsed_time": 44.482019662857056,
+                        "steps_per_second": [
+                            28583.47914235333
+                        ],
+                        "mean_episode_return": [
+                            5.3125
+                        ]
+                    },
+                    "step_31": {
+                        "step_count": 983040,
+                        "elapsed_time": 45.669337034225464,
+                        "steps_per_second": [
+                            29642.50996051132
+                        ],
+                        "mean_episode_return": [
+                            9.375
+                        ]
+                    },
+                    "step_32": {
+                        "step_count": 1013760,
+                        "elapsed_time": 46.85739779472351,
+                        "steps_per_second": [
+                            29038.88533102553
+                        ],
+                        "mean_episode_return": [
+                            12.8125
+                        ]
+                    },
+                    "step_33": {
+                        "step_count": 1044480,
+                        "elapsed_time": 48.04661560058594,
+                        "steps_per_second": [
+                            29712.330538116195
+                        ],
+                        "mean_episode_return": [
+                            12.0625
+                        ]
+                    },
+                    "step_34": {
+                        "step_count": 1075200,
+                        "elapsed_time": 49.235305070877075,
+                        "steps_per_second": [
+                            29306.20458356624
+                        ],
+                        "mean_episode_return": [
+                            16.1875
+                        ]
+                    },
+                    "step_35": {
+                        "step_count": 1105920,
+                        "elapsed_time": 50.43078255653381,
+                        "steps_per_second": [
+                            30437.619738751815
+                        ],
+                        "mean_episode_return": [
+                            10.9375
+                        ]
+                    },
+                    "step_36": {
+                        "step_count": 1136640,
+                        "elapsed_time": 51.62773895263672,
+                        "steps_per_second": [
+                            24901.617834773057
+                        ],
+                        "mean_episode_return": [
+                            17.375
+                        ]
+                    },
+                    "step_37": {
+                        "step_count": 1167360,
+                        "elapsed_time": 52.82028102874756,
+                        "steps_per_second": [
+                            29073.859510791866
+                        ],
+                        "mean_episode_return": [
+                            11.75
+                        ]
+                    },
+                    "step_38": {
+                        "step_count": 1198080,
+                        "elapsed_time": 54.009984731674194,
+                        "steps_per_second": [
+                            29481.296127082307
+                        ],
+                        "mean_episode_return": [
+                            4.5625
+                        ]
+                    },
+                    "step_39": {
+                        "step_count": 1228800,
+                        "elapsed_time": 55.20007348060608,
+                        "steps_per_second": [
+                            28721.961908838006
+                        ],
+                        "mean_episode_return": [
+                            10.0
+                        ]
+                    },
+                    "step_40": {
+                        "step_count": 1259520,
+                        "elapsed_time": 56.39149332046509,
+                        "steps_per_second": [
+                            28730.5693980649
+                        ],
+                        "mean_episode_return": [
+                            4.25
+                        ]
+                    },
+                    "step_41": {
+                        "step_count": 1290240,
+                        "elapsed_time": 57.57920002937317,
+                        "steps_per_second": [
+                            30093.121199619738
+                        ],
+                        "mean_episode_return": [
+                            18.75
+                        ]
+                    },
+                    "step_42": {
+                        "step_count": 1320960,
+                        "elapsed_time": 58.77397537231445,
+                        "steps_per_second": [
+                            28345.158728817856
+                        ],
+                        "mean_episode_return": [
+                            15.875
+                        ]
+                    },
+                    "step_43": {
+                        "step_count": 1351680,
+                        "elapsed_time": 59.96234846115112,
+                        "steps_per_second": [
+                            31071.220090377064
+                        ],
+                        "mean_episode_return": [
+                            13.0
+                        ]
+                    },
+                    "step_44": {
+                        "step_count": 1382400,
+                        "elapsed_time": 61.146100759506226,
+                        "steps_per_second": [
+                            32003.54043072697
+                        ],
+                        "mean_episode_return": [
+                            10.3125
+                        ]
+                    },
+                    "step_45": {
+                        "step_count": 1413120,
+                        "elapsed_time": 62.337778091430664,
+                        "steps_per_second": [
+                            28746.81470820054
+                        ],
+                        "mean_episode_return": [
+                            11.9375
+                        ]
+                    },
+                    "step_46": {
+                        "step_count": 1443840,
+                        "elapsed_time": 63.52754807472229,
+                        "steps_per_second": [
+                            29038.634023072063
+                        ],
+                        "mean_episode_return": [
+                            12.625
+                        ]
+                    },
+                    "step_47": {
+                        "step_count": 1474560,
+                        "elapsed_time": 64.71669602394104,
+                        "steps_per_second": [
+                            28248.75149433416
+                        ],
+                        "mean_episode_return": [
+                            3.1875
+                        ]
+                    },
+                    "step_48": {
+                        "step_count": 1505280,
+                        "elapsed_time": 65.90789556503296,
+                        "steps_per_second": [
+                            29133.18052372022
+                        ],
+                        "mean_episode_return": [
+                            5.9375
+                        ]
+                    },
+                    "step_49": {
+                        "step_count": 1536000,
+                        "elapsed_time": 67.09877610206604,
+                        "steps_per_second": [
+                            27165.841139276374
+                        ],
+                        "mean_episode_return": [
+                            14.6875
+                        ]
+                    },
+                    "step_50": {
+                        "step_count": 1566720,
+                        "elapsed_time": 68.29049777984619,
+                        "steps_per_second": [
+                            28994.220931840176
+                        ],
+                        "mean_episode_return": [
+                            9.6875
+                        ]
+                    },
+                    "step_51": {
+                        "step_count": 1597440,
+                        "elapsed_time": 69.47522592544556,
+                        "steps_per_second": [
+                            30944.85258177861
+                        ],
+                        "mean_episode_return": [
+                            24.625
+                        ]
+                    },
+                    "step_52": {
+                        "step_count": 1628160,
+                        "elapsed_time": 70.67050457000732,
+                        "steps_per_second": [
+                            29103.11114965957
+                        ],
+                        "mean_episode_return": [
+                            11.25
+                        ]
+                    },
+                    "step_53": {
+                        "step_count": 1658880,
+                        "elapsed_time": 71.86200213432312,
+                        "steps_per_second": [
+                            28747.553567909803
+                        ],
+                        "mean_episode_return": [
+                            -4.1875
+                        ]
+                    },
+                    "step_54": {
+                        "step_count": 1689600,
+                        "elapsed_time": 73.0476062297821,
+                        "steps_per_second": [
+                            30213.158771463815
+                        ],
+                        "mean_episode_return": [
+                            -7.375
+                        ]
+                    },
+                    "step_55": {
+                        "step_count": 1720320,
+                        "elapsed_time": 74.23550295829773,
+                        "steps_per_second": [
+                            29235.475242435066
+                        ],
+                        "mean_episode_return": [
+                            8.0
+                        ]
+                    },
+                    "step_56": {
+                        "step_count": 1751040,
+                        "elapsed_time": 75.42490530014038,
+                        "steps_per_second": [
+                            29142.28938683342
+                        ],
+                        "mean_episode_return": [
+                            -5.375
+                        ]
+                    },
+                    "step_57": {
+                        "step_count": 1781760,
+                        "elapsed_time": 76.61466431617737,
+                        "steps_per_second": [
+                            28748.29246560085
+                        ],
+                        "mean_episode_return": [
+                            15.375
+                        ]
+                    },
+                    "step_58": {
+                        "step_count": 1812480,
+                        "elapsed_time": 77.80137848854065,
+                        "steps_per_second": [
+                            29323.363832594885
+                        ],
+                        "mean_episode_return": [
+                            16.875
+                        ]
+                    },
+                    "step_59": {
+                        "step_count": 1843200,
+                        "elapsed_time": 78.98973321914673,
+                        "steps_per_second": [
+                            30173.49219909177
+                        ],
+                        "mean_episode_return": [
+                            16.1875
+                        ]
+                    },
+                    "step_60": {
+                        "step_count": 1873920,
+                        "elapsed_time": 80.1777036190033,
+                        "steps_per_second": [
+                            30599.443719963157
+                        ],
+                        "mean_episode_return": [
+                            -4.1875
+                        ]
+                    },
+                    "step_61": {
+                        "step_count": 1904640,
+                        "elapsed_time": 81.36926031112671,
+                        "steps_per_second": [
+                            28793.93133275553
+                        ],
+                        "mean_episode_return": [
+                            14.0
+                        ]
+                    },
+                    "step_62": {
+                        "step_count": 1935360,
+                        "elapsed_time": 82.55743646621704,
+                        "steps_per_second": [
+                            28911.031268040082
+                        ],
+                        "mean_episode_return": [
+                            20.1875
+                        ]
+                    },
+                    "step_63": {
+                        "step_count": 1966080,
+                        "elapsed_time": 83.74991512298584,
+                        "steps_per_second": [
+                            29060.010739092028
+                        ],
+                        "mean_episode_return": [
+                            1.25
+                        ]
+                    },
+                    "step_64": {
+                        "step_count": 1996800,
+                        "elapsed_time": 84.94755506515503,
+                        "steps_per_second": [
+                            28315.976371308017
+                        ],
+                        "mean_episode_return": [
+                            14.375
+                        ]
+                    },
+                    "step_65": {
+                        "step_count": 2027520,
+                        "elapsed_time": 86.1457006931305,
+                        "steps_per_second": [
+                            29181.57324868461
+                        ],
+                        "mean_episode_return": [
+                            -3.3125
+                        ]
+                    },
+                    "step_66": {
+                        "step_count": 2058240,
+                        "elapsed_time": 87.33953547477722,
+                        "steps_per_second": [
+                            28981.94978277205
+                        ],
+                        "mean_episode_return": [
+                            3.0
+                        ]
+                    },
+                    "step_67": {
+                        "step_count": 2088960,
+                        "elapsed_time": 88.53549122810364,
+                        "steps_per_second": [
+                            29922.178724618552
+                        ],
+                        "mean_episode_return": [
+                            4.0
+                        ]
+                    },
+                    "step_68": {
+                        "step_count": 2119680,
+                        "elapsed_time": 89.7309319972992,
+                        "steps_per_second": [
+                            28758.88750803514
+                        ],
+                        "mean_episode_return": [
+                            23.375
+                        ]
+                    },
+                    "step_69": {
+                        "step_count": 2150400,
+                        "elapsed_time": 90.92527437210083,
+                        "steps_per_second": [
+                            29377.791397077493
+                        ],
+                        "mean_episode_return": [
+                            9.75
+                        ]
+                    },
+                    "step_70": {
+                        "step_count": 2181120,
+                        "elapsed_time": 92.12105536460876,
+                        "steps_per_second": [
+                            29485.18202827743
+                        ],
+                        "mean_episode_return": [
+                            13.0625
+                        ]
+                    },
+                    "step_71": {
+                        "step_count": 2211840,
+                        "elapsed_time": 93.31604838371277,
+                        "steps_per_second": [
+                            29279.864571244078
+                        ],
+                        "mean_episode_return": [
+                            23.125
+                        ]
+                    },
+                    "step_72": {
+                        "step_count": 2242560,
+                        "elapsed_time": 94.51151275634766,
+                        "steps_per_second": [
+                            29276.798911099282
+                        ],
+                        "mean_episode_return": [
+                            20.0
+                        ]
+                    },
+                    "step_73": {
+                        "step_count": 2273280,
+                        "elapsed_time": 95.70472717285156,
+                        "steps_per_second": [
+                            30442.590408448403
+                        ],
+                        "mean_episode_return": [
+                            16.125
+                        ]
+                    },
+                    "step_74": {
+                        "step_count": 2304000,
+                        "elapsed_time": 96.89253997802734,
+                        "steps_per_second": [
+                            30885.606723060355
+                        ],
+                        "mean_episode_return": [
+                            23.375
+                        ]
+                    },
+                    "step_75": {
+                        "step_count": 2334720,
+                        "elapsed_time": 98.08333230018616,
+                        "steps_per_second": [
+                            30572.400094757366
+                        ],
+                        "mean_episode_return": [
+                            16.4375
+                        ]
+                    },
+                    "step_76": {
+                        "step_count": 2365440,
+                        "elapsed_time": 99.27468037605286,
+                        "steps_per_second": [
+                            29875.290032497884
+                        ],
+                        "mean_episode_return": [
+                            6.1875
+                        ]
+                    },
+                    "step_77": {
+                        "step_count": 2396160,
+                        "elapsed_time": 100.46786761283875,
+                        "steps_per_second": [
+                            29285.99781802313
+                        ],
+                        "mean_episode_return": [
+                            0.75
+                        ]
+                    },
+                    "step_78": {
+                        "step_count": 2426880,
+                        "elapsed_time": 101.6651222705841,
+                        "steps_per_second": [
+                            29494.771632502372
+                        ],
+                        "mean_episode_return": [
+                            2.625
+                        ]
+                    },
+                    "step_79": {
+                        "step_count": 2457600,
+                        "elapsed_time": 102.86158490180969,
+                        "steps_per_second": [
+                            29082.175111373053
+                        ],
+                        "mean_episode_return": [
+                            4.125
+                        ]
+                    },
+                    "step_80": {
+                        "step_count": 2488320,
+                        "elapsed_time": 104.05247616767883,
+                        "steps_per_second": [
+                            29289.832402234635
+                        ],
+                        "mean_episode_return": [
+                            4.875
+                        ]
+                    },
+                    "step_81": {
+                        "step_count": 2519040,
+                        "elapsed_time": 105.24484300613403,
+                        "steps_per_second": [
+                            29009.511788150467
+                        ],
+                        "mean_episode_return": [
+                            20.125
+                        ]
+                    },
+                    "step_82": {
+                        "step_count": 2549760,
+                        "elapsed_time": 106.43843865394592,
+                        "steps_per_second": [
+                            29440.426763998807
+                        ],
+                        "mean_episode_return": [
+                            34.3125
+                        ]
+                    },
+                    "step_83": {
+                        "step_count": 2580480,
+                        "elapsed_time": 107.63310313224792,
+                        "steps_per_second": [
+                            30430.994703620403
+                        ],
+                        "mean_episode_return": [
+                            37.625
+                        ]
+                    },
+                    "step_84": {
+                        "step_count": 2611200,
+                        "elapsed_time": 108.82960033416748,
+                        "steps_per_second": [
+                            29136.975191253983
+                        ],
+                        "mean_episode_return": [
+                            39.5
+                        ]
+                    },
+                    "step_85": {
+                        "step_count": 2641920,
+                        "elapsed_time": 110.02365469932556,
+                        "steps_per_second": [
+                            29003.49378949097
+                        ],
+                        "mean_episode_return": [
+                            29.3125
+                        ]
+                    },
+                    "step_86": {
+                        "step_count": 2672640,
+                        "elapsed_time": 111.2161865234375,
+                        "steps_per_second": [
+                            29157.736859027278
+                        ],
+                        "mean_episode_return": [
+                            30.5
+                        ]
+                    },
+                    "step_87": {
+                        "step_count": 2703360,
+                        "elapsed_time": 112.42001628875732,
+                        "steps_per_second": [
+                            23712.7091813659
+                        ],
+                        "mean_episode_return": [
+                            24.1875
+                        ]
+                    },
+                    "step_88": {
+                        "step_count": 2734080,
+                        "elapsed_time": 113.61432099342346,
+                        "steps_per_second": [
+                            29065.296894625146
+                        ],
+                        "mean_episode_return": [
+                            32.1875
+                        ]
+                    },
+                    "step_89": {
+                        "step_count": 2764800,
+                        "elapsed_time": 114.80965566635132,
+                        "steps_per_second": [
+                            28496.090903686592
+                        ],
+                        "mean_episode_return": [
+                            26.5625
+                        ]
+                    },
+                    "step_90": {
+                        "step_count": 2795520,
+                        "elapsed_time": 116.02121019363403,
+                        "steps_per_second": [
+                            26273.72113600238
+                        ],
+                        "mean_episode_return": [
+                            34.8125
+                        ]
+                    },
+                    "step_91": {
+                        "step_count": 2826240,
+                        "elapsed_time": 117.21133303642273,
+                        "steps_per_second": [
+                            31118.76617173806
+                        ],
+                        "mean_episode_return": [
+                            30.9375
+                        ]
+                    },
+                    "step_92": {
+                        "step_count": 2856960,
+                        "elapsed_time": 118.40158081054688,
+                        "steps_per_second": [
+                            31428.895778500042
+                        ],
+                        "mean_episode_return": [
+                            29.0625
+                        ]
+                    },
+                    "step_93": {
+                        "step_count": 2887680,
+                        "elapsed_time": 119.59426021575928,
+                        "steps_per_second": [
+                            29291.6222185364
+                        ],
+                        "mean_episode_return": [
+                            28.5625
+                        ]
+                    },
+                    "step_94": {
+                        "step_count": 2918400,
+                        "elapsed_time": 120.7907497882843,
+                        "steps_per_second": [
+                            29510.076074051274
+                        ],
+                        "mean_episode_return": [
+                            29.125
+                        ]
+                    },
+                    "step_95": {
+                        "step_count": 2949120,
+                        "elapsed_time": 121.98413109779358,
+                        "steps_per_second": [
+                            29002.741715214273
+                        ],
+                        "mean_episode_return": [
+                            31.6875
+                        ]
+                    },
+                    "step_96": {
+                        "step_count": 2979840,
+                        "elapsed_time": 123.17859053611755,
+                        "steps_per_second": [
+                            29401.216199638995
+                        ],
+                        "mean_episode_return": [
+                            21.0625
+                        ]
+                    },
+                    "step_97": {
+                        "step_count": 3010560,
+                        "elapsed_time": 124.36970520019531,
+                        "steps_per_second": [
+                            29412.813702544685
+                        ],
+                        "mean_episode_return": [
+                            28.375
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
