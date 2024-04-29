@@ -47,8 +47,8 @@ class DiagnoseData:
 
         if not identical:
             print(
-                "The algorithms used across the different tasks are not the same\n\
-                The overlapping algorithms are :\n",
+                "The algorithms used across the different tasks are not the same.\n"
+                + "The overlapping algorithms are:\n",
                 sorted(same_algos),
             )
 
@@ -59,7 +59,7 @@ class DiagnoseData:
 
         if not algo_names_valid:
             print(
-                "Some algorithm names contain commas, which is not permitted."
+                "Some algorithm names contain commas, which is not permitted. "
                 + f"Valid algorithm names are {valid_algo_names}."
             )
 
@@ -75,21 +75,22 @@ class DiagnoseData:
 
         if "step_count" in same_metrics:
             same_metrics.remove("step_count")
+        if "elapsed_time" in same_metrics:
+            same_metrics.remove("elapsed_time")
 
         for i in range(1, len(list_metric)):
             if "step_count" in list_metric[i]:
                 list_metric[i].remove("step_count")
+            if "elapsed_time" in list_metric[i]:
+                list_metric[i].remove("elapsed_time")
             if sorted(same_metrics) != sorted(list_metric[i]):
                 identical = False
                 same_metrics = list(set(same_metrics) & set(list_metric[i]))
 
         if not identical:
-            print(
-                "The metrics used across the different steps, runs, algorithms\
-                    and scenarios are not the same\n\
-                    The overlapping metrics are :\n",
-                sorted(same_metrics),
-            )
+            print("The metrics used across the different steps, runs, "
+                  + "algorithms and scenarios are not the same.\n"
+                  + f"The overlapping metrics are:\n{sorted(same_metrics)}")
 
         return identical, same_metrics
 
@@ -102,8 +103,9 @@ class DiagnoseData:
             return True, num_runs[0]
 
         print(
-            "The number of runs is not identical through the different algorithms and "
-            "scenarios.\nThe minimum number of runs is " + str(min(num_runs)) + " runs."
+            "The number of runs is not identical through the different algorithms "
+            + "and scenarios.\nThe minimum number of runs is "
+            + str(min(num_runs)) + " runs."
         )
         return False, min(num_runs)
 
@@ -117,8 +119,8 @@ class DiagnoseData:
             return True, num_steps[0]
 
         print(
-            "The number of steps is not identical through the different runs, \
-                algorithms and scenarios.\n The minimum number of steps: "
+            "The number of steps is not identical through the different runs,"
+            + "algorithms and scenarios.\nThe minimum number of steps is "
             + str(min(num_steps))
             + " steps."
         )
@@ -205,7 +207,7 @@ class DiagnoseData:
             ):
                 print("Valid format for the environment " + env + "!")
             else:
-                print("invalid format for the environment " + env + "!")
+                print("Invalid format for the environment " + env + "!")
             check_data_results[env] = {
                 "valid_algorithms": valid_algo,
                 "valid_algorithm_names": valid_algo_names,
