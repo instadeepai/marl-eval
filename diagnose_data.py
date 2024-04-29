@@ -1,9 +1,10 @@
-from marl_eval.utils.diagnose_data_errors import DiagnoseData
 import json
+
+from marl_eval.utils.diagnose_data_errors import DiagnoseData
 
 data_dir = "./concatenated_json_files/metrics.json"
 
-with open(data_dir, "r") as f:
+with open(data_dir) as f:
     raw_data = json.load(f)
 
 diagnose_obj = DiagnoseData(raw_data)

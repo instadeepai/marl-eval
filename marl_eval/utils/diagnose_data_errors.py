@@ -88,9 +88,11 @@ class DiagnoseData:
                 same_metrics = list(set(same_metrics) & set(list_metric[i]))
 
         if not identical:
-            print("The metrics used across the different steps, runs, "
-                  + "algorithms and scenarios are not the same.\n"
-                  + f"The overlapping metrics are:\n{sorted(same_metrics)}")
+            print(
+                "The metrics used across the different steps, runs, "
+                + "algorithms and scenarios are not the same.\n"
+                + f"The overlapping metrics are:\n{sorted(same_metrics)}"
+            )
 
         return identical, same_metrics
 
@@ -105,7 +107,8 @@ class DiagnoseData:
         print(
             "The number of runs is not identical through the different algorithms "
             + "and scenarios.\nThe minimum number of runs is "
-            + str(min(num_runs)) + " runs."
+            + str(min(num_runs))
+            + " runs."
         )
         return False, min(num_runs)
 
