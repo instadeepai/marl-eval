@@ -76,11 +76,11 @@ def plot_single_task_curve(
     if colors is None:
         color_palette = sns.color_palette(color_palette, n_colors=len(algorithms))
         colors = dict(zip(algorithms, color_palette))
-    if fix_normed_axis is True:
-        ax.set_ylim(0, 1)
 
     marker = kwargs.pop("marker", "o")
     linewidth = kwargs.pop("linewidth", 2)
+
+    highest_upper_val = 1
 
     for algorithm in algorithms:
         x_axis_len = len(aggregated_data[algorithm]["mean"])
@@ -98,6 +98,9 @@ def plot_single_task_curve(
             metric_values + confidence_interval,
         )
 
+        if fix_normed_axis is True and highest_upper_val < np.max(upper):
+            highest_upper_val = np.max(upper)
+
         if legend_map is not None:
             algorithm_name = legend_map[algorithm]
         else:
@@ -114,6 +117,9 @@ def plot_single_task_curve(
         ax.fill_between(
             x_axis_values, y1=lower, y2=upper, color=colors[algorithm], alpha=0.2
         )
+
+    if fix_normed_axis is True:
+        ax.set_ylim(0, highest_upper_val)
 
     return _annotate_and_decorate_axis(
         ax,
