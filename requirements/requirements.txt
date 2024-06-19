@@ -1,7 +1,7 @@
 colorcet==3.0.0
 matplotlib>=3.5.3
-numpy
-rliable
+numpy<=1.26.4
+rliable @ git+https://github.com/google-research/rliable
 seaborn
 pandas==1.4.4
 Jinja2
