@@ -36,6 +36,7 @@ def plot_single_task_curve(
     ticklabelsize: str = "xx-large",
     legend_map: Optional[Dict] = None,
     run_times: Optional[Dict] = None,
+    fix_normed_axis: bool = False,
     **kwargs: Any,
 ) -> Figure:
     """Plots an aggregate metric with CIs as a function of environment frames.
@@ -60,6 +61,7 @@ def plot_single_task_curve(
         If None, then this mapping is created based on `algorithms`.
       run_times: Dictionary that maps each algorithm to the number of seconds it
         took to run. If None, then environment steps will be displayed.
+      fix_normed_axis: If the metric is normalised, fix the y-axis from 0 to 1.
       **kwargs: Arbitrary keyword arguments.
 
     Returns:
@@ -78,6 +80,8 @@ def plot_single_task_curve(
     marker = kwargs.pop("marker", "o")
     linewidth = kwargs.pop("linewidth", 2)
 
+    highest_upper_val = 1
+
     for algorithm in algorithms:
         x_axis_len = len(aggregated_data[algorithm]["mean"])
 
@@ -93,6 +97,9 @@ def plot_single_task_curve(
             metric_values - confidence_interval,
             metric_values + confidence_interval,
         )
+
+        if fix_normed_axis is True and highest_upper_val < np.max(upper):
+            highest_upper_val = np.max(upper)
 
         if legend_map is not None:
             algorithm_name = legend_map[algorithm]
@@ -110,6 +117,9 @@ def plot_single_task_curve(
         ax.fill_between(
             x_axis_values, y1=lower, y2=upper, color=colors[algorithm], alpha=0.2
         )
+
+    if fix_normed_axis is True:
+        ax.set_ylim(0, highest_upper_val)
 
     return _annotate_and_decorate_axis(
         ax,
