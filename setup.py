@@ -59,7 +59,9 @@ setup(
     name="id-marl-eval",
     version=version,
     description="A Python library for Multi-Agent Reinforcement Learning evaluation.",
-    long_description=open(os.path.join(_CURRENT_DIR, "README.md")).read(),
+    long_description=open(
+        os.path.join(_CURRENT_DIR, "README.md"), encoding="utf-8"
+    ).read(),
     long_description_content_type="text/markdown",
     author="InstaDeep Ltd",
     license="Apache License, Version 2.0",
