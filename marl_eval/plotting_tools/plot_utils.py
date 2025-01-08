@@ -82,7 +82,9 @@ def plot_single_task_curve(
         x_axis_len = len(aggregated_data[algorithm]["mean"])
 
         # Set x-axis values to match evaluation interval steps.
-        x_axis_values = np.arange(x_axis_len) * extra_info["evaluation_interval"]
+        # x_axis_values = np.arange(x_axis_len) * extra_info["evaluation_interval"]
+        # Note: This is hardcoded for now as well.
+        x_axis_values = np.linspace(0,20, x_axis_len) 
 
         if run_times is not None:
             x_axis_values = np.linspace(0, run_times[algorithm] / 60, x_axis_len)
@@ -102,15 +104,17 @@ def plot_single_task_curve(
         ax.plot(
             x_axis_values,
             metric_values,
-            color=colors[algorithm],
+            color=colors[algorithm_name],
             marker=marker,
             linewidth=linewidth,
             label=algorithm_name,
         )
         ax.fill_between(
-            x_axis_values, y1=lower, y2=upper, color=colors[algorithm], alpha=0.2
+            x_axis_values, y1=lower, y2=upper, color=colors[algorithm_name], alpha=0.2
         )
-
+    # plt.hlines(y=0.15, xmin=0, xmax=2e7, colors=colors["MAPPO"], linestyles='--', label='JaxMARL MAPPO')
+    # plt.hlines(y=0.1, xmin=0, xmax=2e7, colors=colors["IPPO"], linestyles='--', label='JaxMARL IPPO')
+    # plt.legend()
     return _annotate_and_decorate_axis(
         ax,
         xlabel=xlabel,

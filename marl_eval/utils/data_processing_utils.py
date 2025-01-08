@@ -422,17 +422,21 @@ def create_matrices_for_rliable(  # noqa: C901
                 for i, run in enumerate(runs):
                     for j, task in enumerate(tasks):
                         # Get the metric data
-                        metric_data = data_env[task][algorithm][run][
-                            absolute_metric_key
-                        ][metric]
-                        # Compute the mean if it's a list, otherwise use as is
-                        data = (
-                            np.mean(metric_data)
-                            if isinstance(metric_data, list)
-                            else metric_data
-                        )
-                        # Store the data in the metric dictionary
-                        metric_dictionary[metric][algorithm][i][j] = data
+                        try: 
+                            metric_data = data_env[task][algorithm][run][
+                                absolute_metric_key
+                            ][metric]
+                            # Compute the mean if it's a list, otherwise use as is
+                            data = (
+                                np.mean(metric_data)
+                                if isinstance(metric_data, list)
+                                else metric_data
+                            )
+                            # Store the data in the metric dictionary
+                            metric_dictionary[metric][algorithm][i][j] = data
+                        except KeyError:
+                            print(f"KeyError: {env_name}, {task}, {algorithm}, {run}")
+                            continue
 
         metric_dictionary_return = metric_dictionary
 
@@ -462,15 +466,26 @@ def create_matrices_for_rliable(  # noqa: C901
                 for algorithm in algorithms:
                     for i, run in enumerate(runs):
                         for j, task in enumerate(tasks):
-                            # Get the metric data
-                            metric_data = data_env[task][algorithm][run][step][metric]
-                            # Compute the mean if it's a list, otherwise use as is
-                            data = (
-                                np.mean(metric_data)
-                                if isinstance(metric_data, list)
-                                else metric_data
-                            )
-                            # Store the data in the metric dictionary
+                            try:
+                                # Get the metric data
+                                if step in data_env[task][algorithm][run]:
+                                    metric_data = data_env[task][algorithm][run][step][metric]
+                                # else:
+                                #     step = data_env[task][algorithm][run].keys()[-1]
+                                #     metric_data = data_env[task][algorithm][run][step][metric]
+                                # Compute the mean if it's a list, otherwise use as is
+                                data = (
+                                    np.mean(metric_data)
+                                    if isinstance(metric_data, list)
+                                    else metric_data
+                                )
+                            except KeyError:
+                                print(
+                                    f"KeyError: {env_name}, {task}, {algorithm}, {run}"
+                                )
+                                data = 0.0
+                                # Store the data in the metric dictionary
+                            
                             metric_dictionary[metric][algorithm][i][j] = data
 
             for metric in mean_absolute_metrics:
