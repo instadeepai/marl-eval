@@ -38,6 +38,7 @@ def performance_profiles(
     metric_name: str,
     metrics_to_normalize: List[str],
     legend_map: Optional[Dict[str, str]] = None,
+    colors: Optional[Dict[str, str]] = None,
 ) -> Figure:
     """Produces performance profile plots.
 
@@ -65,6 +66,7 @@ def performance_profiles(
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
+    algorithms.sort(reverse=True)
 
     if legend_map is not None:
         legend_map = {algo.upper(): value for algo, value in legend_map.items()}
@@ -73,6 +75,7 @@ def performance_profiles(
             legend_map[algo]: value for algo, value in data_dictionary.items()
         }
         algorithms = list(data_dictionary.keys())
+        algorithms.sort(reverse=True)
 
     if metric_name in metrics_to_normalize:
         xlabel = "Normalized " + " ".join(metric_name.split("_"))
@@ -85,16 +88,20 @@ def performance_profiles(
     )
 
     # Plot score distributions
-    fig, ax = plt.subplots(ncols=1, figsize=(7, 5))
+    fig, ax = plt.subplots(ncols=1, figsize=(12, 12)) # Note: change this based on needs
     plot_utils.plot_performance_profiles(
         score_distributions,
         np.linspace(0, 1, 100),
         performance_profile_cis=score_distributions_cis,
-        colors=dict(zip(algorithms, sns.color_palette(cc.glasbey_category10))),
+        colors=dict(zip(algorithms, sns.color_palette(cc.glasbey_category10))) if colors is None else colors,
         xlabel=f"{xlabel} " + r"$(\tau)$",
         ax=ax,
-        legend=algorithms,
+        legend=algorithms, # Note: legend=algorithms or legend=[] to remove the legend.
     )
+    plt.ylabel(r"Fraction of runs with score > $\tau$",fontsize=40)
+    plt.xlabel("Mean episode return " + r"$(\tau)$",fontsize=40)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
     return fig
 
 
@@ -140,6 +147,7 @@ def aggregate_scores(
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
+    algorithms.sort(reverse=True)
 
     if legend_map is not None:
         legend_map = {algo.upper(): value for algo, value in legend_map.items()}
@@ -148,6 +156,7 @@ def aggregate_scores(
             legend_map[algo]: value for algo, value in data_dictionary.items()
         }
         algorithms = list(data_dictionary.keys())
+        algorithms.sort(reverse=True)
 
     aggregate_func = lambda x: np.array(  # noqa: E731
         [
@@ -311,6 +320,7 @@ def sample_efficiency_curves(
     metrics_to_normalize: List[str],
     legend_map: Optional[Dict[str, str]] = None,
     xlabel: str = "Timesteps",
+    colors: Optional[Dict[str, str]] = None,
 ) -> Tuple[Figure, Dict[str, np.ndarray], Dict[str, np.ndarray]]:
     """Produces sample efficiency curve plots.
 
@@ -346,6 +356,7 @@ def sample_efficiency_curves(
     upper_algo_dict = {algo.upper(): value for algo, value in data_dictionary.items()}
     data_dictionary = upper_algo_dict
     algorithms = list(data_dictionary.keys())
+    algorithms.sort(reverse=True)
 
     if legend_map is not None:
         legend_map = {algo.upper(): value for algo, value in legend_map.items()}
@@ -354,6 +365,7 @@ def sample_efficiency_curves(
             legend_map[algo]: value for algo, value in data_dictionary.items()
         }
         algorithms = list(data_dictionary.keys())
+        algorithms.sort(reverse=True) 
 
     # Find lowest values from amount of runs that have completed
     # across all algorithms
@@ -375,6 +387,9 @@ def sample_efficiency_curves(
 
     iqm_scores, iqm_cis = rly.get_interval_estimates(scores_dict, iqm, reps=5000)
 
+    xticks = np.linspace(0, 20, len(x_axis_values)) # Note: assuming we do 20M timesteps
+    x_axis_values = xticks
+    
     fig = plot_utils.plot_sample_efficiency_curve(
         x_axis_values,
         iqm_scores,
@@ -382,12 +397,19 @@ def sample_efficiency_curves(
         algorithms=algorithms,
         xlabel=xlabel,
         ylabel=ylabel,
-        legend=algorithms,
+        # xticks=xticks,
+        # xticklabels=xticklabels,
+        legend=[], # Note: legend=algorithms or legend=[] to remove the legend.
         figsize=(15, 8),
-        color_palette=cc.glasbey_category10,
+        colors=dict(zip(algorithms, sns.color_palette(cc.glasbey_category10))) if colors is None else colors,
     )
 
     dictionary["extra"] = extra
+    plt.xlabel("Timesteps [Millions]",fontsize=40)
+    plt.ylabel("Mean episode return",fontsize=40)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
+    # plt.legend(prop={'size': 25}) # Note: Comment when NOT inserting the legend.
 
     return fig, iqm_scores, iqm_cis
 
@@ -401,6 +423,7 @@ def plot_single_task(
     xlabel: str = "Timesteps",
     legend_map: Optional[Dict[str, str]] = None,
     run_times: Optional[Dict[str, float]] = None,
+    colors: Optional[Dict[str, str]] = None,
 ) -> Figure:
     """Produces aggregated plot for a single task in an environment.
 
@@ -441,6 +464,7 @@ def plot_single_task(
     task_mean_ci_data = upper_algo_dict
     algorithms = list(task_mean_ci_data.keys())
     algorithms.remove("extra")
+    algorithms.sort(reverse=True)
 
     if legend_map is not None:
         legend_map = {algo.upper(): value for algo, value in legend_map.items()}
@@ -454,12 +478,17 @@ def plot_single_task(
         algorithms=algorithms,
         xlabel=xlabel,
         ylabel=ylabel,
-        legend=algorithms,
+        legend=algorithms, # Note: legend=algorithms or legend=[] to remove the legend.
         figsize=(15, 8),
-        color_palette=cc.glasbey_category10,
+        colors=dict(zip(algorithms, sns.color_palette(cc.glasbey_category10))) if colors is None else colors,
         legend_map=legend_map,
         run_times=run_times,
         marker="",
     )
-
+    plt.title(f"{task_name}", fontsize=40)
+    plt.xlabel("Timesteps [Millions]",fontsize=40)
+    plt.ylabel("Mean episode return",fontsize=40)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
+    plt.legend(prop={'size': 25}) # Note: Uncomment when inserting the legend.
     return fig
