@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import json
 import logging
 import os
@@ -20,7 +21,7 @@ import zipfile
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import neptune
 from colorama import Fore, Style
@@ -118,6 +119,7 @@ def pull_neptune_data(
     store_directory: str = "./downloaded_json_data",
     neptune_data_key: str = "metrics",
     disable_progress_bar: bool = False,
+    algo_name_map: Optional[Dict[str, str]] = None,
 ) -> None:
     """Downloads logs from a Neptune project based on provided tags.
 
@@ -166,6 +168,7 @@ def pull_neptune_data(
                 run_id,
                 store_directory,
                 neptune_data_key,
+                algo_name_map,
             )
             for run_id in run_ids
         ]
@@ -183,7 +186,11 @@ def pull_neptune_data(
 
 
 def _download_and_extract_data(
-    project_name: str, run_id: str, store_directory: str, neptune_data_key: str
+    project_name: str, 
+    run_id: str, 
+    store_directory: str, 
+    neptune_data_key: str,
+    algo_name_map: Optional[Dict[str, str]] = None,
 ) -> None:
     try:
         with neptune.init_run(
@@ -197,6 +204,27 @@ def _download_and_extract_data(
                     file_path += f"_{j}"
                 run[f"{neptune_data_key}/{data_key}"].download(destination=file_path)
                 _extract_zip_file(file_path)
+
+                # map the algo-name when loaded
+                with open(f"{file_path}.json") as f:
+                    data = json.load(f)
+
+                copy_data = copy.deepcopy(data)
+
+                for env_name, envs in data.items():
+                    for scenario_name, scenarios in envs.items():
+                        for old_algo_name, algos in scenarios.items():
+                            if algo_name_map is not None:
+                                algo_name = algo_name_map[old_algo_name]
+                            else:
+                                algo_name = old_algo_name
+                            del copy_data[env_name][scenario_name][old_algo_name]
+                            copy_data[env_name][scenario_name][algo_name] = algos
+
+                with open(f"{file_path}.json", "w") as f:
+                    json.dump(copy_data, f, indent=4)
+
+
     except Exception as e:
         print(f"Error downloading data for run {run_id}: {e}")
 

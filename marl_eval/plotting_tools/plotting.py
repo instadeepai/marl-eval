@@ -407,7 +407,8 @@ def sample_efficiency_curves(
         ylabel=ylabel,
         # xticks=xticks,
         # xticklabels=xticklabels,
-        legend=[], # Note: legend=algorithms or legend=[] to remove the legend.
+        legend=algorithms,
+        # legend=[], # Note: legend=algorithms or legend=[] to remove the legend.
         figsize=(15, 8),
         colors=dict(zip(algorithms, sns.color_palette(cc.glasbey_category10))) if colors is None else colors,
     )
